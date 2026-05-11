@@ -22,8 +22,8 @@ skills/gsigmad/
 
 with the comment:
 
-> Live symlink to canonical gsigmad source repo (per Watchtower memory:
-> "gsigmad runtime install"); do not track
+> Live symlink to canonical gsigmad source repo (runtime install
+> convenience); do not track
 
 Practically:
 
@@ -85,4 +85,3 @@ That choice is deferred until a concrete need surfaces.
 - `.gitignore` line 41
 - `AGENTS.md` § "Skill Entry Points"
 - `README.md` § "Source of truth"
-- `.planning/quick/260511-unblock-carryover-prompts/PROMPT-C1-anchor-gitignore-decision.md`

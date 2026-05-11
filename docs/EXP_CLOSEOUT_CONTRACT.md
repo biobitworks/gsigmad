@@ -2,10 +2,10 @@
 
 Canonical science-governance contract for closing a Getting Science
 Done (gsigmad) experiment. Every EXP closeout must explicitly account
-for the four sections below. The same 10 classifications surfaced by
-the Watchtower overlay (`watchtower/portfolio_classifications.py`,
-quick task `260508-pcl`) are codified here as the **science-governance
-side** of that contract — Watchtower observes, gsigmad governs.
+for the four sections below. The 10 portfolio classifications recognised
+by an operator console overlay (if any) are codified here as the
+**science-governance side** of that contract — the console observes,
+gsigmad governs.
 
 This document is read by:
 
@@ -152,25 +152,25 @@ The contract is enforced by these gates:
    waiver — the repo's classification record is what makes the
    notebook expectation go away.
 
-## Section 6 — Watchtower interop
+## Section 6 — Operator console interop
 
-Watchtower (`260508-pcl`) renders the *observed* state of these
-classifications in `/api/project-review` and on `/projects/{id}`.
-Watchtower never writes the contract; it only displays it. The
-mapping is one-to-one:
+An operator console (if integrated) renders the *observed* state of
+these classifications in its project-review surface. The console
+never writes the contract; it only displays it. The mapping is
+one-to-one:
 
-| Watchtower field | gsigmad contract source |
+| Operator console field | gsigmad contract source |
 |---|---|
 | `classification` | Section 4 input classification |
 | `classification_reason` | Section 4 declared reason text |
 | `notebook_replay.replay_readiness` | Derived from Section 3 contract value + on-disk state |
 | `notebook_replay.recommended_owner` | Section 3 `replay_owner` |
-| `dashboard.kind` (`control_plane_script`) | Watchtower-side detection only; not a gsigmad contract field |
+| `dashboard.kind` (`control_plane_script`) | Console-side detection only; not a gsigmad contract field |
 
 When the contract changes (e.g., a new `notebook_replay_contract`
-enum value), update both this document AND
-`watchtower/portfolio_classifications.py` so the operator console
-keeps rendering accurately.
+enum value), update both this document AND the corresponding console
+classification module so the operator console keeps rendering
+accurately.
 
 ## Section 7 — How to add a contract field
 
@@ -179,38 +179,35 @@ keeps rendering accurately.
    Contract" to surface the new field at closeout time.
 3. Update `skills/gsigmad-audit-output/SKILL.md` "Closeout Contract
    Gate" if the new field is gate-enforceable.
-4. If the field maps to a Watchtower-rendered surface, also update
-   `watchtower/portfolio_classifications.py` and
-   `docs/PORTFOLIO_CLASSIFICATIONS.md` in the Watchtower repo. Both
-   docs cross-reference each other.
-5. Open a quick task receipt under `.planning/quick/` documenting
-   the change. The contract is a governance contract; new fields go
-   through this doc + a quick-task receipt, not silent edits.
+4. If the field maps to an operator console rendered surface, also
+   update that console's portfolio classification module + reference
+   docs.
+5. Record the change in the project's append-only LAB_NOTEBOOK with a
+   signed entry. The contract is a governance contract; new fields go
+   through this doc + a notebook receipt, not silent edits.
 
 ## Boundaries
 
 - This document is a **governance contract**, not executable code.
   Pydantic schema validation of these fields is a follow-up
   `260508-eccf-*` lane.
-- gsigmad governs; Watchtower observes; Ollarma executes (only when
-  `safe_for_ollarma_jupyter_replay: true`).
+- gsigmad governs; the operator console (if any) observes; the
+  bounded local execution lane (if any) executes only when
+  `safe_for_ollarma_jupyter_replay: true`.
 - No KG / SeedGraph / Overwatch / ProTHub / ArangoDB writeback.
 - No notebook execution from gsigmad itself. Replay is owned by
   Ollarma; the contract gates *whether* a replay may run, not how.
 
 ## Contract version
 
-`v1.0` — 2026-05-08, quick task `260508-ecc`.
+`v1.0` — 2026-05-08.
 
 ## Cross-references
 
 - `skills/gsigmad-run-experiment/SKILL.md` §"EXP Closeout Contract"
 - `skills/gsigmad-audit-output/SKILL.md` "Closeout Contract Gate"
 - `skills/gsigmad-create-prompt/SKILL.md` (PROMPT provenance side;
-  `no_prompt_reason` enum lives in `gsigmad-create-prompt` after the
-  follow-up `260508-eccf-*` lane closes)
-- Watchtower:
-  - `watchtower/portfolio_classifications.py`
-    (`<watchtower-repo>/`)
-  - `docs/PORTFOLIO_CLASSIFICATIONS.md` (Watchtower-side reference)
-  - `watchtower/notebook_replay.py` (observed state machinery)
+  `no_prompt_reason` enum lives in `gsigmad-create-prompt`)
+- Operator console (if integrated): the console's portfolio
+  classification module and its observed-state machinery for
+  notebook replay.

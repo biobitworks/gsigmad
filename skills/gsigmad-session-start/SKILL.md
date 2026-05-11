@@ -19,10 +19,7 @@ Use for ALL signatures this session:
 
 ## Context Discovery
 
-Determine the primary project directory. Check for:
-- <cellico-repo>
-- <fractal-waves-repo>
-- <overwatch-repo>
+Determine the primary project directory. Check for any registered project repo listed in `adapters/*.md` (template at `examples/adapters/example-project.md`).
 
 Read the project's `.agent/task.md` if it exists.
 Read `research_hub/portfolio/WORKFLOW_RULES.md` for canonical rules (if it exists for the project).

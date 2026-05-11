@@ -9,13 +9,18 @@ truth.
 | Topic | File |
 | --- | --- |
 | Project overview | `../README.md` |
-| Live state | `../.planning/STATE.md` |
-| Roadmap | `../.planning/ROADMAP.md` |
-| Lab notebook | `../LAB_NOTEBOOK.md` |
+| Release notes | `../RELEASE.md` |
+| Security policy | `../SECURITY.md` |
+| Citation | `../CITATION.cff` |
 | Governance bridge | `GOVERNANCE_LAYER_BRIDGE.md` |
 | Control-plane bridge contract | `CONTROL_PLANE_BRIDGE_CONTRACT.md` |
 | Runtime integration matrix | `RUNTIME_INTEGRATION_MATRIX.md` |
 | Dashboard receipt | `DASHBOARD.md` |
+
+Live state, roadmap, and the project-local lab notebook are scaffolded
+by `gsigmad init` into the consuming repo (under `.gsigmad/`,
+`.agent/`, and `LAB_NOTEBOOK.md` respectively) — they are not shipped
+with the public package.
 
 ## Machine Contracts
 
@@ -40,11 +45,13 @@ The package-bundled copy is:
 
 ## Runtime Adapters
 
-| Adapter | File |
-| --- | --- |
-| Ollarma | `../adapters/ollarma.md` |
-| Ollarma runtime manifest | `../adapters/runtime/ollarma.yaml` |
-| Runtime registry guide | `../adapters/runtime/README.md` |
+Adapter manifests live under `adapters/*.md` in the consuming repo.
+Public release ships a template at `../examples/adapters/example-project.md`;
+copy it to `adapters/<your-project>.md` (or `adapters/runtime/<name>.yaml`
+for runtime-bridge adapters) to register a project with the framework.
+Concrete runtime adapters (e.g. for a bounded local execution lane or
+a downstream operator console) are operator-defined and live in the
+consuming repo, not in this package.
 
 ## Claim Boundary
 

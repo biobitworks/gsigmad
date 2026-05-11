@@ -15,7 +15,7 @@ Cross-project experiment search — queries the Overwatch KG via AQL with option
 /gsd:find-experiments project=overwatch
 /gsd:find-experiments classification=CONFIRMATORY status=completed
 /gsd:find-experiments protein=TP53
-/gsd:find-experiments project=cellico date_from=2026-01-01 date_to=2026-12-31
+/gsd:find-experiments project=example-project date_from=2026-01-01 date_to=2026-12-31
 /gsd:find-experiments classification=EXPLORATORY protein=BRCA1
 ```
 
@@ -23,7 +23,7 @@ Cross-project experiment search — queries the Overwatch KG via AQL with option
 
 | Parameter | Values | Description |
 |-----------|--------|-------------|
-| `project` | any project name | Restrict to a single project (e.g. `cellico`, `overwatch`). Omit for all projects. |
+| `project` | any project name | Restrict to a single project (e.g. `example-project`). Omit for all projects. |
 | `classification` | `CONFIRMATORY` / `EXPLORATORY` / `REPLICATION` | Filter by experiment classification. |
 | `status` | `running` / `completed` / `failed` | Filter by experiment status. |
 | `date_from` | ISO 8601 date (e.g. `2026-01-01`) | Include only experiments with start_date >= date_from. |
@@ -66,11 +66,11 @@ The command returns a GitHub-flavored markdown table:
 ```
 | EXP | Project | Classification | Status | Last Run | Provenance Sig |
 | --- | --- | --- | --- | --- | --- |
-| cellico:EXP-042 | cellico | CONFIRMATORY | completed | run_20260315_001 | SIG-20260315T... |
+| example-project:EXP-001 | example-project | CONFIRMATORY | completed | run_00000000_000 | SIG-YYYYMMDDTHHMMSSZ... |
 ```
 
 Columns:
-- **EXP**: Experiment ID prefixed with project namespace (e.g. `cellico:EXP-042`) to prevent cross-project collision
+- **EXP**: Experiment ID prefixed with project namespace (e.g. `example-project:EXP-001`) to prevent cross-project collision
 - **Project**: Source project name
 - **Classification**: CONFIRMATORY / EXPLORATORY / REPLICATION
 - **Status**: Current experiment status
@@ -82,7 +82,7 @@ Columns:
 - If `KG_UNAVAILABLE` appears, ArangoDB is offline. The query cannot fall back to local scan.
 - Results are capped at 100 per query (ArangoDB hard limit).
 - The `protein` filter uses the `involves` edge traversal — it does NOT match experiment document fields directly.
-- exp_id values include project prefix (e.g. `cellico:EXP-042`) per DATA_CONTRACTS.md §6 namespace rules.
+- exp_id values include project prefix (e.g. `example-project:EXP-001`) per DATA_CONTRACTS.md §6 namespace rules.
 
 ## Non-Negotiables
 

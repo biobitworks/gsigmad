@@ -69,12 +69,11 @@ contract:
   `safe_for_ollarma_jupyter_replay` set → warn `human_gated_replay_
   decision_pending`; the human PI owns the next action.
 
-### Watchtower interop note
+### Operator console interop note
 
-When this gate halts, the Watchtower overlay
-(`watchtower/portfolio_classifications.py`, `260508-pcl`) will render
-the project's current readiness state but cannot fix the inputs. The
-fix is in the EXP note, not in Watchtower.
+When this gate halts, an operator console overlay (if any) will
+render the project's current readiness state but cannot fix the
+inputs. The fix is in the EXP note, not in the console.
 
 ## Trust Tier Compliance Note (EC-03)
 

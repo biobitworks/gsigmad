@@ -18,19 +18,22 @@ It points at the source surfaces rather than inventing a second UI.
 | Ollarma adapter | gsigmad | `adapters/runtime/ollarma.yaml` |
 | Bridge skill | gsigmad | `skills/gsigmad-governance-bridge/SKILL.md` |
 
-## Watchtower Mapping
+## Operator Console Mapping
 
-When Watchtower is running, the review matrix should see:
+When an operator console integration is configured, the review matrix
+in the consuming repo should expose:
 
 - docs: `docs/`
 - KB: `docs/KB_HOME.md`
 - dashboard: `docs/DASHBOARD.md`
 - lab notebook: `LAB_NOTEBOOK.md`
 - experiments: `experiments/`
-- workflows: `.planning/ROADMAP.md`
+- workflows: the project's roadmap surface, if maintained
 
 ## Boundary
 
-Watchtower may display gsigmad status, docs, bridge surfaces, and readiness
-gaps. It must not become the governance owner. Runtime execution remains
-Ollarma's responsibility; durable truth remains Overwatch's responsibility.
+An operator console (if integrated) may display gsigmad status, docs,
+bridge surfaces, and readiness gaps. It must not become the governance
+owner. Runtime execution remains the bounded local execution lane's
+responsibility; durable truth remains the configured KG owner's
+responsibility.

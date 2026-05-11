@@ -30,3 +30,15 @@ Before pushing publicly:
 - private-surface scan has no internal-only directories
 - package metadata includes license, citation, security, and contribution files
 - GitHub remote is explicitly configured for the intended public repo
+
+The upstream framework (`gettingsciencedone`) ships an executable
+release-gate scan that enforces the above. From an upstream checkout:
+
+```bash
+python3 scripts/release_gate_scan.py /path/to/gsigmad
+pytest tests/test_release_gate.py -q
+```
+
+Exit code 1 on any BLOCK-class finding halts the release. The scan
+rules are committed at
+`.planning/quick/260511-gsigmad-public-release-ip-redteam/SANITIZATION-RULES.json`.

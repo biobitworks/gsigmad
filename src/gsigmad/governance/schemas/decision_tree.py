@@ -137,7 +137,7 @@ def generate_json_schema(output_path: Optional[str] = None) -> dict:
     schema = DecisionTree.model_json_schema()
     # Add $schema and $id for draft compliance (D-10: following Overwatch canon.json pattern)
     schema["$schema"] = "https://json-schema.org/draft/2020-12/schema"
-    schema["$id"] = "https://gettingsciencedone/schemas/decision-tree/v1.0"
+    schema["$id"] = "urn:biobitworks:gsigmad:schemas:decision-tree:v1.0"
 
     if output_path:
         with open(output_path, "w") as f:

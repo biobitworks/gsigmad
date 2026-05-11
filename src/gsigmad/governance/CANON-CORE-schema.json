@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gettingsciencedone/schemas/canon-core-extension/v1.0.0",
+  "$id": "urn:biobitworks:gsigmad:schemas:canon-core-extension:v1.0.0",
   "title": "CANON-CORE Extension Header",
   "description": "Schema for the extension declaration block that project CANON files must include when extending CANON-CORE. Validated by audit-claims to verify project CANONs are properly declaring extends: CANON-CORE and documenting any invariant overrides with justification.",
   "type": "object",

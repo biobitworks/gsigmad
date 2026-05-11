@@ -199,11 +199,10 @@ gates:
 
 ## EXP Closeout Contract (HARD GATE — blocks COMPLETE)
 
-Source of truth: `docs/EXP_CLOSEOUT_CONTRACT.md` (v1.0, quick task
-`260508-ecc`). Every EXP closeout MUST record the four sections below
-or declare an explicit exemption. The same 10 classifications surfaced
-by the Watchtower overlay (`watchtower/portfolio_classifications.py`,
-`260508-pcl`) are the science-governance contract here.
+Source of truth: `docs/EXP_CLOSEOUT_CONTRACT.md` (v1.0). Every EXP
+closeout MUST record the four sections below or declare an explicit
+exemption. The portfolio_classifications vocabulary defined in your
+operator console (if any) is the science-governance contract here.
 
 Record these fields in the EXP note's frontmatter or a dedicated
 `## Closeout Contract` section. Do NOT mark the EXP COMPLETE until

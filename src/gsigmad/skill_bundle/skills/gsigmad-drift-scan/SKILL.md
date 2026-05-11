@@ -1,13 +1,13 @@
 ---
 name: gsigmad-drift-scan
-description: "Scan all 12 project adapters for CANON classification changes. Use when running scheduled drift detection or investigating a suspected CANON change. Loads adapters/*.md automatically and writes a drift report to .agent/drift_reports/."
+description: "Scan all registered project adapters for CANON classification changes. Use when running scheduled drift detection or investigating a suspected CANON change. Loads adapters/*.md automatically and writes a drift report to .agent/drift_reports/."
 disable-model-invocation: true
 allowed-tools: [Read, Bash]
 ---
 
 # Drift Scan ($canon-drift-detection)
 
-Scan all 12 registered projects for CANON classification changes. Reads adapter metadata automatically from `adapters/*.md` — no manual project list needed. Writes a timestamped JSON drift report when classification changes are detected.
+Scan all registered project adapters for CANON classification changes. Reads adapter metadata automatically from `adapters/*.md` (template at `examples/adapters/example-project.md`) — no manual project list needed. Writes a timestamped JSON drift report when classification changes are detected.
 
 ## Usage
 
@@ -15,7 +15,7 @@ Scan all 12 registered projects for CANON classification changes. Reads adapter 
 /gsd:drift-scan
 ```
 
-No parameters. All configuration is sourced from `adapters/*.md` automatically (per D-08, WIRE-03).
+No parameters. All configuration is sourced from `adapters/*.md` automatically (per D-08, WIRE-03). Public release ships an example template at `examples/adapters/example-project.md`; copy to `adapters/<your-project>.md` to register a project for drift scanning.
 
 ## Execution
 
@@ -27,7 +27,7 @@ sys.path.insert(0, '.')
 from gsigmad.governance.compiler.adapter_loader import load_project_registry
 from gsigmad.governance.compiler.drift_scanner import scan_all_projects
 
-# Load all 12 project adapters from adapters/*.md (per D-08, WIRE-03)
+# Load all registered project adapters from adapters/*.md (per D-08, WIRE-03)
 project_registry = load_project_registry('.')
 
 result = scan_all_projects(gsd_root='.', project_registry=project_registry)
@@ -62,7 +62,7 @@ When drift is detected, the full report at `.agent/drift_reports/DRIFT-{timestam
   "drift_detected": true,
   "drift_events": [
     {
-      "project": "cellico",
+      "project": "example-project",
       "invariant_changed": "classification",
       "old_classification": "EXPLORATORY",
       "new_classification": "CONFIRMATORY",
@@ -83,6 +83,6 @@ Fields in each drift event:
 ## Non-Negotiables
 
 - Do NOT manually construct `project_registry`; always call `load_project_registry()` so that adapter file changes propagate automatically without code edits.
-- Projects with `has_canon=false` are silently skipped by `scan_all_projects()` — this is correct behaviour, not an error. Conductor, Antigence-Bittensor, and other projects without CANON.md cannot experience classification drift.
+- Projects with `has_canon=false` are silently skipped by `scan_all_projects()` — this is correct behaviour, not an error. Projects without a CANON.md cannot experience classification drift.
 - Do NOT suppress or modify drift events; display them verbatim from the result dict. The raw output is the audit record.
 - This command is read-only except for writing the DRIFT JSON report and updating `last_drift_scan.txt`. It does not modify any CANON.md, experiment record, or KG document.

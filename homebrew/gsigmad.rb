@@ -11,7 +11,7 @@ class Gsigmad < Formula
   include Language::Python::Virtualenv
 
   desc "Science governance CLI -- deterministic guardrails for probabilistic AI"
-  homepage "https://github.com/biobitworks/gettingsciencedone"
+  homepage "https://github.com/biobitworks/gsigmad"
   # TODO: Replace with actual PyPI release URL and sha256 after publishing
   url "https://files.pythonhosted.org/packages/source/g/gsigmad/gsigmad-1.1.0.tar.gz"
   sha256 "PLACEHOLDER_SHA256"

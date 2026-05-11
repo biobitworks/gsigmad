@@ -204,5 +204,5 @@
   "title": "DecisionTree",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gettingsciencedone/schemas/decision-tree/v1.0"
+  "$id": "urn:biobitworks:gsigmad:schemas:decision-tree:v1.0"
 }
