@@ -1,0 +1,4 @@
+interface:
+  display_name: "redteam research remediate"
+policy:
+  allow_implicit_invocation: true

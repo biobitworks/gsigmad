@@ -1,0 +1,8 @@
+project: synthproj_c01
+description: synthetic adapter for EXP-003 registered_declaration_incomplete arm
+_runtime_response: present
+knowledge_base:
+  sources:
+    - kind: README.md
+      path: synthproj_c01/README.md
+  # missing required: LAB_NOTEBOOK.md and experiments/ declarations

@@ -1,0 +1,7 @@
+# Synthetic adapter that is NOT registered (filename marker indicates absence).
+project: synthproj_a02
+description: synthetic adapter for EXP-003 not_registered arm
+knowledge_base:
+  sources:
+    - kind: README.md
+      path: synthproj_a02/README.md

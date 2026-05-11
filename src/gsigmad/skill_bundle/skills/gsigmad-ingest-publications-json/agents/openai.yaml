@@ -1,0 +1,4 @@
+interface:
+  display_name: "ingest publications json"
+policy:
+  allow_implicit_invocation: true

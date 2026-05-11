@@ -1,0 +1,4 @@
+interface:
+  display_name: "Model Identifiability"
+policy:
+  allow_implicit_invocation: true

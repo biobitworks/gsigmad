@@ -1,0 +1,121 @@
+command: run-experiment
+version: "1.0"
+description: Full EXP workflow with governance gates for CONFIRMATORY, EXPLORATORY, and REPLICATION experiments
+
+inputs:
+  required:
+    - field: exp_record
+      type: dict
+      description: EXP pre-registration YAML loaded into dict (must include classification, hypothesis fields)
+    - field: classification
+      type: str
+      enum: [CONFIRMATORY, EXPLORATORY, REPLICATION]
+      description: Experiment classification — determines which gates are enforced
+  optional:
+    - field: prompt_file
+      type: str
+      description: Path to PROMPT-### .md file with pre-execution red team fields
+    - field: data_file
+      type: str
+      description: Path to data file (required for temporal integrity gate on CONFIRMATORY)
+    - field: contract_dict
+      type: dict
+      description: Data contract definition dict (interface + fields) — required if data contract gate is active
+    - field: data_dict
+      type: dict
+      description: Actual data to validate against contract_dict
+
+outputs:
+  schema:
+    status: str  # PASS | FAIL | HALT
+    gates_passed: list[str]
+    gates_failed: list[str]
+    error: Optional[str]
+    run_id: Optional[str]  # Set on PASS; format: EXP-###-<timestamp>-<hash4>
+
+gate_checks:
+  - gate: power_analysis
+    applies_to: [CONFIRMATORY]
+    module: gsigmad.governance.gates.power_analysis.check_power_analysis_gate
+    halt_on_fail: true
+    description: Verifies exp_record has complete power_analysis block with required_n, effect_size_mesi, alpha, achieved_power
+  - gate: temporal_integrity
+    applies_to: [CONFIRMATORY]
+    module: gsigmad.governance.gates.temporal_integrity.check_temporal_integrity
+    halt_on_fail: true
+    description: Verifies pre-registration commit predates data file mtime to prevent HARKing
+  - gate: red_team
+    applies_to: [CONFIRMATORY]
+    module: gsigmad.governance.gates.red_team.check_red_team_gate
+    halt_on_fail: true
+    description: Verifies PROMPT fields risk_tier, red_team_status=PASS, remediation_constraints, execution_decision=GO
+  - gate: data_contract
+    applies_to: [CONFIRMATORY, EXPLORATORY, REPLICATION]
+    module: gsigmad.governance.gates.data_contract.validate_data_contract
+    halt_on_fail: true
+    description: Validates interface boundaries between modules before execution (ALL classifications)
+  - gate: drift_check
+    applies_to: [CONFIRMATORY, EXPLORATORY, REPLICATION]
+    module: gsigmad.governance.compiler.drift_check.check_drift
+    halt_on_fail: true
+    description: Post-run drift check — triggers every 5 experiments; halts if SCIENCE < 50%
+
+error_names:
+  - POWER_ANALYSIS_GATE_FAILED
+  - HARKING_PREVENTION_ERROR
+  - RED TEAM GATE FAILED
+  - DATA CONTRACT VIOLATION
+  - TRUST_TIER_ERROR
+  - DRIFT_WARNING
+
+edge_cases:
+  - id: EC-01
+    name: confirmatory_temporal_gate
+    description: CONFIRMATORY experiment where pre-registration commit postdates data file mtime — HARKing prevention fires
+    input:
+      classification: CONFIRMATORY
+      prereg_file: experiments/EXP_001_example.md
+      data_file: data/results_2026_01_01.csv
+      # Simulated: prereg_commit_ts 2026-01-02 AFTER data_file mtime 2026-01-01
+    expected:
+      gate: temporal_integrity
+      pass: false
+      error_prefix: HARKING_PREVENTION_ERROR
+  - id: EC-03
+    name: provisional_artifact_gate
+    description: PROVISIONAL trust tier artifact used in CONFIRMATORY evidence chain — write blocked before DB contact
+    input:
+      classification: CONFIRMATORY
+      exp_record:
+        _provenance:
+          trust_tier: PROVISIONAL
+    expected:
+      gate: trust_tier
+      pass: false
+      error_prefix: TRUST_TIER_ERROR
+  - id: EC-RUN-01
+    name: missing_power_analysis_block
+    description: CONFIRMATORY experiment missing power_analysis block in EXP record
+    input:
+      classification: CONFIRMATORY
+      exp_record: {}
+    expected:
+      gate: power_analysis
+      pass: false
+      error_prefix: POWER_ANALYSIS_GATE_FAILED
+  - id: EC-RUN-02
+    name: data_contract_missing_required_field
+    description: Data dict missing a required field defined in contract
+    input:
+      classification: EXPLORATORY
+      contract_dict:
+        interface: "module_A -> module_B"
+        fields:
+          - name: protein_id
+            type: str
+            required: true
+      data_dict: {}
+    expected:
+      gate: data_contract
+      pass: false
+      error_prefix: DATA CONTRACT VIOLATION

@@ -1,0 +1,4 @@
+interface:
+  display_name: "route publication destinations"
+policy:
+  allow_implicit_invocation: true

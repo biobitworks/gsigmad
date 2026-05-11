@@ -1,0 +1,189 @@
+command: fair-check
+version: "1.0"
+description: >-
+  Assess experiment outputs against FAIR criteria (Findable, Accessible, Interoperable, Reusable)
+  and produce a scored checklist with per-dimension pass/fail and total score
+
+inputs:
+  required:
+    - field: exp_id
+      type: str
+      description: "Experiment identifier, e.g. \"EXP-042\""
+  optional:
+    - field: gsd_root
+      type: str
+      default: "."
+      description: "Root directory of GSD project"
+
+outputs:
+  schema:
+    exp_id: str
+    checked_at: str  # ISO 8601 UTC timestamp
+    dimensions:
+      findable:
+        pass: bool
+        sub_checks:
+          - id: str
+            pass: bool
+            detail: str
+      accessible:
+        pass: bool
+        sub_checks:
+          - id: str
+            pass: bool
+            detail: str
+      interoperable:
+        pass: bool
+        sub_checks:
+          - id: str
+            pass: bool
+            detail: str
+      reusable:
+        pass: bool
+        sub_checks:
+          - id: str
+            pass: bool
+            detail: str
+    total_score: int  # 0-4, count of passing dimensions
+    pass: bool
+    summary: str
+  artifacts:
+    - path: "experiments/fair/EXP_{NNN}_fair.json"
+      description: "Per-experiment FAIR compliance checklist JSON"
+
+gate_checks:
+  - gate: fair_check
+    applies_to: [ALL]
+    module: gsigmad.governance.fair.fair_check.run_fair_check
+    halt_on_fail: false
+    description: >-
+      FAIR compliance assessment tool. Evaluates experiment outputs against all four
+      FAIR dimensions (11 sub-checks). This is an assessment tool, NOT an execution gate --
+      it does not block experiment runs or other governance operations.
+
+error_names:
+  - FAIR_CHECK_FAILED
+
+sub_checks:
+  findable:
+    - id: F-ID
+      description: "Persistent identifier (DOI or PMID) present in EXP record identifiers field or .agent/identifiers.json"
+      fail_message: "No persistent identifier (DOI/PMID) found"
+    - id: F-META
+      description: "Searchable metadata fields present: title, description, keywords, creator"
+      fail_message: "Missing metadata fields"
+
+  accessible:
+    - id: A-PROTOCOL
+      description: "All declared output files exist on disk and are retrievable via local filesystem"
+      fail_message: "One or more output files missing from disk"
+    - id: A-LICENSE
+      description: "License declared in EXP record license field or LICENSE/LICENSE.md file"
+      fail_message: "No license found in EXP record or LICENSE file"
+
+  interoperable:
+    - id: I-FORMAT
+      description: "Output files use community standard formats (.json, .csv with headers, .prov.json)"
+      fail_message: "Non-standard file format detected"
+    - id: I-VOCAB
+      description: "JSON output files contain JSON-LD @context key or EXP record has vocabulary field"
+      fail_message: "No linked vocabulary reference found"
+    - id: I-PROV
+      description: "PROV-JSON provenance file exists with W3C required keys: entity, activity, wasGeneratedBy"
+      fail_message: "No valid PROV-JSON provenance file found"
+
+  reusable:
+    - id: R-LICENSE
+      description: "Explicit license for reuse declared (same sources as A-LICENSE)"
+      fail_message: "No license found for reuse terms"
+    - id: R-METHOD
+      description: "Non-empty methodology field in EXP record describing experimental approach"
+      fail_message: "Methodology field absent or empty"
+    - id: R-VARDEF
+      description: "Each variable in variables array has a definition field with non-empty text"
+      fail_message: "Variable missing definition"
+    - id: R-UNITS
+      description: "Each variable in variables array has a unit field with non-empty text"
+      fail_message: "Variable missing unit"
+
+edge_cases:
+  - id: EC-FAIR-01
+    name: no_persistent_identifier
+    description: "EXP record has no DOI or PMID in identifiers field and no .agent/identifiers.json entry"
+    input:
+      exp_id: "EXP-099"
+      exp_record:
+        exp_id: "EXP-099"
+        title: "Test experiment"
+        description: "Testing FAIR checks"
+        keywords: ["test"]
+        creator: "test-agent"
+        identifiers: {}
+    expected:
+      findable_pass: false
+      failing_sub_check: F-ID
+      detail_contains: "No persistent identifier"
+
+  - id: EC-FAIR-02
+    name: non_standard_format
+    description: "Output file uses .xlsx format which is not in the community format whitelist"
+    input:
+      exp_id: "EXP-042"
+      exp_record:
+        exp_id: "EXP-042"
+        output_files: ["results/exp042_raw.xlsx"]
+    expected:
+      interoperable_pass: false
+      failing_sub_check: I-FORMAT
+      detail_contains: "exp042_raw.xlsx"
+
+  - id: EC-FAIR-03
+    name: variable_missing_definition
+    description: "Variable has name and unit but no definition field"
+    input:
+      exp_id: "EXP-042"
+      exp_record:
+        exp_id: "EXP-042"
+        variables:
+          - name: "conc_ratio"
+            unit: "ratio"
+    expected:
+      reusable_pass: false
+      failing_sub_check: R-VARDEF
+      detail_contains: "conc_ratio"
+
+  - id: EC-FAIR-04
+    name: malformed_prov_json
+    description: "PROV-JSON file exists but is missing required W3C key 'activity'"
+    input:
+      exp_id: "EXP-042"
+      prov_json_content:
+        entity: {"ex:e1": {"prov:type": "document"}}
+        wasGeneratedBy: {"ex:g1": {"prov:entity": "ex:e1"}}
+    expected:
+      interoperable_pass: false
+      failing_sub_check: I-PROV
+      detail_contains: "activity"
+
+  - id: EC-FAIR-05
+    name: all_dimensions_pass
+    description: "Complete EXP with all FAIR criteria satisfied: DOI, metadata, license, community formats, PROV-JSON, methodology, variable definitions and units"
+    input:
+      exp_id: "EXP-042"
+      exp_record:
+        exp_id: "EXP-042"
+        title: "Complete experiment"
+        description: "Fully FAIR-compliant"
+        keywords: ["biology", "test"]
+        creator: "test-agent"
+        identifiers: {"doi": "10.1234/test"}
+        license: "Apache-2.0"
+        methodology: "Standard computational biology pipeline"
+        vocabulary: "https://schema.org/"
+        variables:
+          - name: "concentration"
+            definition: "Protein concentration in sample"
+            unit: "mg/mL"
+    expected:
+      total_score: 4
+      pass: true

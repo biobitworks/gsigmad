@@ -1,0 +1,74 @@
+command: find-experiments
+version: "1.0"
+description: Cross-project KG query for EXP records via ArangoDB with optional filter predicates
+
+inputs:
+  required: []
+  optional:
+    - field: project
+      type: str
+      description: Project name to restrict results (e.g. "cellico"). Omit for all projects.
+    - field: classification
+      type: str
+      enum: [CONFIRMATORY, EXPLORATORY, REPLICATION]
+      description: Filter by experiment classification
+    - field: status
+      type: str
+      enum: [planned, running, in_progress, completed, failed]
+      description: Filter by experiment status
+    - field: date_from
+      type: str
+      description: ISO 8601 date string — include only experiments with start_date >= date_from
+    - field: date_to
+      type: str
+      description: ISO 8601 date string — include only experiments with start_date <= date_to
+    - field: protein
+      type: str
+      description: Protein name or gene symbol to filter via the involves edge traversal
+    - field: limit
+      type: int
+      default: 50
+      description: Maximum number of results to return (hard-capped at 100 by ArangoDB module)
+
+outputs:
+  schema:
+    results: list[dict]  # Each dict: {exp_id: str, project: str, classification: str, status: str, last_run: str, provenance_sig: str}
+    count: int
+    formatted_table: str  # GitHub-flavored markdown table for display
+    error: Optional[str]  # Set to "KG_UNAVAILABLE: ..." when ArangoDB is not reachable
+
+gate_checks: []
+
+error_names:
+  - KG_UNAVAILABLE
+
+edge_cases:
+  - id: EC-KG-01
+    name: arango_unavailable
+    description: ArangoDB is not running — ARANGO_AVAILABLE flag is False; returns error dict with KG_UNAVAILABLE prefix
+    input:
+      project: "cellico"
+    expected:
+      gate: none
+      pass: false
+      error_prefix: KG_UNAVAILABLE
+  - id: EC-KG-02
+    name: no_results_match
+    description: All filter predicates are valid but no experiments match — returns empty results list
+    input:
+      project: "cellico"
+      classification: CONFIRMATORY
+      status: failed
+    expected:
+      gate: none
+      pass: true
+      error_prefix: null
+  - id: EC-KG-03
+    name: limit_cap_enforcement
+    description: Requested limit > 100 is silently capped at module maximum of 100
+    input:
+      limit: 500
+    expected:
+      gate: none
+      pass: true
+      error_prefix: null

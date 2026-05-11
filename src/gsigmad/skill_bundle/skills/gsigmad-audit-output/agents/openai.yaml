@@ -1,0 +1,4 @@
+interface:
+  display_name: "Audit Output"
+policy:
+  allow_implicit_invocation: true

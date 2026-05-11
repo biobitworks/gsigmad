@@ -1,0 +1,4 @@
+interface:
+  display_name: "Session Start"
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,5 @@
+project: synthproj_b01
+description: synthetic adapter for EXP-003 registered_no_response arm
+_runtime_response: absent
+knowledge_base:
+  sources: []

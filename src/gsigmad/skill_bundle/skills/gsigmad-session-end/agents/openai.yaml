@@ -1,0 +1,4 @@
+interface:
+  display_name: "Session End"
+policy:
+  allow_implicit_invocation: false

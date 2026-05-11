@@ -1,0 +1,72 @@
+command: audit-output
+version: "1.0"
+description: Audit AI agent output artifacts for claim classification, provenance completeness, and trust tier compliance
+
+inputs:
+  required:
+    - field: artifact_path
+      type: str
+      description: Path to the agent output artifact file to audit
+    - field: classification
+      type: str
+      enum: [CONFIRMATORY, EXPLORATORY, REPLICATION]
+      description: Experiment classification for trust tier enforcement context
+  optional:
+    - field: agent_id
+      type: str
+      description: Identifier of the agent that produced the artifact (for provenance validation)
+    - field: trust_tier
+      type: str
+      enum: [PROVISIONAL, VERIFIED, CANONICAL]
+      default: PROVISIONAL
+      description: Trust tier of the artifact — PROVISIONAL blocks inclusion in CONFIRMATORY evidence chains
+    - field: check_provenance
+      type: bool
+      default: true
+      description: Whether to validate PROV-JSON provenance chain completeness
+
+outputs:
+  schema:
+    status: str  # PASS | FAIL
+    claim_violations: list[str]
+    provenance_gaps: list[str]
+    trust_tier_block: Optional[str]  # Set when PROVISIONAL artifact in CONFIRMATORY context
+    error: Optional[str]
+
+gate_checks:
+  - gate: trust_tier_enforcement
+    applies_to: [CONFIRMATORY]
+    module: gsigmad.governance.kg.writer.TrustTierError
+    halt_on_fail: true
+    description: Blocks PROVISIONAL artifacts from entering CONFIRMATORY evidence chains (EXTREF quarantine-to-promote policy)
+  - gate: effect_size_reporting
+    applies_to: [ALL]
+    module: gsigmad.governance.gates.audit_claims.check_effect_size_reporting
+    halt_on_fail: false
+    description: Audits claims in output for p-value without effect size + CI
+
+error_names:
+  - TRUST_TIER_ERROR
+  - STAT_RIGOR_VIOLATION
+
+edge_cases:
+  - id: EC-03
+    name: provisional_artifact_gate
+    description: PROVISIONAL trust tier artifact presented for inclusion in CONFIRMATORY evidence chain
+    input:
+      classification: CONFIRMATORY
+      trust_tier: PROVISIONAL
+    expected:
+      gate: trust_tier_enforcement
+      pass: false
+      error_prefix: TRUST_TIER_ERROR
+  - id: EC-OUT-01
+    name: exploratory_provisional_allowed
+    description: PROVISIONAL artifact in EXPLORATORY context is allowed (not blocked)
+    input:
+      classification: EXPLORATORY
+      trust_tier: PROVISIONAL
+    expected:
+      gate: trust_tier_enforcement
+      pass: true
+      error_prefix: null

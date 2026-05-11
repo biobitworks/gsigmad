@@ -1,0 +1,128 @@
+command: export
+version: "1.0"
+description: >-
+  Package experiment artifacts into a submission-ready export bundle with a
+  machine-readable manifest (SHA-256 checksums, artifact types, provenance hash,
+  FAIR score). Optionally upload to OSF or deposit to Zenodo for DOI reservation.
+
+inputs:
+  required:
+    - field: exp_id
+      type: str
+      description: "Experiment identifier, e.g. \"EXP-042\""
+  optional:
+    - field: gsd_root
+      type: str
+      default: "."
+      description: "Root directory of GSD project"
+    - field: target
+      type: str
+      default: null
+      enum: ["osf", "zenodo", null]
+      description: "Upload target repository. If null, bundle is created locally without upload."
+
+outputs:
+  schema:
+    bundle_path: str  # Path to export directory (e.g. exports/EXP-042/)
+    manifest:
+      exp_id: str
+      created_at: str  # ISO 8601 UTC timestamp
+      artifacts:
+        - filename: str
+          artifact_type: str  # data, script, pre-reg, notebook, provenance, fair
+          sha256: str  # 64-char hex digest, or null if missing
+          exp_id: str
+          prov_json_hash: str  # SHA-256 of PROV-JSON content, or null
+          fair_score: int  # FAIR total score, or null
+          status: str  # present or missing
+    upload_result:
+      pass: bool
+      osf_url: str  # Only when target=osf
+      doi: str  # Only when target=zenodo
+      deposit_id: int  # Only when target=zenodo
+      error: str  # Only when pass=false
+  artifacts:
+    - path: "exports/EXP-{NNN}/manifest.json"
+      description: "Per-experiment export manifest with checksums and metadata"
+    - path: "exports/EXP-{NNN}/"
+      description: "Export bundle directory containing all collected artifacts"
+
+gate_checks:
+  - gate: manifest_valid
+    applies_to: [ALL]
+    module: gsigmad.governance.export.exporter.create_bundle
+    halt_on_fail: false
+    description: >-
+      Verify manifest.json is valid JSON with an exp_id field. Export is a
+      packaging tool, not an execution gate -- it does not block other
+      governance operations.
+  - gate: artifacts_checksummed
+    applies_to: [ALL]
+    module: gsigmad.governance.export.exporter.create_bundle
+    halt_on_fail: false
+    description: >-
+      All artifacts with status "present" have a non-null 64-character hex
+      SHA-256 checksum in the manifest.
+
+error_names:
+  - EXPORT_FAILED
+  - OSF_TOKEN_MISSING
+  - ZENODO_TOKEN_MISSING
+  - OSF_UPLOAD_FAILED
+  - ZENODO_DEPOSIT_FAILED
+
+edge_cases:
+  - id: EC-EXPORT-01
+    name: all_artifacts_present
+    description: "All 6 artifact types exist on disk. Bundle created with all checksums populated and no missing entries."
+    input:
+      exp_id: "EXP-042"
+      target: null
+      fixtures: "Complete EXP record, data files, scripts, pre-reg, notebook, PROV-JSON, FAIR JSON"
+    expected:
+      manifest_artifacts_count: 6
+      missing_count: 0
+      all_sha256_populated: true
+
+  - id: EC-EXPORT-02
+    name: some_artifacts_missing
+    description: "Some artifact source files do not exist. Bundle created with 'missing' entries in manifest; no error raised."
+    input:
+      exp_id: "EXP-099"
+      target: null
+      fixtures: "EXP record exists but output_files reference nonexistent paths"
+    expected:
+      bundle_created: true
+      has_missing_entries: true
+      missing_status: "missing"
+      missing_sha256: null
+
+  - id: EC-EXPORT-03
+    name: exp_record_not_found
+    description: "No EXP record JSON found in experiments/ directory. Export fails before bundle creation."
+    input:
+      exp_id: "EXP-999"
+      target: null
+    expected:
+      error: EXPORT_FAILED
+      message_contains: "EXP-999 not found"
+
+  - id: EC-EXPORT-04
+    name: osf_token_missing
+    description: "Target is OSF but no OSF_TOKEN env var and no .agent/osf_token file exist."
+    input:
+      exp_id: "EXP-042"
+      target: "osf"
+    expected:
+      error: OSF_TOKEN_MISSING
+      message_contains: "https://osf.io/settings/tokens/"
+
+  - id: EC-EXPORT-05
+    name: zenodo_token_missing
+    description: "Target is Zenodo but no ZENODO_TOKEN env var and no .agent/zenodo_token file exist."
+    input:
+      exp_id: "EXP-042"
+      target: "zenodo"
+    expected:
+      error: ZENODO_TOKEN_MISSING
+      message_contains: "https://zenodo.org/account/settings/applications/"

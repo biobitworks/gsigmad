@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gettingsciencedone/schemas/canon-core-extension/v1.0.0",
+  "title": "CANON-CORE Extension Header",
+  "description": "Schema for the extension declaration block that project CANON files must include when extending CANON-CORE. Validated by audit-claims to verify project CANONs are properly declaring extends: CANON-CORE and documenting any invariant overrides with justification.",
+  "type": "object",
+  "required": ["extends"],
+  "properties": {
+    "extends": {
+      "type": "string",
+      "pattern": "^CANON-CORE v\\d+\\.\\d+\\.\\d+$",
+      "description": "Must be 'CANON-CORE v{semver}'. E.g., 'CANON-CORE v1.0.0'"
+    },
+    "project": {
+      "type": "string",
+      "description": "Project name. E.g., 'overwatch', 'cellico', 'fractal-waves'",
+      "examples": ["overwatch", "cellico", "fractal-waves", "shadow-seeds", "conductor"]
+    },
+    "canon_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Project CANON version (semver). E.g., '1.3.1'"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ACTIVE", "DEPRECATED", "DRAFT"],
+      "description": "Current status of the project CANON document"
+    },
+    "signed": {
+      "type": "string",
+      "pattern": "^SIG-\\d{8}T\\d{6}Z-.+-[0-9a-f]{4}$",
+      "description": "SIG-ID of the agent that last modified this CANON file. Format: SIG-YYYYMMDDTHHMMSSZ-[agent]-[hash4]"
+    },
+    "overrides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["invariant", "override_justification"],
+        "properties": {
+          "invariant": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9,
+            "description": "CANON-CORE invariant number being overridden (1-9)"
+          },
+          "override_justification": {
+            "type": "string",
+            "minLength": 20,
+            "description": "Why this invariant cannot apply to this domain. Must be substantive (minimum 20 characters). State the domain incompatibility and how the spirit of the invariant is still upheld."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "List of CANON-CORE invariants overridden by this project. Each override requires a mandatory justification. Projects without domain conflicts should not declare overrides."
+    }
+  },
+  "additionalProperties": true,
+  "examples": [
+    {
+      "extends": "CANON-CORE v1.0.0",
+      "project": "overwatch",
+      "canon_version": "1.3.1",
+      "status": "ACTIVE",
+      "signed": "SIG-20260331T000000Z-claude-sonnet-4-6-3325"
+    },
+    {
+      "extends": "CANON-CORE v1.0.0",
+      "project": "cellico",
+      "canon_version": "2.0.0",
+      "status": "ACTIVE",
+      "signed": "SIG-20260331T000000Z-claude-sonnet-4-6-3325"
+    },
+    {
+      "extends": "CANON-CORE v1.0.0",
+      "project": "fractal-waves",
+      "canon_version": "1.0.0",
+      "status": "ACTIVE",
+      "signed": "SIG-20260331T000000Z-claude-sonnet-4-6-3325",
+      "overrides": [
+        {
+          "invariant": 1,
+          "override_justification": "Fractal Waves is a mathematics-only domain. Biology-inclusive language in Invariant 1 references (e.g., Cellico terminology) creates domain incompatibility. All data still traced to source — mathematical derivations cited to proof or algorithm reference."
+        }
+      ]
+    }
+  ]
+}

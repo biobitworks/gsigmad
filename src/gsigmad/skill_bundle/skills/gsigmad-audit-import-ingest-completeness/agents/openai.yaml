@@ -1,0 +1,4 @@
+interface:
+  display_name: "audit import ingest completeness"
+policy:
+  allow_implicit_invocation: true

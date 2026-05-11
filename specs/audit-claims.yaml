@@ -1,0 +1,73 @@
+command: audit-claims
+version: "1.0"
+description: Lint claims for evidence support, effect size reporting, and DOI/PMID citation validity
+
+inputs:
+  required:
+    - field: claims
+      type: list
+      description: List of claim strings to audit for statistical rigor and citation validity
+  optional:
+    - field: verify_citations
+      type: bool
+      default: true
+      description: Whether to verify DOI/PMID strings against CrossRef/PubMed APIs
+    - field: timeout
+      type: int
+      default: 10
+      description: HTTP timeout in seconds for DOI/PMID verification requests
+
+outputs:
+  schema:
+    status: str  # PASS | FAIL
+    claims_audited: int
+    violations: list[str]
+    unverified_citations: list[str]  # DOIs/PMIDs with UNVERIFIED_PENDING status (soft-fail)
+    error: Optional[str]
+
+gate_checks:
+  - gate: effect_size_reporting
+    applies_to: [ALL]
+    module: gsigmad.governance.gates.audit_claims.check_effect_size_reporting
+    halt_on_fail: false
+    description: Rejects claims citing p-value without both effect size measure AND 95% CI
+  - gate: audit_claims
+    applies_to: [ALL]
+    module: gsigmad.governance.gates.audit_claims.audit_claims_gate
+    halt_on_fail: true
+    description: Full claim audit — checks effect size, DOI/PMID verification, claim classification
+
+error_names:
+  - STAT_RIGOR_VIOLATION
+  - DOI_NOT_FOUND
+  - PMID_NOT_FOUND
+
+edge_cases:
+  - id: EC-02
+    name: effect_size_enforcement
+    description: Claim cites p-value without effect size measure and confidence interval
+    input:
+      claim_text: "The treatment was effective (p < 0.05)"
+    expected:
+      gate: effect_size_reporting
+      pass: false
+      error_prefix: STAT_RIGOR_VIOLATION
+  - id: EC-AUDIT-01
+    name: effect_size_without_ci
+    description: Claim has p-value and effect size but no confidence interval — also violates CANON-CORE Invariant 6
+    input:
+      claim_text: "Cohen's d = 0.62, p < 0.001 — strong treatment effect"
+    expected:
+      gate: effect_size_reporting
+      pass: false
+      error_prefix: STAT_RIGOR_VIOLATION
+  - id: EC-AUDIT-02
+    name: doi_not_found
+    description: Claim cites a DOI that returns 404 from CrossRef — hard block (not UNVERIFIED_PENDING)
+    input:
+      claim_text: "As shown in doi:10.1234/does-not-exist"
+      verify_citations: true
+    expected:
+      gate: audit_claims
+      pass: false
+      error_prefix: DOI_NOT_FOUND

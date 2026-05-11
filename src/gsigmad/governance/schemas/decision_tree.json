@@ -1,0 +1,208 @@
+{
+  "$defs": {
+    "Analysis": {
+      "description": "A statistical analysis specification.",
+      "properties": {
+        "test": {
+          "description": "Statistical test, e.g. 'ttest_ind', 'anova_oneway', 'logrank'",
+          "title": "Test",
+          "type": "string"
+        },
+        "correction": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Multiple comparison correction, e.g. 'bonferroni', 'fdr_bh'",
+          "title": "Correction"
+        },
+        "post_hoc": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Post-hoc test, e.g. 'tukey_hsd', 'dunn'",
+          "title": "Post Hoc"
+        },
+        "stopping_rule": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Test-level stopping rule if different from global",
+          "title": "Stopping Rule"
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "title": "Analysis",
+      "type": "object"
+    },
+    "ConditionalBranch": {
+      "description": "A conditional analysis branch activated when a condition is met.",
+      "properties": {
+        "condition": {
+          "description": "Boolean condition, e.g. 'n_groups > 2', 'outcome_type == survival'",
+          "title": "Condition",
+          "type": "string"
+        },
+        "analysis": {
+          "$ref": "#/$defs/Analysis"
+        }
+      },
+      "required": [
+        "condition",
+        "analysis"
+      ],
+      "title": "ConditionalBranch",
+      "type": "object"
+    },
+    "SensitivityAnalysis": {
+      "description": "A pre-specified sensitivity analysis to run if trigger condition is met.",
+      "properties": {
+        "name": {
+          "description": "Short name for this sensitivity analysis",
+          "title": "Name",
+          "type": "string"
+        },
+        "trigger": {
+          "description": "Condition that activates this analysis, e.g. 'shapiro_wilk_p < 0.05'",
+          "title": "Trigger",
+          "type": "string"
+        },
+        "fallback_test": {
+          "description": "Alternative test to use if trigger fires",
+          "title": "Fallback Test",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "trigger",
+        "fallback_test"
+      ],
+      "title": "SensitivityAnalysis",
+      "type": "object"
+    },
+    "StoppingRule": {
+      "description": "Stopping rule for the experiment.",
+      "properties": {
+        "type": {
+          "description": "'fixed_n': no interim analyses; 'sequential': GST/SPRT; 'adaptive': Bayesian adaptive",
+          "enum": [
+            "fixed_n",
+            "sequential",
+            "adaptive"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "max_n": {
+          "description": "Maximum sample size \u2014 execution must stop at or before this N",
+          "minimum": 1,
+          "title": "Max N",
+          "type": "integer"
+        },
+        "interim_analyses": {
+          "description": "List of interim analysis specifications (for sequential/adaptive designs)",
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Interim Analyses",
+          "type": "array"
+        }
+      },
+      "required": [
+        "type",
+        "max_n"
+      ],
+      "title": "StoppingRule",
+      "type": "object"
+    }
+  },
+  "description": "Full conditional analysis decision tree for an EXP pre-registration.\n\nPer D-09: must specify the complete analysis plan including:\n- Primary analysis (test, correction method)\n- Conditional branches (if/then alternative analyses)\n- Stopping rules (when to stop data collection)\n- Sensitivity analyses (pre-specified robustness checks)\n- Deviations require a new EXP (prevents post-hoc plan modification)",
+  "properties": {
+    "version": {
+      "default": "1.0",
+      "description": "Decision tree schema version",
+      "title": "Version",
+      "type": "string"
+    },
+    "exp_id": {
+      "description": "EXP identifier this tree belongs to, e.g. 'EXP-042'",
+      "pattern": "^EXP-\\d{3,}$",
+      "title": "Exp Id",
+      "type": "string"
+    },
+    "created_at": {
+      "description": "ISO 8601 timestamp when tree was authored",
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "author": {
+      "description": "Agent that authored this decision tree (SIG-ID agent component)",
+      "title": "Author",
+      "type": "string"
+    },
+    "primary_analysis": {
+      "$ref": "#/$defs/Analysis",
+      "description": "The pre-specified primary analysis. This is the analysis that will be used unless a conditional branch triggers."
+    },
+    "conditional_branches": {
+      "description": "Pre-specified alternative analyses activated by conditions. Per D-09: must cover key sensitivity scenarios.",
+      "items": {
+        "$ref": "#/$defs/ConditionalBranch"
+      },
+      "title": "Conditional Branches",
+      "type": "array"
+    },
+    "stopping_rules": {
+      "$ref": "#/$defs/StoppingRule",
+      "description": "When to stop data collection. Required. Per D-09: must be fully specified."
+    },
+    "deviations_require": {
+      "const": "new_EXP",
+      "default": "new_EXP",
+      "description": "Any deviation from this tree requires a new EXP, not a post-hoc amendment.",
+      "title": "Deviations Require",
+      "type": "string"
+    },
+    "sensitivity_analyses": {
+      "description": "Pre-specified robustness checks. Per D-09: must cover normality violations, outlier handling, variance heterogeneity at minimum.",
+      "items": {
+        "$ref": "#/$defs/SensitivityAnalysis"
+      },
+      "title": "Sensitivity Analyses",
+      "type": "array"
+    }
+  },
+  "required": [
+    "exp_id",
+    "created_at",
+    "author",
+    "primary_analysis",
+    "stopping_rules"
+  ],
+  "title": "DecisionTree",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gettingsciencedone/schemas/decision-tree/v1.0"
+}

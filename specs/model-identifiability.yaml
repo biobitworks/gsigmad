@@ -1,0 +1,53 @@
+command: model-identifiability
+version: "1.0"
+description: Assess whether model parameters are uniquely identifiable from available data before CONFIRMATORY execution
+
+inputs:
+  required:
+    - field: model_spec
+      type: dict
+      description: Model specification dict with parameters, equations, and constraints
+    - field: data_summary
+      type: dict
+      description: Summary of available data (sample sizes, measured variables, noise estimates)
+  optional:
+    - field: check_structural
+      type: bool
+      default: true
+      description: Run structural identifiability analysis (algebraic — does unique solution exist in theory)
+    - field: check_practical
+      type: bool
+      default: true
+      description: Run practical identifiability analysis (numerical — can parameters be estimated from this data)
+    - field: agent_model
+      type: str
+      default: "qwen2.5-coder:7b"
+      description: Ollama model name for analytical subagent (LOCAL_MODEL trust tier — inferences labeled HYPOTHESIS)
+
+outputs:
+  schema:
+    status: str  # PASS | FAIL | INDETERMINATE
+    structural_identifiable: Optional[bool]
+    practical_identifiable: Optional[bool]
+    non_identifiable_params: list[str]
+    recommendations: list[str]
+    trust_tier: str  # Always LOCAL_MODEL for Ollama-assisted analysis
+    error: Optional[str]
+
+gate_checks: []
+
+error_names:
+  - MODEL_IDENTIFIABILITY_FAILED
+
+edge_cases:
+  - id: EC-IDENT-01
+    name: non_identifiable_parameters
+    description: Model has structurally non-identifiable parameters (multiple parameter sets produce identical outputs)
+    input:
+      model_spec:
+        parameters: [k1, k2]
+        equations: ["dX/dt = (k1 + k2) * X"]  # k1 and k2 only appear as sum — not identifiable individually
+    expected:
+      gate: none
+      pass: false
+      error_prefix: MODEL_IDENTIFIABILITY_FAILED

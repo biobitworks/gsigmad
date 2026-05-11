@@ -1,0 +1,10 @@
+{
+  "name": "gsigmad",
+  "version": "1.1.0",
+  "bin": {
+    "gsigmad": "bin/gsigmad.js"
+  },
+  "dependencies": {
+    "cross-spawn": "^7.0.6"
+  }
+}

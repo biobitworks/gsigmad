@@ -1,0 +1,4 @@
+interface:
+  display_name: "Negative Results"
+policy:
+  allow_implicit_invocation: true

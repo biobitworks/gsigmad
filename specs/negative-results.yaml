@@ -1,0 +1,52 @@
+command: negative-results
+version: "1.0"
+description: Register and document null/negative experimental results to prevent duplication and enable power-based interpretation
+
+inputs:
+  required:
+    - field: exp_id
+      type: str
+      description: EXP-### identifier for the experiment with a negative result
+    - field: hypothesis
+      type: str
+      description: The null hypothesis that was not rejected (H0 text)
+    - field: outcome
+      type: str
+      enum: [NULL_RESULT, UNDERPOWERED, TRUE_NEGATIVE]
+      description: Classification of the negative result — distinguishes true null from power failure
+  optional:
+    - field: power_achieved
+      type: float
+      description: Statistical power achieved in the experiment (0.0 to 1.0)
+    - field: effect_size
+      type: float
+      description: Observed effect size for power-based interpretation
+    - field: notes
+      type: str
+      description: Free-text notes for registry entry
+
+outputs:
+  schema:
+    status: str  # PASS | FAIL
+    registry_entry_id: str  # Unique identifier for this negative result entry
+    forward_link_required: bool  # True if future confirmatory follow-up is mandated
+    error: Optional[str]
+
+gate_checks: []
+
+error_names:
+  - NEGATIVE_RESULTS_REGISTRY_WRITE_FAILED
+
+edge_cases:
+  - id: EC-NEG-01
+    name: underpowered_null_result
+    description: H0 not rejected but achieved_power < 0.80 — must classify as UNDERPOWERED not TRUE_NEGATIVE
+    input:
+      exp_id: EXP-042
+      hypothesis: "Treatment has no effect on protein abundance"
+      outcome: TRUE_NEGATIVE
+      power_achieved: 0.45
+    expected:
+      gate: none
+      pass: false
+      error_prefix: NEGATIVE_RESULTS_REGISTRY_WRITE_FAILED

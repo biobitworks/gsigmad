@@ -1,0 +1,75 @@
+command: create-prompt
+version: "1.0"
+description: Create a PROMPT-### pre-registration artifact with governance fields for a new experiment
+
+inputs:
+  required:
+    - field: title
+      type: str
+      description: Descriptive name for the prompt (used in PROMPT_###_NAME.md filename)
+    - field: classification
+      type: str
+      enum: [CONFIRMATORY, EXPLORATORY, REPLICATION]
+      description: Experiment classification — determines which pre-registration fields are required
+  optional:
+    - field: hypothesis_h0
+      type: str
+      description: Null hypothesis (H0) — required for CONFIRMATORY and REPLICATION
+    - field: hypothesis_h1
+      type: str
+      description: Alternative hypothesis (H1) — required for CONFIRMATORY and REPLICATION
+    - field: statistical_test
+      type: str
+      description: Statistical test to use (e.g. Mann-Whitney U, paired t-test) — required for CONFIRMATORY
+    - field: alpha
+      type: float
+      default: 0.05
+      description: Significance threshold — required for CONFIRMATORY
+    - field: mesi
+      type: str
+      description: Minimum Effect Size of Interest with justification — required for CONFIRMATORY
+    - field: exp_id
+      type: str
+      description: EXP-### to reserve and link in PROMPT_EXP_MAP.md (optional; allocate manually if not provided)
+    - field: agent
+      type: str
+      description: Agent name to assign this prompt to (e.g. "claude-sonnet-4-6")
+
+outputs:
+  schema:
+    status: str  # PASS | FAIL
+    prompt_id: str  # PROMPT-### identifier assigned
+    prompt_md_path: str  # Path to created PROMPT_###_NAME.md file
+    prompt_json_path: str  # Path to created PROMPT_###_NAME.json file
+    prompt_exp_map_updated: bool  # True if PROMPT_EXP_MAP.md was updated this session
+    error: Optional[str]
+
+gate_checks: []
+
+error_names:
+  - PROMPT_VALIDATION_FAILED
+
+edge_cases:
+  - id: EC-PROMPT-01
+    name: confirmatory_missing_h0
+    description: CONFIRMATORY classification without H0 field — pre-registration incomplete
+    input:
+      classification: CONFIRMATORY
+      title: "Test protein abundance change"
+      hypothesis_h0: null
+      statistical_test: "Mann-Whitney U"
+      alpha: 0.05
+    expected:
+      gate: none
+      pass: false
+      error_prefix: PROMPT_VALIDATION_FAILED
+  - id: EC-PROMPT-02
+    name: exploratory_no_h0_allowed
+    description: EXPLORATORY classification without H0/H1 is valid — these fields are encouraged but not required
+    input:
+      classification: EXPLORATORY
+      title: "Explore correlation patterns in SARS-CoV-2 proteome"
+    expected:
+      gate: none
+      pass: true
+      error_prefix: null

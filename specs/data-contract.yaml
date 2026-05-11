@@ -1,0 +1,87 @@
+command: data-contract
+version: "1.0"
+description: Validate data against an interface contract definition — enforces type, range, and required-field constraints
+
+inputs:
+  required:
+    - field: contract
+      type: dict
+      description: Contract definition dict matching DataContract schema (interface str + fields list)
+    - field: data
+      type: dict
+      description: Actual data dict to validate against the contract
+  optional:
+    - field: classification
+      type: str
+      enum: [CONFIRMATORY, EXPLORATORY, REPLICATION]
+      description: Experiment classification — included for context; gate applies to ALL classifications
+
+outputs:
+  schema:
+    status: str  # PASS | FAIL
+    valid: bool
+    violations: list[str]
+    halt_message: Optional[str]  # Set on violation; contains "DATA CONTRACT VIOLATION" prefix
+    error: Optional[str]
+
+gate_checks:
+  - gate: data_contract
+    applies_to: [CONFIRMATORY, EXPLORATORY, REPLICATION]
+    module: gsigmad.governance.gates.data_contract.validate_data_contract
+    halt_on_fail: true
+    description: Validates all fields in data against contract definition (type, range, required, enum checks)
+
+error_names:
+  - DATA CONTRACT VIOLATION
+
+edge_cases:
+  - id: EC-DC-01
+    name: missing_required_field
+    description: Data dict is missing a required field defined in the contract
+    input:
+      contract:
+        interface: "preprocessing -> analysis"
+        fields:
+          - name: sample_count
+            type: int
+            required: true
+      data: {}
+    expected:
+      gate: data_contract
+      pass: false
+      error_prefix: DATA CONTRACT VIOLATION
+  - id: EC-DC-02
+    name: out_of_range_value
+    description: A numeric field value falls outside the declared [min, max] range constraint
+    input:
+      contract:
+        interface: "loader -> normalizer"
+        fields:
+          - name: confidence_score
+            type: float
+            range: [0.0, 1.0]
+            required: true
+      data:
+        confidence_score: 1.5
+    expected:
+      gate: data_contract
+      pass: false
+      error_prefix: DATA CONTRACT VIOLATION
+  - id: EC-DC-03
+    name: provisional_contract_in_confirmatory
+    description: PROVISIONAL trust tier artifact used in contract for CONFIRMATORY experiment — TRUST_TIER_ERROR fires upstream
+    input:
+      classification: CONFIRMATORY
+      contract:
+        interface: "extref -> analysis"
+        fields:
+          - name: protein_abundance
+            type: float
+            required: true
+      data:
+        protein_abundance: 2.3
+        _trust_tier: PROVISIONAL
+    expected:
+      gate: data_contract
+      pass: false
+      error_prefix: TRUST_TIER_ERROR

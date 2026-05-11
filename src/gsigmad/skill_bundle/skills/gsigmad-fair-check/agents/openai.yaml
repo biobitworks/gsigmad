@@ -1,0 +1,4 @@
+interface:
+  display_name: "FAIR Check"
+policy:
+  allow_implicit_invocation: false

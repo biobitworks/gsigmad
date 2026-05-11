@@ -1,0 +1,1 @@
+"""gsigmad scaffold templates package."""

@@ -1,0 +1,4 @@
+interface:
+  display_name: "governance bridge"
+policy:
+  allow_implicit_invocation: true

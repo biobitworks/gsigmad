@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+title: gsigmad
+message: "If you use gsigmad, please cite this software repository."
+type: software
+authors:
+  - name: BiotBitWorks
+repository-code: "https://github.com/biobitworks/gsigmad"
+url: "https://github.com/biobitworks/gsigmad"
+license: Apache-2.0
+version: 1.1.0
+date-released: 2026-05-11
+abstract: "Local-first science governance CLI and Agent Skills bundle for preregistration, claim auditing, reproducibility checks, and source custody workflows."

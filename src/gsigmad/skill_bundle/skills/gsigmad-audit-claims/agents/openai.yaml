@@ -1,0 +1,4 @@
+interface:
+  display_name: "Audit Claims"
+policy:
+  allow_implicit_invocation: true

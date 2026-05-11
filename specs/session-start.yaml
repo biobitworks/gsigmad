@@ -1,0 +1,68 @@
+command: session-start
+version: "1.0"
+description: Display EXP status across active projects and run drift check at session start
+
+inputs:
+  required:
+    - field: project_root
+      type: str
+      description: Path to project root for drift check and EXP status lookup
+  optional:
+    - field: projects
+      type: list
+      description: List of project root paths to include in EXP status display (default is project_root only)
+    - field: skip_drift_check
+      type: bool
+      default: false
+      description: Override to skip drift check (not recommended — for testing only)
+
+outputs:
+  schema:
+    status: str  # PASS | HALT
+    exp_summary: dict  # {running: int, completed: int, failed: int} per project
+    drift_triggered: bool  # True when drift counter reached DRIFT_TRIGGER (5)
+    drift_warning: Optional[str]  # Set when drift halts; contains DRIFT_WARNING prefix
+    prompt_integrity: str  # PASS | FAIL | SKIPPED
+    error: Optional[str]
+
+gate_checks:
+  - gate: drift_check
+    applies_to: [ALL]
+    module: gsigmad.governance.compiler.drift_check.check_drift
+    halt_on_fail: true
+    description: Increments drift counter; halts if counter reaches 5 AND SCIENCE classification < 50%
+
+error_names:
+  - DRIFT_WARNING
+
+edge_cases:
+  - id: EC-04
+    name: drift_check_trigger
+    description: Drift counter reaches 5 with SCIENCE classification at 40% (below 50% threshold) — session halts
+    input:
+      project_root: "/path/to/project"
+      # Simulated: drift_counter = 5, science_pct = 40.0%
+    expected:
+      gate: drift_check
+      pass: false
+      error_prefix: DRIFT_WARNING
+  - id: EC-SS-01
+    name: drift_check_not_triggered
+    description: Drift counter below 5 — drift check passes without analysis
+    input:
+      project_root: "/path/to/project"
+      # Simulated: drift_counter = 3
+    expected:
+      gate: drift_check
+      pass: true
+      error_prefix: null
+  - id: EC-SS-02
+    name: drift_check_triggered_pass
+    description: Drift counter reaches 5 with SCIENCE classification at 80% — analysis runs but passes
+    input:
+      project_root: "/path/to/project"
+      # Simulated: drift_counter = 5, science_pct = 80.0%
+    expected:
+      gate: drift_check
+      pass: true
+      error_prefix: null

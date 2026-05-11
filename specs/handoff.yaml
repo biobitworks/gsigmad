@@ -1,0 +1,41 @@
+command: handoff
+version: "1.0"
+description: Generate a structured handoff document for the next agent or session with no-overlap scope and resume prompt
+
+inputs:
+  required:
+    - field: session_id
+      type: str
+      description: Current session identifier in format YYYYMMDD_HHMMSS_claude
+  optional:
+    - field: completed
+      type: list
+      description: List of completed items with EXP/PROMPT numbers and result paths
+    - field: in_progress
+      type: list
+      description: List of in-progress items with exact state and next action
+    - field: blocked
+      type: list
+      description: List of blocked items with blocker description
+    - field: reserved_ids
+      type: list
+      description: List of reserved EXP-### and PROMPT-### IDs not yet used
+    - field: target_agent
+      type: str
+      description: Agent that will receive the handoff (e.g. "qwen2.5-coder:7b", "codex")
+
+outputs:
+  schema:
+    status: str  # PASS | FAIL
+    artifact_path: str  # Path to handoff note file created
+    resume_prompt: str  # Copy-pasteable resume prompt for the next agent
+    active_locks: list[str]  # Lock files found in .agent/locks/
+    ollarma_continuation: dict  # {"suitable": bool, "command": str, "artifacts": list[str], "stop_condition": str}
+    error: Optional[str]
+
+gate_checks: []
+
+error_names:
+  - HANDOFF_WRITE_FAILED
+
+edge_cases: []

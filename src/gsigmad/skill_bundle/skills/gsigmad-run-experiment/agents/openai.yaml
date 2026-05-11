@@ -1,0 +1,4 @@
+interface:
+  display_name: "Run Experiment"
+policy:
+  allow_implicit_invocation: false

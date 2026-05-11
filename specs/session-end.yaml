@@ -1,0 +1,53 @@
+command: session-end
+version: "1.0"
+description: End current session with final state save, LAB_NOTEBOOK synthesis entry, artifact provenance, and optional commit+push
+
+inputs:
+  required:
+    - field: session_id
+      type: str
+      description: Session identifier in format YYYYMMDD_HHMMSS_claude
+  optional:
+    - field: accomplishments
+      type: list
+      description: List of final accomplishments (EXP/PROMPT numbers + summaries)
+    - field: pending_items
+      type: list
+      description: List of items deferred to next session
+    - field: commit
+      type: bool
+      default: false
+      description: Whether to stage and commit all changes (requires user approval)
+    - field: push
+      type: bool
+      default: false
+      description: Whether to push committed changes to remote (requires explicit user approval)
+
+outputs:
+  schema:
+    status: str  # PASS | FAIL
+    artifact_path: str  # Path to session conversation digest file
+    lab_notebook_entry: str  # Path to LAB_NOTEBOOK.md (updated with synthesis entry)
+    prompt_integrity: str  # PASS | FAIL — blocking check; DO NOT proceed on FAIL
+    extref_integrity: str  # PASS | FAIL | SKIPPED
+    signature_lint: str  # PASS | WARNINGS
+    commit_hash: Optional[str]  # Set if committed
+    error: Optional[str]
+
+gate_checks: []
+
+error_names:
+  - PROMPT_INTEGRITY_FAILED
+  - SESSION_STATE_WRITE_FAILED
+
+edge_cases:
+  - id: EC-END-01
+    name: prompt_integrity_failure_blocks_close
+    description: PROMPT file missing from prompts/ directory — session-end halts and refuses to commit
+    input:
+      session_id: "20260401_120000_claude"
+      commit: true
+    expected:
+      gate: none
+      pass: false
+      error_prefix: PROMPT_INTEGRITY_FAILED

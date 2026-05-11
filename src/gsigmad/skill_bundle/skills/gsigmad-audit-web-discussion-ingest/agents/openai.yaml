@@ -1,0 +1,4 @@
+interface:
+  display_name: "audit web discussion ingest"
+policy:
+  allow_implicit_invocation: true

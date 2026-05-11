@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ablation Analysis"
+policy:
+  allow_implicit_invocation: true

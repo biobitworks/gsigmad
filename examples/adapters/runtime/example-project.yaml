@@ -1,0 +1,16 @@
+schema_version: 1
+project_name: example-project
+project_root: /absolute/path/to/example-project
+namespace_prefix: "example:"
+runtime_mode: gsigmad
+repo_class: active
+surfaces:
+  canon_path: CANON.md
+  experiments_dir: experiments
+  lab_notebook_path: LAB_NOTEBOOK.md
+command_modes:
+  status: gsigmad
+  audit: gsigmad
+knowledge_base:
+  status: not_configured
+  sources: []

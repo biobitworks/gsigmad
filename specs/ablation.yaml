@@ -1,0 +1,61 @@
+command: ablation
+version: "1.0"
+description: Design and document ablation studies to isolate the contribution of individual model components or features
+
+inputs:
+  required:
+    - field: exp_id
+      type: str
+      description: Parent EXP-### identifier this ablation study is associated with
+    - field: components
+      type: list
+      description: List of model components or features to ablate (each item is a component name string)
+    - field: baseline_metric
+      type: dict
+      description: Dict with metric_name and baseline_value for comparison against ablated versions
+  optional:
+    - field: ablation_strategy
+      type: str
+      enum: [leave_one_out, additive, full_factorial]
+      default: leave_one_out
+      description: Strategy for constructing ablation conditions
+    - field: statistical_correction
+      type: str
+      enum: [bonferroni, holm, bh_fdr, none]
+      default: bh_fdr
+      description: Multiple comparison correction method for ablation results
+
+outputs:
+  schema:
+    status: str  # PASS | FAIL
+    ablation_plan: list[dict]  # Each entry: {condition, components_removed, run_order}
+    correction_method: str
+    error: Optional[str]
+
+gate_checks: []
+
+error_names:
+  - ABLATION_PLAN_FAILED
+
+edge_cases:
+  - id: EC-ABL-01
+    name: single_component_full_factorial
+    description: Full factorial ablation with only one component — degenerates to leave_one_out; planner warns user
+    input:
+      components: ["dropout"]
+      ablation_strategy: full_factorial
+    expected:
+      gate: none
+      pass: true
+      error_prefix: null
+  - id: EC-ABL-02
+    name: missing_multiple_comparison_correction
+    description: Ablation over 5+ conditions with no statistical correction declared
+    input:
+      components: [A, B, C, D, E]
+      ablation_strategy: leave_one_out
+      statistical_correction: none
+    expected:
+      gate: none
+      pass: false
+      error_prefix: ABLATION_PLAN_FAILED

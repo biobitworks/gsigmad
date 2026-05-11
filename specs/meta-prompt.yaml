@@ -1,0 +1,89 @@
+command: meta-prompt
+version: "1.0"
+description: Assemble a budget-aware governance prompt from named blocks with per-block token limits and 60% context window enforcement
+
+inputs:
+  required:
+    - field: project_root
+      type: str
+      description: Absolute or relative path to the project root directory
+  optional:
+    - field: phase
+      type: str
+      default: "default"
+      description: Phase label for the compiled prompt header
+    - field: classification
+      type: str
+      enum: [SCIENCE, CONFIRMATORY, EXPLORATORY, REPLICATION]
+      default: "SCIENCE"
+      description: Classification label for header
+
+outputs:
+  schema:
+    pass: bool  # True if all blocks assembled within budget; False if any gate failed
+    prompt: Optional[str]  # Compiled governance prompt (present when pass=True)
+    token_counts: Optional[dict]  # Per-block token counts keyed by block name (present when pass=True)
+    error: Optional[str]  # Gate error message (present when pass=False)
+
+gate_checks:
+  - gate: required_block_presence
+    applies_to: [ALL]
+    module: gsigmad.governance.compiler.metaprompt.assemble_metaprompt
+    halt_on_fail: true
+    description: >
+      Verifies all required blocks (MISSION_ANCHOR, CANON_CORE) exist on disk
+      before assembly
+  - gate: per_block_budget
+    applies_to: [ALL]
+    module: gsigmad.governance.compiler.metaprompt.assemble_metaprompt
+    halt_on_fail: true
+    description: >
+      Verifies each named block does not exceed its registered max_tokens limit
+      (MISSION_ANCHOR=500, CHAIN_DIGEST=1000, CANON_CORE=800, project_extension=400)
+  - gate: context_window_limit
+    applies_to: [ALL]
+    module: gsigmad.governance.compiler.metaprompt.assemble_metaprompt
+    halt_on_fail: true
+    description: >
+      Verifies total governance block tokens do not exceed 60% of 200k context
+      window (120,000 tokens) before the task prompt
+
+error_names:
+  - METAPROMPT_MISSING_BLOCK
+  - METAPROMPT_BUDGET_EXCEEDED
+  - METAPROMPT_CONTEXT_OVERFLOW
+
+edge_cases:
+  - id: EC-META-01
+    name: missing_required_block
+    description: Required block MISSION_ANCHOR file is absent from project_root — assembly halts before budget checks
+    input:
+      project_root: /tmp/project-no-blocks
+      phase: default
+      classification: SCIENCE
+    expected:
+      gate: required_block_presence
+      pass: false
+      error_prefix: METAPROMPT_MISSING_BLOCK
+  - id: EC-META-02
+    name: per_block_budget_exceeded
+    description: MISSION_ANCHOR block file contains 600 tokens which exceeds its registered limit of 500 tokens
+    input:
+      project_root: /tmp/project-oversized-anchor
+      phase: default
+      classification: SCIENCE
+    expected:
+      gate: per_block_budget
+      pass: false
+      error_prefix: METAPROMPT_BUDGET_EXCEEDED
+  - id: EC-META-03
+    name: context_window_overflow
+    description: All required blocks are present and within individual budgets but combined total exceeds 120,000 tokens
+    input:
+      project_root: /tmp/project-large-blocks
+      phase: default
+      classification: SCIENCE
+    expected:
+      gate: context_window_limit
+      pass: false
+      error_prefix: METAPROMPT_CONTEXT_OVERFLOW

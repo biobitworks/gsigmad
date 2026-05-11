@@ -1,0 +1,36 @@
+command: session-pause
+version: "1.0"
+description: Pause current session — save conversation digest, update SESSION_LOG, run signature lint, optionally commit
+
+inputs:
+  required:
+    - field: session_id
+      type: str
+      description: Session identifier in format YYYYMMDD_HHMMSS_claude
+  optional:
+    - field: accomplishments
+      type: list
+      description: List of accomplishments completed before pause (EXP/PROMPT numbers + summaries)
+    - field: in_progress
+      type: list
+      description: List of in-progress items with exact state and next action
+    - field: commit
+      type: bool
+      default: false
+      description: Whether to stage and commit changes after state save (requires user approval)
+
+outputs:
+  schema:
+    status: str  # PASS | FAIL
+    artifact_path: str  # Path to conversation digest file created
+    session_log_updated: bool
+    prompt_integrity: str  # PASS | FAIL — checks PROMPT files exist and PROMPT_EXP_MAP is current
+    signature_lint: str  # PASS | WARNINGS — SIG-ID format validation result
+    error: Optional[str]
+
+gate_checks: []
+
+error_names:
+  - SESSION_STATE_WRITE_FAILED
+
+edge_cases: []
