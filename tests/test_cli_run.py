@@ -131,6 +131,32 @@ def test_run_dry_run(tmp_path: Path, monkeypatch):
     assert "power_analysis" in result.output.lower() or "gate" in result.output.lower()
 
 
+def test_confirmatory_dry_run_blocks_missing_alpha_mesi_before_execution(tmp_path: Path, monkeypatch):
+    """Malformed confirmatory preregistration blocks dry-run without preflight/gates."""
+    _init_project(tmp_path)
+    exp_path = _create_exp(tmp_path, "EXP-1.1", "CONFIRMATORY")
+    record = yaml.safe_load(exp_path.read_text(encoding="utf-8"))
+    del record["hypothesis"]["alpha"]
+    del record["hypothesis"]["mesi"]
+    exp_path.write_text(yaml.safe_dump(record, default_flow_style=False, sort_keys=False), encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+
+    with patch(
+        "gsigmad.commands.run.run_execution_preflight",
+        side_effect=AssertionError("dry-run preregistration block must not execute preflight"),
+    ), patch("gsigmad.commands.run._load_gate_fn", side_effect=AssertionError("dry run must not execute gates")):
+        result = runner.invoke(app, ["--json", "run", "--dry-run", "EXP-1.1"], catch_exceptions=False)
+
+    assert result.exit_code == 1, result.output
+    data = json.loads(result.output)
+    assert data["error"] == "Experiment preregistration is incomplete"
+    assert data["failures"] == [
+        "CONFIRMATORY_PREREGISTRATION_MISSING: hypothesis.alpha",
+        "CONFIRMATORY_PREREGISTRATION_MISSING: hypothesis.mesi",
+    ]
+    assert not (tmp_path / ".gsigmad" / "closure_chain.json").exists()
+
+
 def test_run_gate_failure(tmp_path: Path, monkeypatch):
     """When a gate returns pass=False, run exits code 1."""
     _init_project(tmp_path)

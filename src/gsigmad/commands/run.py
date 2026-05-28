@@ -78,6 +78,7 @@ GATE_CHAIN: dict[str, list[tuple[str, str, str]]] = {
 }
 
 _PREFLIGHT_CHECKS = ["claim_lint", "hypothesis_promotion"]
+_CONFIRMATORY_PREREGISTRATION_FIELDS = ("alpha", "mesi")
 
 
 def _emit_run_payload(json_output: bool, payload: dict, *, title: str | None = None) -> None:
@@ -165,6 +166,39 @@ def _blocked_scaffold_payload(exp_id: str, classification: str, exp_record: dict
         "scaffold_state": scaffold_state,
         "scaffold_missing": list(exp_record.get("scaffold_missing", [])),
         "scaffold_warnings": list(exp_record.get("scaffold_warnings", [])),
+    }
+
+
+def _is_missing_contract_value(value: Any) -> bool:
+    return value is None or (isinstance(value, str) and not value.strip())
+
+
+def _preregistration_contract_failures(exp_record: dict, classification: str) -> list[str]:
+    """Return deterministic preregistration failures that do not execute gates."""
+    if classification != "CONFIRMATORY":
+        return []
+
+    hypothesis = exp_record.get("hypothesis")
+    if not isinstance(hypothesis, dict):
+        return [
+            "CONFIRMATORY_PREREGISTRATION_MISSING: hypothesis.alpha",
+            "CONFIRMATORY_PREREGISTRATION_MISSING: hypothesis.mesi",
+        ]
+
+    failures = []
+    for field in _CONFIRMATORY_PREREGISTRATION_FIELDS:
+        if field not in hypothesis or _is_missing_contract_value(hypothesis.get(field)):
+            failures.append(f"CONFIRMATORY_PREREGISTRATION_MISSING: hypothesis.{field}")
+    return failures
+
+
+def _preregistration_block_payload(exp_id: str, classification: str, failures: list[str]) -> dict:
+    return {
+        "exp_id": exp_id,
+        "classification": classification,
+        "error": "Experiment preregistration is incomplete",
+        "detail": "CONFIRMATORY experiments require hypothesis.alpha and hypothesis.mesi before dry-run or execution.",
+        "failures": failures,
     }
 
 
@@ -410,6 +444,12 @@ def run_experiment(
     scaffold_state = exp_record.get("scaffold_state")
     if scaffold_state is not None and str(scaffold_state) != "ready":
         payload = _blocked_scaffold_payload(exp_id, classification, exp_record)
+        _emit_run_payload(json_output, payload, title=f"Run Blocked: {exp_id} ({classification})")
+        raise typer.Exit(code=1)
+
+    preregistration_failures = _preregistration_contract_failures(exp_record, classification)
+    if preregistration_failures:
+        payload = _preregistration_block_payload(exp_id, classification, preregistration_failures)
         _emit_run_payload(json_output, payload, title=f"Run Blocked: {exp_id} ({classification})")
         raise typer.Exit(code=1)
 
