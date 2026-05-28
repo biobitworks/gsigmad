@@ -3,6 +3,18 @@
 This is the public-safe shape of a future "bad science workflow" benchmark.
 It is not yet a ratified benchmark dataset.
 
+A draft public seed corpus now lives in `examples/benchmark/`:
+
+- `bad_science_fixtures.jsonl` covers the minimum fixture families below.
+- `claim_boundary_corpus.jsonl` records where creative inference enters and
+  where deterministic gates must take over.
+- `failure_taxonomy.md` defines release-evidence status values and fixture
+  families.
+
+These files are synthetic public release artifacts. They remain
+`draft_public_seed` until a human reviewer ratifies the rows for a versioned
+benchmark release.
+
 ## Purpose
 
 The benchmark should measure whether deterministic gates catch specific

@@ -100,6 +100,14 @@ Optional Hugging Face templates live under
 - a dataset-card template with synthetic deterministic gate-trace JSONL rows
 - a static Space template for showing the same gate-boundary summary
 
+Public benchmark seed artifacts live under
+[examples/benchmark/](examples/benchmark/):
+
+- synthetic adversarial workflow fixtures across the failure taxonomy
+- a claim-boundary corpus separating creative inference from deterministic gates
+- a public failure taxonomy for missing gates, runner limits, and no-writeback
+  boundaries
+
 These examples are public-safe release artifacts, not a full benchmark and not
 evidence that gsigmad validates scientific truth.
 
