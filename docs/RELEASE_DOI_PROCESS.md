@@ -11,6 +11,7 @@ Before creating a public release candidate:
 uv sync --all-extras
 uv run pytest -q
 uv run python scripts/release_smoke.py
+uv run python scripts/clean_install_smoke.py
 python -m gsigmad --help
 node npm/bin/gsigmad.js --version
 ```

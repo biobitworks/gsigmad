@@ -49,4 +49,5 @@ def test_release_smoke_skip_build(tmp_path: Path) -> None:
         "public_artifact:docs/SCOPE_AND_ETHICS.md",
         "public_artifact:examples/huggingface/dataset/README.md",
         "public_artifact:examples/huggingface/space/README.md",
+        "public_artifact:scripts/clean_install_smoke.py",
     }

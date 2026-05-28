@@ -31,6 +31,7 @@ cd gsigmad
 uv sync --all-extras
 uv run pytest
 uv run python scripts/release_smoke.py
+uv run python scripts/clean_install_smoke.py
 ```
 
 For a first local run, see [docs/QUICKSTART.md](docs/QUICKSTART.md).
@@ -120,6 +121,17 @@ The smoke creates a disposable local project, exercises the offline CLI
 lifecycle, verifies installed skill bundles, checks the npm shim, builds the
 sdist and wheel, and writes `release_smoke_receipt.json` in the smoke
 workspace.
+
+For a clean install proof, run:
+
+```bash
+uv run python scripts/clean_install_smoke.py
+```
+
+That smoke builds a wheel, installs it into a disposable virtual environment,
+runs the same offline CLI lifecycle outside the source tree, verifies packaged
+skills and release assets, and checks that the npm shim can delegate to the
+installed Python package.
 
 ## License
 
