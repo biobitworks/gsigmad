@@ -35,6 +35,13 @@ uv run python scripts/release_smoke.py
 
 For a first local run, see [docs/QUICKSTART.md](docs/QUICKSTART.md).
 
+Public positioning docs:
+
+- [Scope and ethics](docs/SCOPE_AND_ETHICS.md)
+- [Comparison and positioning](docs/COMPARISON.md)
+- [Release and DOI process](docs/RELEASE_DOI_PROCESS.md)
+- [Public benchmark plan](docs/PUBLIC_BENCHMARK_PLAN.md)
+
 ## CLI
 
 ```bash
@@ -93,6 +100,13 @@ Optional Hugging Face templates live under
 
 These examples are public-safe release artifacts, not a full benchmark and not
 evidence that gsigmad validates scientific truth.
+
+## Citation and DOI
+
+Citation metadata lives in [CITATION.cff](CITATION.cff). The first public DOI
+should be minted from an archived GitHub release through Zenodo, then recorded
+in the next `CITATION.cff` update. Until a DOI exists, the citation file should
+remain DOI-free rather than using a placeholder.
 
 ## Release Smoke
 

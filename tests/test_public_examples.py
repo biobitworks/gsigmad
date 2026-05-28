@@ -19,7 +19,11 @@ def _frontmatter(path: Path) -> dict[str, object]:
 def test_quickstart_and_huggingface_examples_exist() -> None:
     repo = Path(__file__).resolve().parent.parent
     required = [
+        repo / "docs" / "COMPARISON.md",
+        repo / "docs" / "PUBLIC_BENCHMARK_PLAN.md",
         repo / "docs" / "QUICKSTART.md",
+        repo / "docs" / "RELEASE_DOI_PROCESS.md",
+        repo / "docs" / "SCOPE_AND_ETHICS.md",
         repo / "examples" / "huggingface" / "README.md",
         repo / "examples" / "huggingface" / "dataset" / "README.md",
         repo / "examples" / "huggingface" / "dataset" / "gate_traces.jsonl",
@@ -60,3 +64,18 @@ def test_huggingface_static_space_metadata() -> None:
     assert card["sdk"] == "static"
     assert card["app_file"] == "index.html"
     assert card["license"] == "apache-2.0"
+
+
+def test_public_scope_docs_keep_claim_boundary() -> None:
+    repo = Path(__file__).resolve().parent.parent
+    scope = (repo / "docs" / "SCOPE_AND_ETHICS.md").read_text(encoding="utf-8")
+    comparison = (repo / "docs" / "COMPARISON.md").read_text(encoding="utf-8")
+    doi = (repo / "docs" / "RELEASE_DOI_PROCESS.md").read_text(encoding="utf-8")
+    benchmark = (repo / "docs" / "PUBLIC_BENCHMARK_PLAN.md").read_text(encoding="utf-8")
+
+    assert "not a truth machine" in scope
+    assert "does not mean the claim is true" in scope
+    assert "not a workflow engine" in comparison
+    assert "This is not a claim of priority" in comparison
+    assert "DOI-free rather than using a\nplaceholder" in doi
+    assert "not yet a ratified benchmark dataset" in benchmark

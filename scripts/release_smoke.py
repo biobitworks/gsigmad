@@ -110,7 +110,11 @@ def _check_archive_contains(
 
 
 PUBLIC_ARTIFACTS = [
+    "docs/COMPARISON.md",
+    "docs/PUBLIC_BENCHMARK_PLAN.md",
     "docs/QUICKSTART.md",
+    "docs/RELEASE_DOI_PROCESS.md",
+    "docs/SCOPE_AND_ETHICS.md",
     "examples/huggingface/README.md",
     "examples/huggingface/dataset/README.md",
     "examples/huggingface/dataset/gate_traces.jsonl",
@@ -202,7 +206,11 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
                     "gsigmad/skill_bundle/skills/gsigmad/SKILL.md",
                     "gsigmad/release_assets/skills/gsigmad/SKILL.md",
                     "gsigmad/release_assets/docs/DASHBOARD.md",
+                    "gsigmad/release_assets/docs/COMPARISON.md",
+                    "gsigmad/release_assets/docs/PUBLIC_BENCHMARK_PLAN.md",
                     "gsigmad/release_assets/docs/QUICKSTART.md",
+                    "gsigmad/release_assets/docs/RELEASE_DOI_PROCESS.md",
+                    "gsigmad/release_assets/docs/SCOPE_AND_ETHICS.md",
                     "gsigmad/release_assets/specs/find-experiments.yaml",
                     "gsigmad/release_assets/scripts/release_smoke.py",
                     "gsigmad/release_assets/examples/huggingface/dataset/README.md",
@@ -224,7 +232,11 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
                 [
                     f"{prefix}/skills/gsigmad/SKILL.md",
                     f"{prefix}/docs/DASHBOARD.md",
+                    f"{prefix}/docs/COMPARISON.md",
+                    f"{prefix}/docs/PUBLIC_BENCHMARK_PLAN.md",
                     f"{prefix}/docs/QUICKSTART.md",
+                    f"{prefix}/docs/RELEASE_DOI_PROCESS.md",
+                    f"{prefix}/docs/SCOPE_AND_ETHICS.md",
                     f"{prefix}/specs/find-experiments.yaml",
                     f"{prefix}/scripts/release_smoke.py",
                     f"{prefix}/examples/huggingface/dataset/README.md",
