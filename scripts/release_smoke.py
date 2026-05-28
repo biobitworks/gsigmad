@@ -126,6 +126,7 @@ PUBLIC_ARTIFACTS = [
     "examples/huggingface/space/index.html",
     "scripts/clean_install_smoke.py",
     "scripts/huggingface_artifact_smoke.py",
+    "scripts/homebrew_artifact_smoke.py",
     "scripts/npm_package_smoke.py",
 ]
 
@@ -199,6 +200,13 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
             cwd=repo,
         )
     )
+    commands.append(
+        _run(
+            "homebrew_artifact_smoke",
+            [python, "scripts/homebrew_artifact_smoke.py", "--workspace", str(workspace / "homebrew-artifacts")],
+            cwd=repo,
+        )
+    )
 
     if not args.skip_build:
         if dist.exists():
@@ -228,6 +236,7 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
                     "gsigmad/release_assets/specs/find-experiments.yaml",
                     "gsigmad/release_assets/scripts/clean_install_smoke.py",
                     "gsigmad/release_assets/scripts/huggingface_artifact_smoke.py",
+                    "gsigmad/release_assets/scripts/homebrew_artifact_smoke.py",
                     "gsigmad/release_assets/scripts/npm_package_smoke.py",
                     "gsigmad/release_assets/scripts/release_smoke.py",
                     "gsigmad/release_assets/examples/benchmark/README.md",
@@ -261,6 +270,7 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
                     f"{prefix}/specs/find-experiments.yaml",
                     f"{prefix}/scripts/clean_install_smoke.py",
                     f"{prefix}/scripts/huggingface_artifact_smoke.py",
+                    f"{prefix}/scripts/homebrew_artifact_smoke.py",
                     f"{prefix}/scripts/npm_package_smoke.py",
                     f"{prefix}/scripts/release_smoke.py",
                     f"{prefix}/examples/benchmark/README.md",

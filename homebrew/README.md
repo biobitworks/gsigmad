@@ -1,9 +1,18 @@
-# gsigmad Homebrew Tap
+# gsigmad Homebrew Tap Template
 
-## Installation
+This directory is a Homebrew tap template. It is not yet published and is not
+install-ready because the formula still needs the real PyPI sdist checksum and
+generated Python resource stanzas.
 
-    brew tap biobitworks/gsigmad
-    brew install gsigmad
+## Current Status
+
+- Status: `deferred_until_pypi_and_resources`
+- Do not advertise `brew install` as live until the checklist below passes.
+- Local dry-run validation:
+
+```bash
+uv run python scripts/homebrew_artifact_smoke.py
+```
 
 ## Publishing Checklist
 

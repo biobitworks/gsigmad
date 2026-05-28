@@ -32,6 +32,7 @@ uv sync --all-extras
 uv run pytest
 uv run python scripts/release_smoke.py
 uv run python scripts/huggingface_artifact_smoke.py
+uv run python scripts/homebrew_artifact_smoke.py
 uv run python scripts/clean_install_smoke.py
 uv run python scripts/npm_package_smoke.py
 ```
@@ -141,6 +142,16 @@ uv run python scripts/huggingface_artifact_smoke.py
 That smoke validates the dataset-card YAML, JSONL rows, benchmark seed corpus,
 claim-boundary corpus, static Space metadata, and offline HTML shape. It writes
 a local dry-run publish bundle without uploading anything.
+
+For a Homebrew tap dry run, run:
+
+```bash
+uv run python scripts/homebrew_artifact_smoke.py
+```
+
+That smoke validates the formula template and writes a local dry-run tap bundle.
+Until PyPI release values and Python resource stanzas are added, Homebrew status
+is `deferred_until_pypi_and_resources`.
 
 For a clean install proof, run:
 

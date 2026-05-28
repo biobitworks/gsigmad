@@ -12,6 +12,7 @@ uv sync --all-extras
 uv run pytest -q
 uv run python scripts/release_smoke.py
 uv run python scripts/huggingface_artifact_smoke.py
+uv run python scripts/homebrew_artifact_smoke.py
 uv run python scripts/clean_install_smoke.py
 uv run python scripts/npm_package_smoke.py
 python -m gsigmad --help
@@ -81,6 +82,21 @@ Do not use Hugging Face for:
 - canonical lab notebooks
 - live writeback receipts
 - claims that the demo proves scientific truth
+
+## Homebrew Release Surface
+
+The Homebrew formula is a tap template until a PyPI sdist exists and dependency
+resource stanzas have been generated.
+
+Before advertising Homebrew installation, run:
+
+```bash
+uv run python scripts/homebrew_artifact_smoke.py
+```
+
+If the receipt reports `deferred_until_pypi_and_resources`, do not publish live
+`brew install` instructions. Replace the placeholder sha256, add resource
+stanzas, then run `brew audit --new-formula gsigmad` and `brew test gsigmad`.
 
 ## Sources
 
