@@ -10,6 +10,7 @@ include = [
     "skills/**/*.yaml",
     "docs/**/*.md",
     "specs/**/*.yaml",
+    "scripts/**/*.py",
     "npm/**",
     "homebrew/**",
 ]
@@ -58,7 +59,7 @@ dependencies = [
 ml = ["pingouin", "lifelines", "scikit-posthocs", "pymc", "arviz"]
 kg = ["python-arango>=8.3"]
 mcp = ["fastmcp>=3.2"]
-dev = ["pytest>=8.0", "pytest-timeout"]
+dev = ["pytest>=8.0", "pytest-timeout", "build>=1.2"]
 all = ["gsigmad[ml,kg,mcp,dev]"]
 
 [project.scripts]
@@ -71,6 +72,14 @@ Issues = "https://github.com/biobitworks/gsigmad/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/gsigmad"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"skills" = "gsigmad/release_assets/skills"
+"docs" = "gsigmad/release_assets/docs"
+"specs" = "gsigmad/release_assets/specs"
+"scripts" = "gsigmad/release_assets/scripts"
+"npm" = "gsigmad/release_assets/npm"
+"homebrew" = "gsigmad/release_assets/homebrew"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

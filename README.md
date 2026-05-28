@@ -30,6 +30,7 @@ git clone https://github.com/biobitworks/gsigmad.git
 cd gsigmad
 uv sync --all-extras
 uv run pytest
+uv run python scripts/release_smoke.py
 ```
 
 ## CLI
@@ -78,6 +79,19 @@ Integrations with systems such as Watchtower, Ollarma, Antigence, Overwatch,
 SeedGraph, ProTHub, or ProAtlas should be treated as optional or local
 governance surfaces unless a project supplies its own configured adapter.
 Missing adapters are `not_configured`, never PASS.
+
+## Release Smoke
+
+Before tagging a public release, run:
+
+```bash
+uv run python scripts/release_smoke.py
+```
+
+The smoke creates a disposable local project, exercises the offline CLI
+lifecycle, verifies installed skill bundles, checks the npm shim, builds the
+sdist and wheel, and writes `release_smoke_receipt.json` in the smoke
+workspace.
 
 ## License
 

@@ -6,7 +6,29 @@ try {
   ({ spawnSync } = require("node:child_process"));
 }
 
-const result = spawnSync("python3", ["-m", "gsigmad", ...process.argv.slice(2)], {
+const candidates = [
+  process.env.GSIGMAD_PYTHON,
+  "python",
+  "python3"
+].filter(Boolean);
+
+let selected = null;
+for (const python of candidates) {
+  const probe = spawnSync(python, ["-c", "import gsigmad"], {
+    stdio: "ignore"
+  });
+  if (!probe.error && probe.status === 0) {
+    selected = python;
+    break;
+  }
+}
+
+if (selected === null) {
+  console.error("gsigmad requires Python 3.11+ and the gsigmad package. Install with: pipx install gsigmad");
+  process.exit(1);
+}
+
+const result = spawnSync(selected, ["-m", "gsigmad", ...process.argv.slice(2)], {
   stdio: "inherit"
 });
 

@@ -23,6 +23,7 @@ def test_npm_shim_delegates_to_python(tmp_path: Path):
 
     env = dict(os.environ)
     env["PATH"] = f"{fake_bin}:{env['PATH']}"
+    env["GSIGMAD_PYTHON"] = str(fake_python)
     subprocess.run(
         ["node", "npm/bin/gsigmad.js", "--version"],
         cwd=repo_root,
