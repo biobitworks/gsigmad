@@ -66,10 +66,13 @@ High-value entry points:
 
 ## Boundary
 
-`gsigmad` is the public release repo. Internal development may happen in a
-separate upstream repository. This public repo intentionally excludes private
-planning state, private project adapters, live database configuration, raw
-experiment data, internal dashboards, and operator-only receipts.
+`gsigmad` is the public release repo. Internal development happens in a private
+upstream repository. This public repo is a sanitized release cut, not a fork;
+please use the public issue tracker before opening implementation PRs here.
+
+This public repo intentionally excludes private planning state, private project
+adapters, live database configuration, raw experiment data, internal
+dashboards, and operator-only receipts.
 
 Integrations with systems such as Watchtower, Ollarma, Antigence, Overwatch,
 SeedGraph, ProTHub, or ProAtlas should be treated as optional or local
