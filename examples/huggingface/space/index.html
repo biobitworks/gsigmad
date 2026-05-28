@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>gsigmad Gate Trace Demo</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172026;
+      --muted: #58616a;
+      --line: #cfd7df;
+      --panel: #f7f8fa;
+      --pass: #0f7a4f;
+      --miss: #9a5b00;
+      --fail: #a72a2a;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #ffffff;
+      color: var(--ink);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 24px 56px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 34px;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    p {
+      max-width: 780px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+      margin: 28px 0;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      background: var(--panel);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef2f5;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #39424c;
+    }
+
+    .status {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .fail {
+      color: var(--fail);
+    }
+
+    .missing {
+      color: var(--miss);
+    }
+
+    .limit {
+      color: #5b4a91;
+    }
+
+    .note {
+      margin-top: 22px;
+      padding: 14px 16px;
+      border-left: 4px solid var(--pass);
+      background: #f3faf6;
+      color: #274436;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>gsigmad Gate Trace Demo</h1>
+    <p>
+      Public-safe synthetic traces showing where deterministic release gates
+      catch a violation, where a gate is missing, and where the measurement
+      runner did not exercise an existing gate correctly.
+    </p>
+
+    <section class="summary" aria-label="summary metrics">
+      <div class="metric">
+        <strong>1 / 5</strong>
+        <span>demo categories caught in this synthetic slice</span>
+      </div>
+      <div class="metric">
+        <strong>10</strong>
+        <span>deterministic repeats represented per row</span>
+      </div>
+      <div class="metric">
+        <strong>0</strong>
+        <span>model calls, databases, or writeback targets</span>
+      </div>
+    </section>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Violation</th>
+          <th>Expected Gate</th>
+          <th>Status</th>
+          <th>Boundary</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Citation laundering</td>
+          <td>Citation resolution</td>
+          <td class="status fail">Caught</td>
+          <td>Claim text may be creative; DOI resolution is deterministic.</td>
+        </tr>
+        <tr>
+          <td>Vague hypothesis</td>
+          <td>Hypothesis testability</td>
+          <td class="status missing">Missing gate</td>
+          <td>No current gate proves that the hypothesis is a testable prediction.</td>
+        </tr>
+        <tr>
+          <td>Evidence-class inflation</td>
+          <td>Evidence vs claim-class match</td>
+          <td class="status missing">Missing gate</td>
+          <td>No current gate blocks causal wording from correlational evidence.</td>
+        </tr>
+        <tr>
+          <td>Reproducibility forgery</td>
+          <td>Seed and environment backing</td>
+          <td class="status missing">Missing gate</td>
+          <td>No current gate requires replay material before reproducibility claims.</td>
+        </tr>
+        <tr>
+          <td>Post-hoc H0 swap</td>
+          <td>Deviation lock check</td>
+          <td class="status limit">Runner limit</td>
+          <td>The runner must create locked preregistration state before this gate can fire.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="note">
+      This demo is release evidence, not marketing copy. It supports narrow
+      deterministic parity and gate-boundary claims only.
+    </p>
+  </main>
+</body>
+</html>

@@ -109,6 +109,16 @@ def _check_archive_contains(
     )
 
 
+PUBLIC_ARTIFACTS = [
+    "docs/QUICKSTART.md",
+    "examples/huggingface/README.md",
+    "examples/huggingface/dataset/README.md",
+    "examples/huggingface/dataset/gate_traces.jsonl",
+    "examples/huggingface/space/README.md",
+    "examples/huggingface/space/index.html",
+]
+
+
 def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
     repo = _repo_root()
     workspace = args.workspace.resolve() if args.workspace else Path(tempfile.mkdtemp(prefix="gsigmad-release-smoke-"))
@@ -153,6 +163,8 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
     _check_path("codex_skill_installed", project / ".agents" / "skills" / "gsigmad" / "SKILL.md", checks)
     _check_path("claude_skill_installed", project / ".claude" / "skills" / "gsigmad" / "SKILL.md", checks)
     _check_path("experiment_created", project / ".gsigmad" / "experiments" / "EXP-1.1.yaml", checks)
+    for artifact in PUBLIC_ARTIFACTS:
+        _check_path(f"public_artifact:{artifact}", repo / artifact, checks)
 
     from importlib.resources import files
 
@@ -190,8 +202,13 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
                     "gsigmad/skill_bundle/skills/gsigmad/SKILL.md",
                     "gsigmad/release_assets/skills/gsigmad/SKILL.md",
                     "gsigmad/release_assets/docs/DASHBOARD.md",
+                    "gsigmad/release_assets/docs/QUICKSTART.md",
                     "gsigmad/release_assets/specs/find-experiments.yaml",
                     "gsigmad/release_assets/scripts/release_smoke.py",
+                    "gsigmad/release_assets/examples/huggingface/dataset/README.md",
+                    "gsigmad/release_assets/examples/huggingface/dataset/gate_traces.jsonl",
+                    "gsigmad/release_assets/examples/huggingface/space/README.md",
+                    "gsigmad/release_assets/examples/huggingface/space/index.html",
                     "gsigmad/release_assets/npm/bin/gsigmad.js",
                     "gsigmad/release_assets/homebrew/gsigmad.rb",
                 ],
@@ -207,8 +224,13 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
                 [
                     f"{prefix}/skills/gsigmad/SKILL.md",
                     f"{prefix}/docs/DASHBOARD.md",
+                    f"{prefix}/docs/QUICKSTART.md",
                     f"{prefix}/specs/find-experiments.yaml",
                     f"{prefix}/scripts/release_smoke.py",
+                    f"{prefix}/examples/huggingface/dataset/README.md",
+                    f"{prefix}/examples/huggingface/dataset/gate_traces.jsonl",
+                    f"{prefix}/examples/huggingface/space/README.md",
+                    f"{prefix}/examples/huggingface/space/index.html",
                     f"{prefix}/npm/bin/gsigmad.js",
                     f"{prefix}/homebrew/gsigmad.rb",
                 ],

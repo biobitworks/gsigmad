@@ -11,6 +11,7 @@ include = [
     "docs/**/*.md",
     "specs/**/*.yaml",
     "scripts/**/*.py",
+    "examples/**",
     "npm/**",
     "homebrew/**",
 ]
@@ -78,6 +79,7 @@ packages = ["src/gsigmad"]
 "docs" = "gsigmad/release_assets/docs"
 "specs" = "gsigmad/release_assets/specs"
 "scripts" = "gsigmad/release_assets/scripts"
+"examples" = "gsigmad/release_assets/examples"
 "npm" = "gsigmad/release_assets/npm"
 "homebrew" = "gsigmad/release_assets/homebrew"
 

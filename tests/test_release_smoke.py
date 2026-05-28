@@ -43,4 +43,7 @@ def test_release_smoke_skip_build(tmp_path: Path) -> None:
         "claude_skill_installed",
         "experiment_created",
         "packaged_skill_bundle",
+        "public_artifact:docs/QUICKSTART.md",
+        "public_artifact:examples/huggingface/dataset/README.md",
+        "public_artifact:examples/huggingface/space/README.md",
     }

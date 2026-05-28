@@ -33,15 +33,18 @@ uv run pytest
 uv run python scripts/release_smoke.py
 ```
 
+For a first local run, see [docs/QUICKSTART.md](docs/QUICKSTART.md).
+
 ## CLI
 
 ```bash
 gsigmad --help
 gsigmad init .
 gsigmad status
-gsigmad register EXP-001
-gsigmad audit EXP-001
-gsigmad redteam EXP-001
+gsigmad register --type exploratory --hypothesis "H0: toy data are unchanged."
+gsigmad run --dry-run EXP-1.1
+gsigmad audit EXP-1.1 --skip-citations
+gsigmad redteam EXP-1.1
 ```
 
 ## Agent Skills
@@ -79,6 +82,17 @@ Integrations with systems such as Watchtower, Ollarma, Antigence, Overwatch,
 SeedGraph, ProTHub, or ProAtlas should be treated as optional or local
 governance surfaces unless a project supplies its own configured adapter.
 Missing adapters are `not_configured`, never PASS.
+
+## Public Demo Artifacts
+
+Optional Hugging Face templates live under
+[examples/huggingface/](examples/huggingface/):
+
+- a dataset-card template with synthetic deterministic gate-trace JSONL rows
+- a static Space template for showing the same gate-boundary summary
+
+These examples are public-safe release artifacts, not a full benchmark and not
+evidence that gsigmad validates scientific truth.
 
 ## Release Smoke
 
