@@ -297,8 +297,9 @@ def test_run_records_closure_results(tmp_path: Path, monkeypatch):
     """Successful run records closure RESULTS state for the experiment."""
     _init_project(tmp_path)
     monkeypatch.chdir(tmp_path)
-    register_result = runner.invoke(app, ["register", "--type", "exploratory"], catch_exceptions=False)
+    register_result = runner.invoke(app, ["--json", "register", "--type", "exploratory"], catch_exceptions=False)
     assert register_result.exit_code == 0, register_result.output
+    exp_id = json.loads(register_result.output)["exp_id"]
 
     def _loader(module_path, fn_name):
         if fn_name == "validate_data_contract":
@@ -306,12 +307,12 @@ def test_run_records_closure_results(tmp_path: Path, monkeypatch):
         return _mock_gate_pass
 
     with patch("gsigmad.commands.run._load_gate_fn", side_effect=_loader):
-        result = runner.invoke(app, ["run", "EXP-1.1"], catch_exceptions=False)
+        result = runner.invoke(app, ["run", exp_id], catch_exceptions=False)
 
     assert result.exit_code == 0, result.output
     chain_file = tmp_path / ".gsigmad" / "closure_chain.json"
     assert chain_file.is_file()
-    assert "RESULTS-EXP-1.1-1" in chain_file.read_text(encoding="utf-8")
+    assert f"RESULTS-{exp_id}-1" in chain_file.read_text(encoding="utf-8")
 
 
 def test_run_writes_write_once_manifest_and_records_integrity_metadata(

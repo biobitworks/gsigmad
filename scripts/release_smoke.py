@@ -81,6 +81,15 @@ def _check_path(name: str, path: Path, checks: list[dict[str, Any]]) -> None:
     )
 
 
+def _registered_exp_id(receipt: Receipt) -> str | None:
+    try:
+        payload = json.loads(receipt.stdout_tail)
+    except json.JSONDecodeError:
+        return None
+    exp_id = payload.get("exp_id")
+    return str(exp_id) if exp_id else None
+
+
 def _archive_names(path: Path) -> set[str]:
     if path.suffix == ".whl":
         with zipfile.ZipFile(path) as archive:
@@ -167,14 +176,15 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
             cwd=project,
         )
     )
-    commands.append(_run("run_dry", [python, "-m", "gsigmad", "--json", "run", "--dry-run", "EXP-1.1"], cwd=project))
-    commands.append(_run("audit_registered", [python, "-m", "gsigmad", "--json", "audit", "EXP-1.1", "--skip-citations"], cwd=project))
+    exp_id = _registered_exp_id(commands[-1]) or "EXP-1.1"
+    commands.append(_run("run_dry", [python, "-m", "gsigmad", "--json", "run", "--dry-run", exp_id], cwd=project))
+    commands.append(_run("audit_registered", [python, "-m", "gsigmad", "--json", "audit", exp_id, "--skip-citations"], cwd=project))
 
     _check_path("config_created", project / ".gsigmad" / "config.yaml", checks)
     _check_path("lab_notebook_created", project / ".gsigmad" / "LAB_NOTEBOOK.md", checks)
     _check_path("codex_skill_installed", project / ".agents" / "skills" / "gsigmad" / "SKILL.md", checks)
     _check_path("claude_skill_installed", project / ".claude" / "skills" / "gsigmad" / "SKILL.md", checks)
-    _check_path("experiment_created", project / ".gsigmad" / "experiments" / "EXP-1.1.yaml", checks)
+    _check_path("experiment_created", project / ".gsigmad" / "experiments" / f"{exp_id}.yaml", checks)
     for artifact in PUBLIC_ARTIFACTS:
         _check_path(f"public_artifact:{artifact}", repo / artifact, checks)
 

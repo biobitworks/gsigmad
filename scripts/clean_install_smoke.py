@@ -86,6 +86,15 @@ def _check_path(name: str, path: Path, checks: list[dict[str, Any]]) -> None:
     checks.append({"name": name, "status": "PASS" if path.exists() else "FAIL", "path": str(path)})
 
 
+def _registered_exp_id(receipt: Receipt) -> str | None:
+    try:
+        payload = json.loads(receipt.stdout_tail)
+    except json.JSONDecodeError:
+        return None
+    exp_id = payload.get("exp_id")
+    return str(exp_id) if exp_id else None
+
+
 def _clean_install_env() -> dict[str, str]:
     env = dict(os.environ)
     env.pop("PYTHONPATH", None)
@@ -184,8 +193,9 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
             env=clean_env,
         )
     )
-    commands.append(_run("run_dry", [str(gsigmad), "--json", "run", "--dry-run", "EXP-1.1"], cwd=project, env=clean_env))
-    commands.append(_run("audit_registered", [str(gsigmad), "--json", "audit", "EXP-1.1", "--skip-citations"], cwd=project, env=clean_env))
+    exp_id = _registered_exp_id(commands[-1]) or "EXP-1.1"
+    commands.append(_run("run_dry", [str(gsigmad), "--json", "run", "--dry-run", exp_id], cwd=project, env=clean_env))
+    commands.append(_run("audit_registered", [str(gsigmad), "--json", "audit", exp_id, "--skip-citations"], cwd=project, env=clean_env))
 
     env = _clean_install_env()
     env["GSIGMAD_PYTHON"] = str(python)
@@ -195,7 +205,7 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
     _check_path("lab_notebook_created", project / ".gsigmad" / "LAB_NOTEBOOK.md", checks)
     _check_path("codex_skill_installed", project / ".agents" / "skills" / "gsigmad" / "SKILL.md", checks)
     _check_path("claude_skill_installed", project / ".claude" / "skills" / "gsigmad" / "SKILL.md", checks)
-    _check_path("experiment_created", project / ".gsigmad" / "experiments" / "EXP-1.1.yaml", checks)
+    _check_path("experiment_created", project / ".gsigmad" / "experiments" / f"{exp_id}.yaml", checks)
 
     passed = all(item.status == "PASS" for item in commands) and all(item.get("status") == "PASS" for item in checks)
     receipt = {

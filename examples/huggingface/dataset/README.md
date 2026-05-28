@@ -37,6 +37,7 @@ Each JSONL row records:
 - `expected_gate`: gate expected to adjudicate the row
 - `gate_status`: `FAIL`, `MISSING_GATE`, or `RUNNER_LIMITATION`
 - `caught`: whether the violation was caught in the represented measurement
+- `gate_surface_version`: public beta gate surface represented by the row
 - `deterministic_replicates`: repeated runs used for the row
 - `unique_outputs`: number of unique gate outputs observed
 - `creative_inference_boundary`: where probabilistic authoring ends and the

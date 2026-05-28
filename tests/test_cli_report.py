@@ -14,16 +14,17 @@ def _init_project(path: Path) -> None:
     assert result.exit_code == 0, result.output
 
 
-def _register(path: Path, monkeypatch) -> None:
+def _register(path: Path, monkeypatch) -> str:
     monkeypatch.chdir(path)
-    result = runner.invoke(app, ["register", "--type", "exploratory"], catch_exceptions=False)
+    result = runner.invoke(app, ["--json", "register", "--type", "exploratory"], catch_exceptions=False)
     assert result.exit_code == 0, result.output
+    return json.loads(result.output)["exp_id"]
 
 
 def test_report_lock_creates_registered_report_record(tmp_path: Path, monkeypatch):
     _init_project(tmp_path)
-    _register(tmp_path, monkeypatch)
-    result = runner.invoke(app, ["report", "lock", "EXP-1.1"], catch_exceptions=False)
+    exp_id = _register(tmp_path, monkeypatch)
+    result = runner.invoke(app, ["report", "lock", exp_id], catch_exceptions=False)
     assert result.exit_code == 0, result.output
     lock_file = tmp_path / ".agent" / "registered_reports.json"
     assert lock_file.is_file()
@@ -31,8 +32,8 @@ def test_report_lock_creates_registered_report_record(tmp_path: Path, monkeypatc
 
 def test_report_amend_from_json_file(tmp_path: Path, monkeypatch):
     _init_project(tmp_path)
-    _register(tmp_path, monkeypatch)
-    runner.invoke(app, ["report", "lock", "EXP-1.1"], catch_exceptions=False)
+    exp_id = _register(tmp_path, monkeypatch)
+    runner.invoke(app, ["report", "lock", exp_id], catch_exceptions=False)
 
     payload = {
         "justification": "Need to update the effect-size threshold before continuing.",
@@ -46,8 +47,8 @@ def test_report_amend_from_json_file(tmp_path: Path, monkeypatch):
 
     result = runner.invoke(
         app,
-        ["report", "amend", "EXP-1.1", "--json-file", str(payload_path)],
+        ["report", "amend", exp_id, "--json-file", str(payload_path)],
         catch_exceptions=False,
     )
     assert result.exit_code == 0, result.output
-    assert (tmp_path / ".agent" / "amendments" / "EXP-1.1-1.json").is_file()
+    assert (tmp_path / ".agent" / "amendments" / f"{exp_id}-1.json").is_file()

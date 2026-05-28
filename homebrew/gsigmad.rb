@@ -13,7 +13,7 @@ class Gsigmad < Formula
   desc "Science governance CLI -- deterministic guardrails for probabilistic AI"
   homepage "https://github.com/biobitworks/gsigmad"
   # TODO: Replace with actual PyPI release URL and sha256 after publishing
-  url "https://files.pythonhosted.org/packages/source/g/gsigmad/gsigmad-1.1.0.tar.gz"
+  url "https://files.pythonhosted.org/packages/source/g/gsigmad/gsigmad-1.2.0b1.tar.gz"
   sha256 "PLACEHOLDER_SHA256"
   license "Apache-2.0"
 

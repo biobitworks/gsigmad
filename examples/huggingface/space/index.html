@@ -121,16 +121,22 @@
 <body>
   <main>
     <h1>gsigmad Gate Trace Demo</h1>
+    <p style="color: var(--ink); font-weight: 600; max-width: 780px;">
+      Demo dataset for the gsigmad <code>1.2.0b1</code> public beta gate
+      surface. Not a benchmark dataset. Not scientific truth validation.
+    </p>
     <p>
       Public-safe synthetic traces showing where deterministic release gates
-      catch a violation, where a gate is missing, and where the measurement
-      runner did not exercise an existing gate correctly.
+      catch a violation, where a gate fires only when the measurement runner
+      creates the required state, and where the framework intentionally defers
+      to a runner-state requirement. Demo, not benchmark; rows are tied to a
+      specific <code>gate_surface_version</code>.
     </p>
 
     <section class="summary" aria-label="summary metrics">
       <div class="metric">
-        <strong>1 / 5</strong>
-        <span>demo categories caught in this synthetic slice</span>
+        <strong>4 / 5</strong>
+        <span>demo categories caught against gate surface 1.2.0b1</span>
       </div>
       <div class="metric">
         <strong>10</strong>
@@ -146,7 +152,7 @@
       <thead>
         <tr>
           <th>Violation</th>
-          <th>Expected Gate</th>
+          <th>Expected Gate (module / surface)</th>
           <th>Status</th>
           <th>Boundary</th>
         </tr>
@@ -154,31 +160,31 @@
       <tbody>
         <tr>
           <td>Citation laundering</td>
-          <td>Citation resolution</td>
+          <td><code>citation_resolution</code></td>
           <td class="status fail">Caught</td>
           <td>Claim text may be creative; DOI resolution is deterministic.</td>
         </tr>
         <tr>
           <td>Vague hypothesis</td>
-          <td>Hypothesis testability</td>
-          <td class="status missing">Missing gate</td>
-          <td>No current gate proves that the hypothesis is a testable prediction.</td>
+          <td><code>h1_completeness</code></td>
+          <td class="status fail">Caught</td>
+          <td>The H1 wording is authored upstream; H1 completeness is checked deterministically against four required elements.</td>
         </tr>
         <tr>
           <td>Evidence-class inflation</td>
-          <td>Evidence vs claim-class match</td>
-          <td class="status missing">Missing gate</td>
-          <td>No current gate blocks causal wording from correlational evidence.</td>
+          <td><code>evidence_class_guardrail</code></td>
+          <td class="status fail">Caught</td>
+          <td>Interpretive language is authored upstream; the gate blocks causal claims that lack causal evidence.</td>
         </tr>
         <tr>
           <td>Reproducibility forgery</td>
-          <td>Seed and environment backing</td>
-          <td class="status missing">Missing gate</td>
-          <td>No current gate requires replay material before reproducibility claims.</td>
+          <td><code>reproducibility_declaration</code></td>
+          <td class="status fail">Caught</td>
+          <td>The reproducibility claim is authored upstream; the gate requires recorded seed and environment when <code>declared_reproducible: true</code>.</td>
         </tr>
         <tr>
           <td>Post-hoc H0 swap</td>
-          <td>Deviation lock check</td>
+          <td><code>deviation_lock_check</code> (runner state)</td>
           <td class="status limit">Runner limit</td>
           <td>The runner must create locked preregistration state before this gate can fire.</td>
         </tr>
@@ -186,8 +192,18 @@
     </table>
 
     <p class="note">
-      This demo is release evidence, not marketing copy. It supports narrow
-      deterministic parity and gate-boundary claims only.
+      This demo is release evidence, not marketing copy. Rows are measured
+      against <code>gate_surface_version: 1.2.0b1</code> and support narrow
+      gate-boundary claims only: not "validates scientific truth", not
+      "catches all misconduct", not a ratified benchmark dataset.
+    </p>
+
+    <p class="note" style="border-left-color: var(--miss); background: #fdf6e8; color: #4a3a13;">
+      Figure-governance boundary: figures rendered by
+      <code>gsigmad-figure-create</code> are governed local evidence
+      (<code>figure_destination=local_only</code>). Figure writeback to
+      <code>overwatch_evidence</code> or <code>seedgraph_document</code> is
+      deferred and not part of this release.
     </p>
   </main>
 </body>

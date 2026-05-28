@@ -7,6 +7,6 @@ authors:
 repository-code: "https://github.com/biobitworks/gsigmad"
 url: "https://github.com/biobitworks/gsigmad"
 license: Apache-2.0
-version: 1.1.0
-date-released: 2026-05-11
+version: 1.2.0b1
+date-released: 2026-05-28
 abstract: "Local-first science governance CLI and Agent Skills bundle for preregistration, claim auditing, reproducibility checks, and source custody workflows."

@@ -93,7 +93,7 @@ def test_monitor_canon_changes_are_categorized(tmp_path: Path, monkeypatch) -> N
     monitoring_mod.set_monitoring_baseline(project)
 
     (project / "CANON.md").write_text(
-        "> **Status**: ACTIVE\n> **Version**: 1.1.0\n",
+        "> **Status**: ACTIVE\n> **Version**: 1.2.0b1\n",
         encoding="utf-8",
     )
     changed = monitoring_mod.collect_monitoring_scan(project, write_artifacts=True)

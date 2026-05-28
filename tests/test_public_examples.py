@@ -20,6 +20,7 @@ def test_quickstart_and_huggingface_examples_exist() -> None:
     repo = Path(__file__).resolve().parent.parent
     required = [
         repo / "docs" / "COMPARISON.md",
+        repo / "docs" / "CAPABILITY_MATRIX.md",
         repo / "docs" / "PUBLIC_BENCHMARK_PLAN.md",
         repo / "docs" / "QUICKSTART.md",
         repo / "docs" / "RELEASE_DOI_PROCESS.md",
@@ -60,6 +61,7 @@ def test_huggingface_dataset_card_and_rows_are_public_safe() -> None:
     assert {row["claim_ceiling"] for row in rows} == {"DEMO_SYNTHETIC_ONLY"}
     assert all(row["deterministic_replicates"] == 10 for row in rows)
     assert all(row["unique_outputs"] == 1 for row in rows)
+    assert {row["gate_surface_version"] for row in rows} == {"1.2.0b1"}
 
 
 def test_public_benchmark_seed_covers_required_fixture_families() -> None:
@@ -86,6 +88,18 @@ def test_public_benchmark_seed_covers_required_fixture_families() -> None:
     assert {row["pi_ratification_status"] for row in rows} == {"draft_public_seed"}
     assert all(row["deterministic_replicates"] == 10 for row in rows)
     assert all(row["unique_output_count"] == 1 for row in rows)
+    assert {row["gate_surface_version"] for row in rows} == {"1.2.0b1"}
+    represented = {
+        row["violation_family"]: row
+        for row in rows
+        if row["violation_family"] in {
+            "vague_or_non_testable_hypothesis",
+            "evidence_class_inflation",
+            "reproducibility_declaration_without_replay_material",
+        }
+    }
+    assert {row["gate_surface_version"] for row in represented.values()} == {"1.2.0b1"}
+    assert {row["observed_public_status"] for row in represented.values()} == {"FAIL"}
 
 
 def test_public_claim_boundary_corpus_names_creative_and_deterministic_edges() -> None:
@@ -123,6 +137,7 @@ def test_public_scope_docs_keep_claim_boundary() -> None:
     comparison = (repo / "docs" / "COMPARISON.md").read_text(encoding="utf-8")
     doi = (repo / "docs" / "RELEASE_DOI_PROCESS.md").read_text(encoding="utf-8")
     benchmark = (repo / "docs" / "PUBLIC_BENCHMARK_PLAN.md").read_text(encoding="utf-8")
+    capability = (repo / "docs" / "CAPABILITY_MATRIX.md").read_text(encoding="utf-8")
 
     assert "not a truth machine" in scope
     assert "does not mean the claim is true" in scope
@@ -131,3 +146,5 @@ def test_public_scope_docs_keep_claim_boundary() -> None:
     assert "DOI-free rather than using a\nplaceholder" in doi
     assert "not yet a ratified benchmark dataset" in benchmark
     assert "bad_science_fixtures.jsonl" in benchmark
+    assert "1.2.0b1" in capability
+    assert "not a ratified\nbenchmark dataset" in capability

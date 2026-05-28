@@ -10,14 +10,14 @@ def test_version_flag():
     result = runner.invoke(app, ["--version"])
     assert result.exit_code == 0
     assert "gsigmad" in result.output
-    assert "1.1.0" in result.output
+    assert "1.2.0b1" in result.output
 
 
 def test_version_command():
     """gsigmad version shows package + coordinate version."""
     result = runner.invoke(app, ["version"])
     assert result.exit_code == 0
-    assert "1.1.0" in result.output
+    assert "1.2.0b1" in result.output
     assert "coordinate" in result.output.lower()
     assert "not yet assigned" not in result.output.lower()
 

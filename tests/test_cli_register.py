@@ -6,6 +6,7 @@ import yaml
 from typer.testing import CliRunner
 
 from gsigmad.cli import app
+from gsigmad.governance.versioning.coordinate import package_coordinate_seed
 
 runner = CliRunner()
 
@@ -43,26 +44,39 @@ def _write_anchor_file(project_root: Path, *, valid: bool = True) -> Path:
     return anchors_path
 
 
+def _expected_exp_id(sequence: int) -> str:
+    _, milestone = package_coordinate_seed()
+    return f"EXP-{milestone}.{sequence}"
+
+
+def _load_exp(project_root: Path, exp_id: str) -> dict:
+    return yaml.safe_load(
+        (project_root / ".gsigmad" / "experiments" / f"{exp_id}.yaml").read_text(
+            encoding="utf-8"
+        )
+    )
+
+
 def test_register_creates_exp(tmp_path: Path, monkeypatch):
-    """gsigmad register --type exploratory creates EXP-1.1.yaml in .gsigmad/experiments/."""
+    """gsigmad register --type exploratory creates the first EXP file."""
     _init_project(tmp_path)
     monkeypatch.chdir(tmp_path)
     result = runner.invoke(app, ["register", "--type", "exploratory"], catch_exceptions=False)
     assert result.exit_code == 0, f"stdout: {result.output}"
-    exp_file = tmp_path / ".gsigmad" / "experiments" / "EXP-1.1.yaml"
+    exp_file = tmp_path / ".gsigmad" / "experiments" / f"{_expected_exp_id(1)}.yaml"
     assert exp_file.is_file(), f"Expected {exp_file} to exist"
 
 
 def test_register_sequential_ids(tmp_path: Path, monkeypatch):
-    """Two register calls create EXP-1.1.yaml and EXP-1.2.yaml."""
+    """Two register calls create sequential EXP files for the current milestone."""
     _init_project(tmp_path)
     monkeypatch.chdir(tmp_path)
     runner.invoke(app, ["register", "--type", "exploratory"], catch_exceptions=False)
     runner.invoke(app, ["register", "--type", "exploratory"], catch_exceptions=False)
 
     exps_dir = tmp_path / ".gsigmad" / "experiments"
-    assert (exps_dir / "EXP-1.1.yaml").is_file()
-    assert (exps_dir / "EXP-1.2.yaml").is_file()
+    assert (exps_dir / f"{_expected_exp_id(1)}.yaml").is_file()
+    assert (exps_dir / f"{_expected_exp_id(2)}.yaml").is_file()
 
 
 def test_register_types(tmp_path: Path, monkeypatch):
@@ -71,11 +85,11 @@ def test_register_types(tmp_path: Path, monkeypatch):
     monkeypatch.chdir(tmp_path)
 
     runner.invoke(app, ["register", "--type", "confirmatory"], catch_exceptions=False)
-    exp1 = yaml.safe_load((tmp_path / ".gsigmad" / "experiments" / "EXP-1.1.yaml").read_text())
+    exp1 = _load_exp(tmp_path, _expected_exp_id(1))
     assert exp1["classification"] == "CONFIRMATORY"
 
     runner.invoke(app, ["register", "--type", "replication"], catch_exceptions=False)
-    exp2 = yaml.safe_load((tmp_path / ".gsigmad" / "experiments" / "EXP-1.2.yaml").read_text())
+    exp2 = _load_exp(tmp_path, _expected_exp_id(2))
     assert exp2["classification"] == "REPLICATION"
 
 
@@ -88,7 +102,7 @@ def test_register_with_hypothesis(tmp_path: Path, monkeypatch):
         ["register", "--type", "exploratory", "--hypothesis", "H0: no effect"],
         catch_exceptions=False,
     )
-    exp = yaml.safe_load((tmp_path / ".gsigmad" / "experiments" / "EXP-1.1.yaml").read_text())
+    exp = _load_exp(tmp_path, _expected_exp_id(1))
     assert exp["hypothesis"]["h0"] == "H0: no effect"
 
 
@@ -97,7 +111,7 @@ def test_register_template_fields(tmp_path: Path, monkeypatch):
     _init_project(tmp_path)
     monkeypatch.chdir(tmp_path)
     runner.invoke(app, ["register", "--type", "confirmatory"], catch_exceptions=False)
-    exp = yaml.safe_load((tmp_path / ".gsigmad" / "experiments" / "EXP-1.1.yaml").read_text())
+    exp = _load_exp(tmp_path, _expected_exp_id(1))
 
     assert "hypothesis" in exp
     assert "power_analysis" in exp
@@ -137,13 +151,14 @@ def test_register_records_prompt_artifact(tmp_path: Path, monkeypatch):
     )
     assert result.exit_code == 0, result.output
 
-    exp = yaml.safe_load((tmp_path / ".gsigmad" / "experiments" / "EXP-1.1.yaml").read_text())
+    exp = _load_exp(tmp_path, _expected_exp_id(1))
     artifact = exp["prompt_artifact"]
     assert artifact["hash_standard"] == "RFC8785"
     assert artifact["hash_algorithm"] == "sha256"
     assert artifact["hash"]
-    assert exp["prompt_id"].startswith("PROMPT-1.")
-    assert exp["task_id"].startswith("TASK-1.")
+    _, milestone = package_coordinate_seed()
+    assert exp["prompt_id"].startswith(f"PROMPT-{milestone}.")
+    assert exp["task_id"].startswith(f"TASK-{milestone}.")
     assert exp["coordinate_version"].startswith("v")
 
 

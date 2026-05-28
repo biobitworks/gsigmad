@@ -222,8 +222,9 @@ def test_offline_lifecycle_smoke(tmp_path: Path, monkeypatch):
     init_result = runner.invoke(app, ["init", str(tmp_path)], catch_exceptions=False)
     assert init_result.exit_code == 0, init_result.output
 
-    register_result = runner.invoke(app, ["register", "--type", "exploratory"], catch_exceptions=False)
+    register_result = runner.invoke(app, ["--json", "register", "--type", "exploratory"], catch_exceptions=False)
     assert register_result.exit_code == 0, register_result.output
+    exp_id = json.loads(register_result.output)["exp_id"]
 
     def _gate_loader(module_path, fn_name):
         if fn_name == "validate_data_contract":
@@ -231,7 +232,7 @@ def test_offline_lifecycle_smoke(tmp_path: Path, monkeypatch):
         return lambda *args, **kwargs: {"pass": True, "error": None}
 
     with patch("gsigmad.commands.run._load_gate_fn", side_effect=_gate_loader):
-        run_result = runner.invoke(app, ["run", "EXP-1.1"], catch_exceptions=False)
+        run_result = runner.invoke(app, ["run", exp_id], catch_exceptions=False)
     assert run_result.exit_code == 0, run_result.output
 
     with patch("gsigmad.commands.audit._load_audit_gate", return_value=lambda claims, verify_citations=True: {"pass": True, "failures": [], "warnings": []}), patch(_PATCH_DRIFT, return_value=_MOCK_DRIFT_NOT_TRIGGERED):
@@ -240,7 +241,7 @@ def test_offline_lifecycle_smoke(tmp_path: Path, monkeypatch):
 
     assert audit_result.exit_code == 0, audit_result.output
     assert status_result.exit_code == 0, status_result.output
-    assert "EXP-1.1" in status_result.output
+    assert exp_id in status_result.output
     ledger_file = tmp_path / ".gsigmad" / "ledger" / "governance.jsonl"
     assert ledger_file.is_file()
     assert len([line for line in ledger_file.read_text(encoding="utf-8").splitlines() if line.strip()]) >= 5
@@ -262,8 +263,9 @@ def test_status_reports_open_closure_chain(tmp_path: Path, monkeypatch):
     _init_project(tmp_path)
     monkeypatch.chdir(tmp_path)
 
-    register_result = runner.invoke(app, ["register", "--type", "exploratory"], catch_exceptions=False)
+    register_result = runner.invoke(app, ["--json", "register", "--type", "exploratory"], catch_exceptions=False)
     assert register_result.exit_code == 0, register_result.output
+    exp_id = json.loads(register_result.output)["exp_id"]
 
     def _gate_loader2(module_path, fn_name):
         if fn_name == "validate_data_contract":
@@ -271,14 +273,14 @@ def test_status_reports_open_closure_chain(tmp_path: Path, monkeypatch):
         return lambda *args, **kwargs: {"pass": True, "error": None}
 
     with patch("gsigmad.commands.run._load_gate_fn", side_effect=_gate_loader2), patch(_PATCH_DRIFT, return_value=_MOCK_DRIFT_NOT_TRIGGERED):
-        run_result = runner.invoke(app, ["run", "EXP-1.1"], catch_exceptions=False)
+        run_result = runner.invoke(app, ["run", exp_id], catch_exceptions=False)
         status_result = runner.invoke(app, ["--json", "status"], catch_exceptions=False)
 
     assert run_result.exit_code == 0, run_result.output
     assert status_result.exit_code == 0, status_result.output
     payload = json.loads(status_result.output)
     assert payload["closure"]
-    assert payload["closure"][0]["exp_id"] == "EXP-1.1"
+    assert payload["closure"][0]["exp_id"] == exp_id
 
 
 def _create_scaffolded_exp(path: Path, exp_id: str, *, scaffold_state: str) -> None:

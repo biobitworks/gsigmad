@@ -19,15 +19,25 @@ explicit so humans can review them.
 
 ## Install
 
-```bash
-pip install gsigmad
-```
-
-For local development:
+For this beta candidate, install from source until the matching PyPI upload is
+complete:
 
 ```bash
 git clone https://github.com/biobitworks/gsigmad.git
 cd gsigmad
+uv sync --all-extras
+uv run python -m gsigmad --help
+```
+
+After the package is published to PyPI for this version:
+
+```bash
+pip install gsigmad
+```
+
+For local development and release verification:
+
+```bash
 uv sync --all-extras
 uv run pytest
 uv run python scripts/release_smoke.py
@@ -43,6 +53,7 @@ Public positioning docs:
 
 - [Scope and ethics](docs/SCOPE_AND_ETHICS.md)
 - [Comparison and positioning](docs/COMPARISON.md)
+- [Capability matrix](docs/CAPABILITY_MATRIX.md)
 - [Release and DOI process](docs/RELEASE_DOI_PROCESS.md)
 - [Public benchmark plan](docs/PUBLIC_BENCHMARK_PLAN.md)
 
@@ -115,10 +126,14 @@ evidence that gsigmad validates scientific truth.
 
 ## Citation and DOI
 
-Citation metadata lives in [CITATION.cff](CITATION.cff). The first public DOI
-should be minted from an archived GitHub release through Zenodo, then recorded
-in the next `CITATION.cff` update. Until a DOI exists, the citation file should
-remain DOI-free rather than using a placeholder.
+Citation metadata lives in [CITATION.cff](CITATION.cff).
+
+**DOI: pending.** The first public DOI will be minted by Zenodo from an
+archived GitHub release after the public tag. Until Zenodo issues that DOI,
+`CITATION.cff` intentionally has no DOI field; please do not cite a
+placeholder. Once the DOI is issued, this README and `CITATION.cff` will be
+updated in the next docs commit. The DOI cites the archived software release,
+not a peer-reviewed paper or validated benchmark.
 
 ## Release Smoke
 

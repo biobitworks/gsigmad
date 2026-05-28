@@ -5,19 +5,20 @@ databases, private adapters, cloud services, or live writeback targets.
 
 ## 1. Install
 
-From PyPI:
-
-```bash
-pip install gsigmad
-```
-
-From a local clone:
+For this beta candidate, install from source until the matching PyPI upload is
+complete:
 
 ```bash
 git clone https://github.com/biobitworks/gsigmad.git
 cd gsigmad
 uv sync --all-extras
 uv run python -m gsigmad --help
+```
+
+After the package is published to PyPI for this version:
+
+```bash
+pip install gsigmad
 ```
 
 ## 2. Create a Local Project

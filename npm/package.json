@@ -1,6 +1,6 @@
 {
   "name": "gsigmad",
-  "version": "1.1.0",
+  "version": "1.2.0-beta.1",
   "bin": {
     "gsigmad": "bin/gsigmad.js"
   },
