@@ -121,6 +121,7 @@ PUBLIC_ARTIFACTS = [
     "examples/huggingface/space/README.md",
     "examples/huggingface/space/index.html",
     "scripts/clean_install_smoke.py",
+    "scripts/npm_package_smoke.py",
 ]
 
 
@@ -214,6 +215,7 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
                     "gsigmad/release_assets/docs/SCOPE_AND_ETHICS.md",
                     "gsigmad/release_assets/specs/find-experiments.yaml",
                     "gsigmad/release_assets/scripts/clean_install_smoke.py",
+                    "gsigmad/release_assets/scripts/npm_package_smoke.py",
                     "gsigmad/release_assets/scripts/release_smoke.py",
                     "gsigmad/release_assets/examples/huggingface/dataset/README.md",
                     "gsigmad/release_assets/examples/huggingface/dataset/gate_traces.jsonl",
@@ -241,6 +243,7 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
                     f"{prefix}/docs/SCOPE_AND_ETHICS.md",
                     f"{prefix}/specs/find-experiments.yaml",
                     f"{prefix}/scripts/clean_install_smoke.py",
+                    f"{prefix}/scripts/npm_package_smoke.py",
                     f"{prefix}/scripts/release_smoke.py",
                     f"{prefix}/examples/huggingface/dataset/README.md",
                     f"{prefix}/examples/huggingface/dataset/gate_traces.jsonl",

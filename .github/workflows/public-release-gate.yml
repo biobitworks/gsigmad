@@ -45,3 +45,6 @@ jobs:
 
       - name: Run clean install smoke
         run: uv run python scripts/clean_install_smoke.py --workspace .clean-install-smoke
+
+      - name: Run npm package smoke
+        run: uv run python scripts/npm_package_smoke.py --workspace .npm-package-smoke

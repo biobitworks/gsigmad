@@ -12,6 +12,7 @@ uv sync --all-extras
 uv run pytest -q
 uv run python scripts/release_smoke.py
 uv run python scripts/clean_install_smoke.py
+uv run python scripts/npm_package_smoke.py
 python -m gsigmad --help
 node npm/bin/gsigmad.js --version
 ```

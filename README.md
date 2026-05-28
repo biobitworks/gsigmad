@@ -32,6 +32,7 @@ uv sync --all-extras
 uv run pytest
 uv run python scripts/release_smoke.py
 uv run python scripts/clean_install_smoke.py
+uv run python scripts/npm_package_smoke.py
 ```
 
 For a first local run, see [docs/QUICKSTART.md](docs/QUICKSTART.md).
@@ -132,6 +133,17 @@ That smoke builds a wheel, installs it into a disposable virtual environment,
 runs the same offline CLI lifecycle outside the source tree, verifies packaged
 skills and release assets, and checks that the npm shim can delegate to the
 installed Python package.
+
+For a local npm package proof, run:
+
+```bash
+uv run python scripts/npm_package_smoke.py
+```
+
+That smoke packs `npm/` into a local `.tgz`, installs it into a disposable Node
+project, and drives the offline CLI lifecycle through
+`node_modules/.bin/gsigmad` while delegating to the clean installed Python
+wheel.
 
 ## License
 
