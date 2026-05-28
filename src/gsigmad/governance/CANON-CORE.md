@@ -39,8 +39,8 @@ Project CANON files extend CANON-CORE by declaring in their header:
       override: invariant-N
       override-justification: "[why this invariant cannot apply to this domain]"
 
-- Example: Fractal Waves declares `override: invariant-1 (biology reference)` because the domain
-  is mathematics-only; Overwatch's biology-inclusive language creates a domain incompatibility.
+- Example: a demo mathematics project declares `override: invariant-1 (biology reference)` because the domain
+  is mathematics-only; biology-inclusive language creates a domain incompatibility.
   All data still traces to source — mathematical derivations cited to proof or algorithm reference.
 
 **Conflict rule:**
@@ -53,7 +53,7 @@ Project CANON files extend CANON-CORE by declaring in their header:
 
 ### Invariant 1: No Fabricated Data, Claims, or Values
 
-**Source:** Overwatch Invariant 1, Shadow Seeds Invariant 1, Cellico §7 Hypothesis Testing,
+**Source:** Source Project A Invariant 1, Source Project B Invariant 1, Source Project C §7 Hypothesis Testing,
 EXPERIMENT_STANDARDS.md §15
 
 **Statement:** Every datum, computed value, and scientific claim must trace to a verifiable source:
@@ -77,7 +77,7 @@ or develop and validate a new methodology before use.
 
 ### Invariant 2: Run-ID-Specific Result Artifacts
 
-**Source:** Overwatch Invariant 2, Shadow Seeds Invariant 3, Fractal Waves §8
+**Source:** Source Project A Invariant 2, Source Project B Invariant 3, Source Project D §8
 
 **Statement:** No experiment may write results to a fixed-name output file that can be silently
 overwritten. Every result artifact is stamped with a unique run identifier (run-id, EXP-###, or
@@ -94,7 +94,7 @@ in the artifact filename or as a top-level metadata field in the artifact conten
 
 ### Invariant 3: Claim Classification Required
 
-**Source:** Overwatch Invariant 6, Cellico §7, Fractal Waves §8, Shadow Seeds Invariant 6
+**Source:** Source Project A Invariant 6, Source Project C §7, Source Project D §8, Source Project B Invariant 6
 
 **Statement:** Every scientific or operational claim must be tagged with exactly one of:
 **MEASURED** (direct empirical observation), **INFERRED** (derived from measurements via model or
@@ -114,7 +114,7 @@ or knowledge graph entries.
 
 ### Invariant 4: Append-Only Change Logs
 
-**Source:** Overwatch Invariant 5, Cellico §0 Signature Log
+**Source:** Source Project A Invariant 5, Source Project C §0 Signature Log
 
 **Statement:** Corrections, updates, and retractions are made by appending a new signed entry,
 never by editing or deleting prior entries. This applies to LAB_NOTEBOOK entries, CANON files,
@@ -133,7 +133,7 @@ a corresponding append entry is a CANON violation.
 
 ### Invariant 5: Pre-Registration Before Execution for CONFIRMATORY Experiments
 
-**Source:** Overwatch §9.2, Cellico §7, Fractal Waves §8, EXPERIMENT_STANDARDS.md §2
+**Source:** Source Project A §9.2, Source Project C §7, Source Project D §8, EXPERIMENT_STANDARDS.md §2
 
 **Statement:** CONFIRMATORY experiments must lock the null hypothesis (H₀), alternative
 hypothesis (H₁), statistical test, rejection threshold (alpha), and Minimum Effect Size of
@@ -155,7 +155,7 @@ as EXPLORATORY before execution.
 
 ### Invariant 6: Effect Size and Confidence Interval Mandatory
 
-**Source:** Overwatch §9.3, EXPERIMENT_STANDARDS.md §4, Cellico §7
+**Source:** Source Project A §9.3, EXPERIMENT_STANDARDS.md §4, Source Project C §7
 
 **Statement:** p-values alone are insufficient evidence. Every statistical test must report
 an effect size measure appropriate to the test type (Cohen's d for t-tests, η² for ANOVA,
@@ -175,7 +175,7 @@ by their own uncertainty quantification.
 
 ### Invariant 7: Preserve Negative and Falsified Findings
 
-**Source:** Overwatch Invariant 4, WORKFLOW_RULES §5, EXPERIMENT_STANDARDS.md §6
+**Source:** Source Project A Invariant 4, WORKFLOW_RULES §5, EXPERIMENT_STANDARDS.md §6
 
 **Statement:** Null results, failed experiments, and disproven hypotheses are retained,
 documented, and registered in the negative results log with the same rigor applied to positive
@@ -196,7 +196,7 @@ forward-linked from any future experiment that builds on the same research quest
 
 ### Invariant 8: Material Prompts Require Pre-Execution Red Team
 
-**Source:** Overwatch Invariant 9, WORKFLOW_RULES §2b, CANON §8.7
+**Source:** Source Project A Invariant 9, WORKFLOW_RULES §2b, CANON §8.7
 
 **Statement:** Any prompt that can change scientific conclusions, modify benchmark design,
 alter hypothesis classification, or mutate database/knowledge-graph state must document:
@@ -218,7 +218,7 @@ committed red team review entry.
 
 ### Invariant 9: Agent Provenance and Signature Required
 
-**Source:** Overwatch §5, Cellico §0, Fractal Waves §0, Shadow Seeds §4
+**Source:** Source Project A §5, Source Project C §0, Source Project D §0, Source Project B §4
 
 **Statement:** Every modification to a governed document must carry the actual model identifier
 in the SIG-ID format: `SIG-YYYYMMDDTHHMMSSZ-[agent]-[hash4]` where [agent] is the actual model
@@ -245,4 +245,4 @@ hash4 = hashlib.md5(sig_input.encode()).hexdigest()[:4]
 
 | Version | Date | Author | Change |
 |---------|------|--------|--------|
-| 1.0.0 | 2026-03-31 | SIG-20260331T000000Z-claude-sonnet-4-6-3325 | Initial CANON-CORE authored from Overwatch v1.3.1, Cellico v2.0.0, Fractal Waves v1.0.0, Shadow Seeds v1.0.0. 9 invariants curated (not mechanically intersected) covering data fabrication, run-id artifacts, claim classification, append-only logs, pre-registration (HARKing prevention), effect size + CI, negative findings preservation, red team gates, and agent provenance. |
+| 1.0.0 | 2026-03-31 | SIG-20260331T000000Z-claude-sonnet-4-6-3325 | Initial CANON-CORE authored from four source governance projects. 9 invariants curated (not mechanically intersected) covering data fabrication, run-id artifacts, claim classification, append-only logs, pre-registration (HARKing prevention), effect size + CI, negative findings preservation, red team gates, and agent provenance. |

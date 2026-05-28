@@ -120,12 +120,12 @@ def find_experiments(
     NOT perform field matching on the experiment document itself.
 
     Output exp_id values are always formatted as "{project}:EXP-{N}" to
-    prevent namespace collision across projects (e.g. "cellico:EXP-042").
+    prevent namespace collision across projects (e.g. "example-project:EXP-042").
 
     Parameters
     ----------
     project : str | None
-        Restrict to a single project (e.g. "cellico").  None = all projects.
+        Restrict to a single project (e.g. "example-project").  None = all projects.
     classification : str | None
         One of CONFIRMATORY | EXPLORATORY | REPLICATION, or None.
     status : str | None
@@ -185,7 +185,7 @@ def _add_project_prefix(row: dict) -> dict:
     Ensure exp_id is prefixed with its project to prevent namespace collision.
 
     The raw ArangoDB exp_id field is "EXP-042"; the formatted version is
-    "cellico:EXP-042".  If the prefix is already present (e.g. during a
+    "example-project:EXP-042".  If the prefix is already present (e.g. during a
     re-run or data migration), the row is returned unchanged.
     """
     exp_id: str = row.get("exp_id", "")

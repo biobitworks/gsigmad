@@ -111,7 +111,7 @@ def load_project_registry(gsd_root: str, adapters_dir: str = "adapters") -> list
       "**EXP namespace prefix:**" line; empty string if absent.
 
     Args:
-        gsd_root: Path to the gettingsciencedone repo root.
+        gsd_root: Path to the governance workspace root.
         adapters_dir: Subdirectory containing adapter ``*.md`` files.
             Defaults to ``"adapters"``.
 

@@ -104,7 +104,7 @@ repo / EXP level; the last four are derived by Watchtower's
 
 | Classification | Use it for | Expects experiments? |
 |---|---|---|
-| `experiment_repo` | Default. Repos with `experiments/` + canonical EXP records (cellico-bio, vitaology, fractal-waves, deltaprot, …) | yes |
+| `experiment_repo` | Default. Repos with `experiments/` + canonical EXP records (demo-bio, demo-math, demo-pipeline, …) | yes |
 | `operator_console_exempt` | Operator surfaces with no experiment by design (Watchtower) | no |
 | `product_site_exempt` | Public product / website surfaces (bioviz-tech, game-playcast) | no |
 | `meta_repo_exempt` | Meta / portfolio / governance repos (metarepo) | no |

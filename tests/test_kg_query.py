@@ -115,10 +115,10 @@ def test_find_experiments_pmid_filter():
 
 
 def test_find_experiments_namespace_format():
-    """Namespace collision prevention: raw 'EXP-042' + project 'cellico' -> 'cellico:EXP-042'."""
+    """Namespace collision prevention: raw EXP plus project prefix -> project-scoped EXP."""
     raw_row = {
         "exp_id": "EXP-042",
-        "project": "cellico",
+        "project": "example-project",
         "classification": "EXPLORATORY",
         "status": "in_progress",
         "last_run_id": "RUN-099",
@@ -135,7 +135,7 @@ def test_find_experiments_namespace_format():
         from gsigmad.governance.kg.query import find_experiments
         results = find_experiments()
 
-    assert results[0]["exp_id"] == "cellico:EXP-042"
+    assert results[0]["exp_id"] == "example-project:EXP-042"
 
 
 def test_find_experiments_empty():

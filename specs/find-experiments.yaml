@@ -7,7 +7,7 @@ inputs:
   optional:
     - field: project
       type: str
-      description: Project name to restrict results (e.g. "cellico"). Omit for all projects.
+      description: Project name to restrict results (e.g. "example-project"). Omit for all projects.
     - field: classification
       type: str
       enum: [CONFIRMATORY, EXPLORATORY, REPLICATION]
@@ -47,7 +47,7 @@ edge_cases:
     name: arango_unavailable
     description: ArangoDB is not running — ARANGO_AVAILABLE flag is False; returns error dict with KG_UNAVAILABLE prefix
     input:
-      project: "cellico"
+      project: "example-project"
     expected:
       gate: none
       pass: false
@@ -56,7 +56,7 @@ edge_cases:
     name: no_results_match
     description: All filter predicates are valid but no experiments match — returns empty results list
     input:
-      project: "cellico"
+      project: "example-project"
       classification: CONFIRMATORY
       status: failed
     expected:

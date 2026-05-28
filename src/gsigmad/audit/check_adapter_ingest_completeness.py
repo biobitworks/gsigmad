@@ -180,7 +180,7 @@ def _collect_knowledge_base_text(lines: List[str]) -> str:
 # ---------------------------------------------------------------------------
 
 def load_canonical_index(canonical_index_dir: Optional[Path]) -> set:
-    """Return the set of canonical adapter stems (e.g. {'cellico', 'overwatch'}).
+    """Return the set of canonical adapter stems (e.g. {'demo-bio', 'demo-ops'}).
 
     If `canonical_index_dir` is None or does not exist, return an empty set.
     The empty-set case means "no canonical index supplied", and the

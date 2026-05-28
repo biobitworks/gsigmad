@@ -1,4 +1,4 @@
-# GettingScienceDone Knowledge Base Home
+# gsigmad Knowledge Base Home
 
 This is the operator-facing index for `gsigmad`, the science-governance layer.
 It links existing source surfaces and bridge docs. It is not a new source of

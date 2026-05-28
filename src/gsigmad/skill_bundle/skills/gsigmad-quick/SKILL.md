@@ -137,8 +137,8 @@ default to publication lane and do not default to web-discussion lane.
 
 ## Prompt Destination Rule
 
-Put prompt packages in the owning repo, not in gettingsciencedone unless the
-task is changing the gsigmad framework itself.
+Put prompt packages in the owning repo, not in the gsigmad framework repo unless
+the task is changing the framework itself.
 
 Use:
 

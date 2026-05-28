@@ -66,7 +66,7 @@ def scan_all_projects(gsd_root: str, project_registry: list) -> dict:
 
     Args:
         gsd_root:
-            Path to the gettingsciencedone repo root (contains the .agent/
+            Path to the governance workspace root (contains the .agent/
             subdirectory where scan state is stored).
         project_registry:
             List of project entry dicts. Each dict must contain:

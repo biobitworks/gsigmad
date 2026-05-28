@@ -13,8 +13,8 @@
     },
     "project": {
       "type": "string",
-      "description": "Project name. E.g., 'overwatch', 'cellico', 'fractal-waves'",
-      "examples": ["overwatch", "cellico", "fractal-waves", "shadow-seeds", "conductor"]
+      "description": "Project name. E.g., 'example-project', 'demo-bio', 'demo-math'",
+      "examples": ["example-project", "demo-bio", "demo-math", "demo-data", "demo-ops"]
     },
     "canon_version": {
       "type": "string",
@@ -58,28 +58,28 @@
   "examples": [
     {
       "extends": "CANON-CORE v1.0.0",
-      "project": "overwatch",
+      "project": "example-project",
       "canon_version": "1.3.1",
       "status": "ACTIVE",
       "signed": "SIG-20260331T000000Z-claude-sonnet-4-6-3325"
     },
     {
       "extends": "CANON-CORE v1.0.0",
-      "project": "cellico",
+      "project": "demo-bio",
       "canon_version": "2.0.0",
       "status": "ACTIVE",
       "signed": "SIG-20260331T000000Z-claude-sonnet-4-6-3325"
     },
     {
       "extends": "CANON-CORE v1.0.0",
-      "project": "fractal-waves",
+      "project": "demo-math",
       "canon_version": "1.0.0",
       "status": "ACTIVE",
       "signed": "SIG-20260331T000000Z-claude-sonnet-4-6-3325",
       "overrides": [
         {
           "invariant": 1,
-          "override_justification": "Fractal Waves is a mathematics-only domain. Biology-inclusive language in Invariant 1 references (e.g., Cellico terminology) creates domain incompatibility. All data still traced to source — mathematical derivations cited to proof or algorithm reference."
+          "override_justification": "Demo Math is a mathematics-only domain. Biology-inclusive language in Invariant 1 references creates domain incompatibility. All data still traced to source — mathematical derivations cited to proof or algorithm reference."
         }
       ]
     }

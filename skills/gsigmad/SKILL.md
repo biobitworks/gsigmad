@@ -1,19 +1,19 @@
 ---
 name: gsigmad
-description: "Anchor skill for the Getting Science Done (gsigmad-*) framework. Trigger on 'gsigmad', 'gettingsciencedone', 'start a science project', 'write a PROMPT', 'preregister an experiment', 'audit claims', 'triage this', 'here is an image', 'here is a dataset', 'here is a publication', 'red team', 'research and remediate', 'import publications', 'ingest publications', 'publication JSON', 'SeedGraph Merkle', 'chain of custody', 'HN thread', 'Hacker News', 'Reddit thread', 'forum thread', 'GitHub discussion', 'public comment thread', 'web discussion', or any request that mentions the gsigmad/gettingsciencedone namespace. Explains the gsigmad/gsd split and routes to the right sub-skill."
+description: "Anchor skill for the Getting Science Done (gsigmad-*) framework. Trigger on 'gsigmad', 'start a science project', 'write a PROMPT', 'preregister an experiment', 'audit claims', 'triage this', 'here is an image', 'here is a dataset', 'here is a publication', 'red team', 'research and remediate', 'import publications', 'ingest publications', 'publication JSON', 'SeedGraph Merkle', 'chain of custody', 'HN thread', 'Hacker News', 'Reddit thread', 'forum thread', 'GitHub discussion', 'public comment thread', 'web discussion', or any request that mentions the gsigmad namespace. Explains the gsigmad/gsd split and routes to the right sub-skill."
 allowed-tools: Read, Bash, Glob, Grep
 ---
 
 # gsigmad — Getting Science Done
 
-You were invoked because the user mentioned **gsigmad** or **gettingsciencedone**, asked to start a science project / write a prompt / preregister an experiment / audit a claim, or asked how Ollarma, Watchtower, Antigence, Overwatch, Claude Code, ChatGPT Codex, Gemini, or Grok fit into the governance bridge. Your job is to disambiguate, then route to the right sub-skill.
+You were invoked because the user mentioned **gsigmad**, asked to start a science project / write a prompt / preregister an experiment / audit a claim, or asked how Ollarma, Watchtower, Antigence, Overwatch, Claude Code, ChatGPT Codex, Gemini, or Grok fit into the governance bridge. Your job is to disambiguate, then route to the right sub-skill.
 
 ## Two prefixes — never collapse them
 
 | Prefix | Project | Role |
 | --- | --- | --- |
 | `gsd-*` | **Get Shit Done** (npm `get-shit-done-cc`) | Generic workflow scaffolding — phases, plans, execution, verification, code review. |
-| `gsigmad-*` | **Getting Science Done** (`<gsigmad-upstream-dev-repo>`) | Science governance — preregistration (PROMPT artifacts), claim auditing, drift scanning, citation hygiene, FAIR checks, ablation, model identifiability, negative-result protection, replication contracts. |
+| `gsigmad-*` | **Getting Science Done** (`gsigmad`) | Science governance — preregistration (PROMPT artifacts), claim auditing, drift scanning, citation hygiene, FAIR checks, ablation, model identifiability, negative-result protection, replication contracts. |
 
 They share the spoken acronym "GSD" but are separate namespaces and separate codebases. Per `~/projects/CLAUDE.md`:
 
@@ -59,7 +59,7 @@ They share the spoken acronym "GSD" but are separate namespaces and separate cod
   primary skill chain, prompt destination, ready-to-paste prompt, and next step.
 - It should write prompt packages to the owning repo under
   `<target_repo>/.planning/quick/<YYMMDD>-<slug>/`, not into
-  `gettingsciencedone`, unless the framework itself is being changed.
+  the gsigmad framework repo, unless the framework itself is being changed.
 
 **"Red team / research / remediate / what am I missing?"**
 - Route to `/gsigmad-redteam-research-remediate`.
@@ -131,9 +131,9 @@ Non-negotiable for this lane:
 
 ## Source of truth
 
-- Repo: `<gsigmad-upstream-dev-repo>`
+- Repo: `gsigmad`
 - Repo CLAUDE.md / AGENTS.md govern behavior inside that repo.
-- Skill source files live at `gettingsciencedone/skills/gsigmad-*/SKILL.md` and are symlinked into `~/.claude/skills/` and `~/.codex/skills/` for runtime discovery. Edit in source; both runtimes pick up changes immediately.
+- Skill source files live at `skills/gsigmad-*/SKILL.md` and are bundled into the package for runtime discovery. Edit in source; rebuild the package bundle for releases.
 
 ## What this skill does NOT do
 

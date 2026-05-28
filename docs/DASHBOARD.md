@@ -1,6 +1,6 @@
-# GettingScienceDone Dashboard Surface
+# gsigmad Dashboard Surface
 
-GettingScienceDone does not host a standalone web dashboard. Its operator
+gsigmad does not host a standalone web dashboard. Its operator
 projection is Watchtower, and its runtime bridge is Ollarma.
 
 This file exists as the dashboard/review receipt that Watchtower can discover.

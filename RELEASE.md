@@ -31,8 +31,8 @@ Before pushing publicly:
 - package metadata includes license, citation, security, and contribution files
 - GitHub remote is explicitly configured for the intended public repo
 
-The upstream framework (`gettingsciencedone`) ships an executable
-release-gate scan that enforces the above. From an upstream checkout:
+The private upstream development repo ships an executable release-gate scan
+that enforces the above. From that upstream checkout:
 
 ```bash
 python3 scripts/release_gate_scan.py /path/to/gsigmad
