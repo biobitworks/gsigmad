@@ -51,5 +51,5 @@ gsigmad catches all scientific misconduct or validates scientific truth.
 ## Not Included
 
 This demo does not include raw research data, biological measurements, private
-adapters, live database credentials, full v2.3 trial artifacts, or unresolved
+adapters, live database credentials, full internal trial artifacts, or unresolved
 private planning state.
