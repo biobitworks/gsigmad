@@ -31,6 +31,7 @@ cd gsigmad
 uv sync --all-extras
 uv run pytest
 uv run python scripts/release_smoke.py
+uv run python scripts/huggingface_artifact_smoke.py
 uv run python scripts/clean_install_smoke.py
 uv run python scripts/npm_package_smoke.py
 ```
@@ -127,9 +128,19 @@ uv run python scripts/release_smoke.py
 ```
 
 The smoke creates a disposable local project, exercises the offline CLI
-lifecycle, verifies installed skill bundles, checks the npm shim, builds the
-sdist and wheel, and writes `release_smoke_receipt.json` in the smoke
-workspace.
+lifecycle, verifies installed skill bundles, checks the npm shim, validates the
+Hugging Face dataset-card and static Space artifacts, builds the sdist and
+wheel, and writes `release_smoke_receipt.json` in the smoke workspace.
+
+For a Hugging Face artifact dry run, run:
+
+```bash
+uv run python scripts/huggingface_artifact_smoke.py
+```
+
+That smoke validates the dataset-card YAML, JSONL rows, benchmark seed corpus,
+claim-boundary corpus, static Space metadata, and offline HTML shape. It writes
+a local dry-run publish bundle without uploading anything.
 
 For a clean install proof, run:
 

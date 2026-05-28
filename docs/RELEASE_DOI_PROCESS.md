@@ -11,6 +11,7 @@ Before creating a public release candidate:
 uv sync --all-extras
 uv run pytest -q
 uv run python scripts/release_smoke.py
+uv run python scripts/huggingface_artifact_smoke.py
 uv run python scripts/clean_install_smoke.py
 uv run python scripts/npm_package_smoke.py
 python -m gsigmad --help
@@ -57,6 +58,15 @@ placeholder.
 
 Hugging Face dataset cards and Spaces are appropriate for public examples and
 demo traces. They are not the canonical governance truth.
+
+Before mirroring the demo artifacts to Hugging Face, run:
+
+```bash
+uv run python scripts/huggingface_artifact_smoke.py
+```
+
+The command creates a local `huggingface-publish-dry-run/` bundle and receipt.
+It does not upload, create repositories, or mutate canonical governance state.
 
 Use Hugging Face for:
 

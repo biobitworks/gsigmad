@@ -35,6 +35,7 @@ def test_release_smoke_skip_build(tmp_path: Path) -> None:
         "run_dry",
         "audit_registered",
         "npm_shim",
+        "huggingface_artifact_smoke",
     }
     assert {item["name"] for item in receipt["checks"]} >= {
         "config_created",
@@ -53,5 +54,6 @@ def test_release_smoke_skip_build(tmp_path: Path) -> None:
         "public_artifact:examples/huggingface/dataset/README.md",
         "public_artifact:examples/huggingface/space/README.md",
         "public_artifact:scripts/clean_install_smoke.py",
+        "public_artifact:scripts/huggingface_artifact_smoke.py",
         "public_artifact:scripts/npm_package_smoke.py",
     }
