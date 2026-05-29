@@ -21,9 +21,11 @@ def test_quickstart_and_huggingface_examples_exist() -> None:
     required = [
         repo / "docs" / "COMPARISON.md",
         repo / "docs" / "CAPABILITY_MATRIX.md",
+        repo / "docs" / "HOW_TO_USE_GSIGMAD.md",
         repo / "docs" / "PUBLIC_BENCHMARK_PLAN.md",
         repo / "docs" / "QUICKSTART.md",
         repo / "docs" / "RELEASE_DOI_PROCESS.md",
+        repo / "docs" / "RUNTIME_ADOPTION_MATRIX.md",
         repo / "docs" / "SCOPE_AND_ETHICS.md",
         repo / "examples" / "benchmark" / "README.md",
         repo / "examples" / "benchmark" / "bad_science_fixtures.jsonl",
@@ -34,6 +36,10 @@ def test_quickstart_and_huggingface_examples_exist() -> None:
         repo / "examples" / "huggingface" / "dataset" / "gate_traces.jsonl",
         repo / "examples" / "huggingface" / "space" / "README.md",
         repo / "examples" / "huggingface" / "space" / "index.html",
+        repo / "examples" / "projects" / "README.md",
+        repo / "examples" / "projects" / "adoption_matrix.v1.2.0b1.json",
+        repo / "examples" / "projects" / "kb_index.v1.2.0b1.json",
+        repo / "examples" / "projects" / "adoption_matrix_receipt.v1.2.0b1.json",
     ]
 
     for path in required:
@@ -138,6 +144,8 @@ def test_public_scope_docs_keep_claim_boundary() -> None:
     doi = (repo / "docs" / "RELEASE_DOI_PROCESS.md").read_text(encoding="utf-8")
     benchmark = (repo / "docs" / "PUBLIC_BENCHMARK_PLAN.md").read_text(encoding="utf-8")
     capability = (repo / "docs" / "CAPABILITY_MATRIX.md").read_text(encoding="utf-8")
+    how_to = (repo / "docs" / "HOW_TO_USE_GSIGMAD.md").read_text(encoding="utf-8")
+    adoption = (repo / "docs" / "RUNTIME_ADOPTION_MATRIX.md").read_text(encoding="utf-8")
 
     assert "not a truth machine" in scope
     assert "does not mean the claim is true" in scope
@@ -148,3 +156,6 @@ def test_public_scope_docs_keep_claim_boundary() -> None:
     assert "bad_science_fixtures.jsonl" in benchmark
     assert "1.2.0b1" in capability
     assert "not a ratified\nbenchmark dataset" in capability
+    assert "returned `EXP_ID`" in how_to
+    assert "adoption proof" in adoption
+    assert "not a ratified scientific benchmark" in adoption

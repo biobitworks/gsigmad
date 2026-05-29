@@ -11,12 +11,12 @@ Cross-project experiment search — queries the Overwatch KG via AQL with option
 ## Usage
 
 ```
-/gsd:find-experiments
-/gsd:find-experiments project=overwatch
-/gsd:find-experiments classification=CONFIRMATORY status=completed
-/gsd:find-experiments protein=TP53
-/gsd:find-experiments project=example-project date_from=2026-01-01 date_to=2026-12-31
-/gsd:find-experiments classification=EXPLORATORY protein=BRCA1
+gsigmad-find-experiments
+gsigmad-find-experiments project=overwatch
+gsigmad-find-experiments classification=CONFIRMATORY status=completed
+gsigmad-find-experiments protein=TP53
+gsigmad-find-experiments project=example-project date_from=2026-01-01 date_to=2026-12-31
+gsigmad-find-experiments classification=EXPLORATORY protein=BRCA1
 ```
 
 ## Filter Parameters

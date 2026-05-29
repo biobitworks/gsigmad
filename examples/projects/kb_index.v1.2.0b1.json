@@ -1,0 +1,392 @@
+{
+  "generated_for": "gsigmad public beta adoption examples",
+  "matrix_version": "v1.2.0b1",
+  "runtime_examples": {
+    "chatgpt_codex": {
+      "authority": "repo edits and local governance only; no truth authority",
+      "skill_path": ".agents/skills/gsigmad/SKILL.md",
+      "status": "supported"
+    },
+    "claude_code": {
+      "authority": "repo edits and local governance only; no truth authority",
+      "skill_path": ".claude/skills/gsigmad/SKILL.md",
+      "status": "supported"
+    },
+    "ollama": {
+      "authority": "local model backend only; no governance authority",
+      "model_count": 8,
+      "probe": "http://127.0.0.1:11434/api/tags",
+      "startup": [
+        "ollama serve"
+      ],
+      "status": "configured"
+    },
+    "ollarma": {
+      "authority": "bounded local bridge with receipts only; no claim promotion authority",
+      "health_status": null,
+      "probe": "http://127.0.0.1:8484/health",
+      "startup": [
+        "ollarma serve",
+        "curl -sS http://127.0.0.1:8484/health | jq '.status, .startup_readiness.status'"
+      ],
+      "status": "not_configured"
+    }
+  },
+  "schema_version": 1,
+  "use_cases": [
+    {
+      "adoption_path": "standalone",
+      "commands": [
+        "git init",
+        "standalone gsigmad path",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml"
+      ],
+      "failure_modes": [
+        "missing seed, missing data contract, or causal wording in results",
+        "missing adapters are not_configured, never PASS",
+        "no live writeback by default",
+        "use the returned EXP id"
+      ],
+      "use_case": "generic_python_science"
+    },
+    {
+      "adoption_path": "gsd_plus_gsigmad",
+      "commands": [
+        "git init",
+        "get-shit-done-cc --codex --claude --local --profile=core",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml",
+        ".codex/get-shit-done/VERSION",
+        ".claude/get-shit-done/VERSION",
+        ".planning/config.json"
+      ],
+      "failure_modes": [
+        "missing seed, missing data contract, or causal wording in results",
+        "missing adapters are not_configured, never PASS",
+        "no live writeback by default",
+        "use the returned EXP id"
+      ],
+      "use_case": "generic_python_science"
+    },
+    {
+      "adoption_path": "standalone",
+      "commands": [
+        "git init",
+        "standalone gsigmad path",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml"
+      ],
+      "failure_modes": [
+        "unverified DOI, unsupported biological mechanism, or missing provenance",
+        "missing adapters are not_configured, never PASS",
+        "no live writeback by default",
+        "use the returned EXP id"
+      ],
+      "use_case": "computational_biology"
+    },
+    {
+      "adoption_path": "gsd_plus_gsigmad",
+      "commands": [
+        "git init",
+        "get-shit-done-cc --codex --claude --local --profile=core",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml",
+        ".codex/get-shit-done/VERSION",
+        ".claude/get-shit-done/VERSION",
+        ".planning/config.json"
+      ],
+      "failure_modes": [
+        "unverified DOI, unsupported biological mechanism, or missing provenance",
+        "missing adapters are not_configured, never PASS",
+        "no live writeback by default",
+        "use the returned EXP id"
+      ],
+      "use_case": "computational_biology"
+    },
+    {
+      "adoption_path": "standalone",
+      "commands": [
+        "git init",
+        "standalone gsigmad path",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml"
+      ],
+      "failure_modes": [
+        "pipeline step drift, missing manifest, or unrecorded reference data",
+        "missing adapters are not_configured, never PASS",
+        "no live writeback by default",
+        "use the returned EXP id"
+      ],
+      "use_case": "bioinformatics_pipeline"
+    },
+    {
+      "adoption_path": "gsd_plus_gsigmad",
+      "commands": [
+        "git init",
+        "get-shit-done-cc --codex --claude --local --profile=core",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml",
+        ".codex/get-shit-done/VERSION",
+        ".claude/get-shit-done/VERSION",
+        ".planning/config.json"
+      ],
+      "failure_modes": [
+        "pipeline step drift, missing manifest, or unrecorded reference data",
+        "missing adapters are not_configured, never PASS",
+        "no live writeback by default",
+        "use the returned EXP id"
+      ],
+      "use_case": "bioinformatics_pipeline"
+    },
+    {
+      "adoption_path": "standalone",
+      "commands": [
+        "git init",
+        "standalone gsigmad path",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml"
+      ],
+      "failure_modes": [
+        "non-identifiable model, unpinned solver seed, or notebook-only replay",
+        "missing adapters are not_configured, never PASS",
+        "no live writeback by default",
+        "use the returned EXP id"
+      ],
+      "use_case": "math_modeling_notebook"
+    },
+    {
+      "adoption_path": "gsd_plus_gsigmad",
+      "commands": [
+        "git init",
+        "get-shit-done-cc --codex --claude --local --profile=core",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml",
+        ".codex/get-shit-done/VERSION",
+        ".claude/get-shit-done/VERSION",
+        ".planning/config.json"
+      ],
+      "failure_modes": [
+        "non-identifiable model, unpinned solver seed, or notebook-only replay",
+        "missing adapters are not_configured, never PASS",
+        "no live writeback by default",
+        "use the returned EXP id"
+      ],
+      "use_case": "math_modeling_notebook"
+    },
+    {
+      "adoption_path": "standalone",
+      "commands": [
+        "git init",
+        "standalone gsigmad path",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml"
+      ],
+      "failure_modes": [
+        "implicit cleaning, undocumented exclusion, or missing environment",
+        "missing adapters are not_configured, never PASS",
+        "no live writeback by default",
+        "use the returned EXP id"
+      ],
+      "use_case": "data_analysis_only"
+    },
+    {
+      "adoption_path": "gsd_plus_gsigmad",
+      "commands": [
+        "git init",
+        "get-shit-done-cc --codex --claude --local --profile=core",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml",
+        ".codex/get-shit-done/VERSION",
+        ".claude/get-shit-done/VERSION",
+        ".planning/config.json"
+      ],
+      "failure_modes": [
+        "implicit cleaning, undocumented exclusion, or missing environment",
+        "missing adapters are not_configured, never PASS",
+        "no live writeback by default",
+        "use the returned EXP id"
+      ],
+      "use_case": "data_analysis_only"
+    },
+    {
+      "adoption_path": "standalone",
+      "commands": [
+        "git init",
+        "standalone gsigmad path",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml"
+      ],
+      "failure_modes": [
+        "claim framed as scientific evidence instead of engineering evidence",
+        "missing adapters are not_configured, never PASS",
+        "no live writeback by default",
+        "use the returned EXP id"
+      ],
+      "use_case": "non_science_software"
+    },
+    {
+      "adoption_path": "gsd_plus_gsigmad",
+      "commands": [
+        "git init",
+        "get-shit-done-cc --codex --claude --local --profile=core",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml",
+        ".codex/get-shit-done/VERSION",
+        ".claude/get-shit-done/VERSION",
+        ".planning/config.json"
+      ],
+      "failure_modes": [
+        "claim framed as scientific evidence instead of engineering evidence",
+        "missing adapters are not_configured, never PASS",
+        "no live writeback by default",
+        "use the returned EXP id"
+      ],
+      "use_case": "non_science_software"
+    }
+  ]
+}

@@ -55,9 +55,10 @@ def test_exp_status(tmp_path):
     mock_client.db.return_value = mock_db
 
     with patch("gsigmad.governance.compiler.session_status.ARANGO_AVAILABLE", True), \
-         patch("gsigmad.governance.compiler.session_status.ArangoClient", return_value=mock_client):
+         patch("gsigmad.governance.compiler.session_status.ArangoClient", return_value=mock_client) as arango_client:
         result = get_exp_status_summary(str(tmp_path))
 
+    arango_client.assert_called_once_with(hosts="http://localhost:8531", request_timeout=0.5)
     assert result["pass"] is True
     exps = result["exps"]
     assert isinstance(exps, list)

@@ -12,7 +12,7 @@ Scan all registered project adapters for CANON classification changes. Reads ada
 ## Usage
 
 ```
-/gsd:drift-scan
+gsigmad-drift-scan
 ```
 
 No parameters. All configuration is sourced from `adapters/*.md` automatically (per D-08, WIRE-03). Public release ships an example template at `examples/adapters/example-project.md`; copy to `adapters/<your-project>.md` to register a project for drift scanning.

@@ -11,9 +11,9 @@ Link an EXP record to a verified publication in the Overwatch Knowledge Graph. U
 ## Usage
 
 ```
-/gsd:cite EXP-015 DOI:10.1371/journal.pcbi.1003285
-/gsd:cite EXP-015 PMID:25147205
-/gsd:cite EXP-015 DOI:10.xxxx type=contradicts
+gsigmad-cite exp_key=overwatch_exp_015 doi=10.1371/journal.pcbi.1003285
+gsigmad-cite exp_key=overwatch_exp_015 pmid=25147205
+gsigmad-cite exp_key=overwatch_exp_015 doi=10.1371/journal.pcbi.1003285 citation_type=contradicts
 ```
 
 ## Parameters
@@ -72,4 +72,4 @@ Citation edges are written as **PROVISIONAL** artifacts:
 
 - Do NOT fabricate DOI or PMID values. If the reference is not in CrossRef or PubMed, do not cite it — log it as HYPOTHESIS support instead.
 - Do NOT retry after a BLOCKED error. The publication is unverified; retrying will produce the same result until the identifier is corrected.
-- The `exp_key` parameter is the ArangoDB `_key`, not the EXP display ID. Use `overwatch_exp_015`, not `EXP-015`. Query the KG with `/gsd:find-experiments` to retrieve the correct `_key`.
+- The `exp_key` parameter is the ArangoDB `_key`, not the EXP display ID. Use `overwatch_exp_015`, not `EXP-015`. Query the KG with `gsigmad-find-experiments` to retrieve the correct `_key`.

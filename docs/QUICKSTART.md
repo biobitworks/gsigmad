@@ -36,19 +36,23 @@ the bundled Agent Skills into `.agents/skills/` and `.claude/skills/`.
 ## 3. Register an Exploratory Experiment
 
 ```bash
-gsigmad register \
+EXP_ID=$(gsigmad --json register \
   --type exploratory \
   --hypothesis "H0: the toy feature distribution is unchanged." \
-  --title "Toy feature drift check"
+  --title "Toy feature drift check" \
+  | python -c 'import json,sys; print(json.load(sys.stdin)["exp_id"])')
+echo "$EXP_ID"
 ```
 
-The first experiment in a fresh project is usually `EXP-1.1`.
+Record the returned `exp_id`; do not assume a fixed value. Fresh projects in
+the 1.2.0b1 surface commonly return `EXP-2.1`, and future numbering may change.
 
 ## 4. Run Offline Gates
 
 ```bash
-gsigmad run --dry-run EXP-1.1
-gsigmad audit EXP-1.1 --skip-citations
+gsigmad run --dry-run "$EXP_ID"
+gsigmad audit "$EXP_ID" --skip-citations
+gsigmad redteam "$EXP_ID"
 ```
 
 `--dry-run` exercises the local gate path without executing external

@@ -1,0 +1,688 @@
+{
+  "case_count": 12,
+  "cases": [
+    {
+      "case_id": "generic_python_science__standalone",
+      "command_statuses": [
+        {
+          "name": "git_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsigmad_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_before",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "register",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "run_dry",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "audit",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "redteam",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_after",
+          "returncode": 0,
+          "status": "PASS"
+        }
+      ],
+      "gsd_status": "not_applicable",
+      "passed": true,
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "case_id": "generic_python_science__gsd_plus_gsigmad",
+      "command_statuses": [
+        {
+          "name": "git_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "get_shit_done_local_install",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsd_config_new_project",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsigmad_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_before",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "register",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "run_dry",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "audit",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "redteam",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_after",
+          "returncode": 0,
+          "status": "PASS"
+        }
+      ],
+      "gsd_status": "configured",
+      "passed": true,
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "case_id": "computational_biology__standalone",
+      "command_statuses": [
+        {
+          "name": "git_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsigmad_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_before",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "register",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "run_dry",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "audit",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "redteam",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_after",
+          "returncode": 0,
+          "status": "PASS"
+        }
+      ],
+      "gsd_status": "not_applicable",
+      "passed": true,
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "case_id": "computational_biology__gsd_plus_gsigmad",
+      "command_statuses": [
+        {
+          "name": "git_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "get_shit_done_local_install",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsd_config_new_project",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsigmad_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_before",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "register",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "run_dry",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "audit",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "redteam",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_after",
+          "returncode": 0,
+          "status": "PASS"
+        }
+      ],
+      "gsd_status": "configured",
+      "passed": true,
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "case_id": "bioinformatics_pipeline__standalone",
+      "command_statuses": [
+        {
+          "name": "git_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsigmad_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_before",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "register",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "run_dry",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "audit",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "redteam",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_after",
+          "returncode": 0,
+          "status": "PASS"
+        }
+      ],
+      "gsd_status": "not_applicable",
+      "passed": true,
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "case_id": "bioinformatics_pipeline__gsd_plus_gsigmad",
+      "command_statuses": [
+        {
+          "name": "git_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "get_shit_done_local_install",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsd_config_new_project",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsigmad_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_before",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "register",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "run_dry",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "audit",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "redteam",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_after",
+          "returncode": 0,
+          "status": "PASS"
+        }
+      ],
+      "gsd_status": "configured",
+      "passed": true,
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "case_id": "math_modeling_notebook__standalone",
+      "command_statuses": [
+        {
+          "name": "git_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsigmad_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_before",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "register",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "run_dry",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "audit",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "redteam",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_after",
+          "returncode": 0,
+          "status": "PASS"
+        }
+      ],
+      "gsd_status": "not_applicable",
+      "passed": true,
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "case_id": "math_modeling_notebook__gsd_plus_gsigmad",
+      "command_statuses": [
+        {
+          "name": "git_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "get_shit_done_local_install",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsd_config_new_project",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsigmad_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_before",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "register",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "run_dry",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "audit",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "redteam",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_after",
+          "returncode": 0,
+          "status": "PASS"
+        }
+      ],
+      "gsd_status": "configured",
+      "passed": true,
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "case_id": "data_analysis_only__standalone",
+      "command_statuses": [
+        {
+          "name": "git_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsigmad_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_before",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "register",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "run_dry",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "audit",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "redteam",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_after",
+          "returncode": 0,
+          "status": "PASS"
+        }
+      ],
+      "gsd_status": "not_applicable",
+      "passed": true,
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "case_id": "data_analysis_only__gsd_plus_gsigmad",
+      "command_statuses": [
+        {
+          "name": "git_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "get_shit_done_local_install",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsd_config_new_project",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsigmad_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_before",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "register",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "run_dry",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "audit",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "redteam",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_after",
+          "returncode": 0,
+          "status": "PASS"
+        }
+      ],
+      "gsd_status": "configured",
+      "passed": true,
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "case_id": "non_science_software__standalone",
+      "command_statuses": [
+        {
+          "name": "git_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsigmad_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_before",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "register",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "run_dry",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "audit",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "redteam",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_after",
+          "returncode": 0,
+          "status": "PASS"
+        }
+      ],
+      "gsd_status": "not_applicable",
+      "passed": true,
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "case_id": "non_science_software__gsd_plus_gsigmad",
+      "command_statuses": [
+        {
+          "name": "git_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "get_shit_done_local_install",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsd_config_new_project",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "gsigmad_init",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_before",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "register",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "run_dry",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "audit",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "redteam",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "status_after",
+          "returncode": 0,
+          "status": "PASS"
+        }
+      ],
+      "gsd_status": "configured",
+      "passed": true,
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    }
+  ],
+  "created_at": "2026-05-29T00:24:23Z",
+  "matrix_version": "v1.2.0b1",
+  "passed": true,
+  "runtime_examples": {
+    "chatgpt_codex": {
+      "authority": "repo edits and local governance only; no truth authority",
+      "skill_path": ".agents/skills/gsigmad/SKILL.md",
+      "status": "supported"
+    },
+    "claude_code": {
+      "authority": "repo edits and local governance only; no truth authority",
+      "skill_path": ".claude/skills/gsigmad/SKILL.md",
+      "status": "supported"
+    },
+    "ollama": {
+      "authority": "local model backend only; no governance authority",
+      "model_count": 8,
+      "probe": "http://127.0.0.1:11434/api/tags",
+      "startup": [
+        "ollama serve"
+      ],
+      "status": "configured"
+    },
+    "ollarma": {
+      "authority": "bounded local bridge with receipts only; no claim promotion authority",
+      "health_status": null,
+      "probe": "http://127.0.0.1:8484/health",
+      "startup": [
+        "ollarma serve",
+        "curl -sS http://127.0.0.1:8484/health | jq '.status, .startup_readiness.status'"
+      ],
+      "status": "not_configured"
+    }
+  },
+  "workspace": "/var/folders/sc/z6dn_f195t7cfdfmwj9tltx00000gn/T/gsigmad-adoption-matrix-zdxyokqo"
+}

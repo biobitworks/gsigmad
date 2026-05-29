@@ -182,7 +182,7 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
             env=cli_env,
         )
     )
-    exp_id = _registered_exp_id(commands[-1]) or "EXP-1.1"
+    exp_id = _registered_exp_id(commands[-1]) or "UNPARSED_EXP_ID"
     commands.append(_run("npm_cli_run_dry", [str(bin_path), "--json", "run", "--dry-run", exp_id], cwd=fixture, env=cli_env))
     commands.append(_run("npm_cli_audit", [str(bin_path), "--json", "audit", exp_id, "--skip-citations"], cwd=fixture, env=cli_env))
 

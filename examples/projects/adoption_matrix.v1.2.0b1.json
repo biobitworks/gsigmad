@@ -1,0 +1,581 @@
+{
+  "adoption_path_count": 2,
+  "case_count": 12,
+  "cases": [
+    {
+      "adoption_path": "standalone",
+      "artifact_checks": {
+        "adapter_not_configured": true,
+        "claude_skill": true,
+        "codex_skill": true,
+        "config": true,
+        "experiment_yaml": true,
+        "lab_notebook": true,
+        "no_live_writeback": true,
+        "prompt_artifact": true,
+        "prompt_id": true,
+        "task_id": true
+      },
+      "case_id": "generic_python_science__standalone",
+      "command_sequence": [
+        "git init",
+        "standalone gsigmad path",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml"
+      ],
+      "failure_mode": "missing seed, missing data contract, or causal wording in results",
+      "gsd_status": "not_applicable",
+      "matrix_version": "v1.2.0b1",
+      "passed": true,
+      "project_label": "Generic Python science",
+      "project_type": "generic_python_science",
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "adoption_path": "gsd_plus_gsigmad",
+      "artifact_checks": {
+        "adapter_not_configured": true,
+        "claude_skill": true,
+        "codex_skill": true,
+        "config": true,
+        "experiment_yaml": true,
+        "gsd_claude_install": true,
+        "gsd_codex_install": true,
+        "gsd_config": true,
+        "lab_notebook": true,
+        "no_live_writeback": true,
+        "prompt_artifact": true,
+        "prompt_id": true,
+        "task_id": true
+      },
+      "case_id": "generic_python_science__gsd_plus_gsigmad",
+      "command_sequence": [
+        "git init",
+        "get-shit-done-cc --codex --claude --local --profile=core",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml",
+        ".codex/get-shit-done/VERSION",
+        ".claude/get-shit-done/VERSION",
+        ".planning/config.json"
+      ],
+      "failure_mode": "missing seed, missing data contract, or causal wording in results",
+      "gsd_status": "configured",
+      "matrix_version": "v1.2.0b1",
+      "passed": true,
+      "project_label": "Generic Python science",
+      "project_type": "generic_python_science",
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "adoption_path": "standalone",
+      "artifact_checks": {
+        "adapter_not_configured": true,
+        "claude_skill": true,
+        "codex_skill": true,
+        "config": true,
+        "experiment_yaml": true,
+        "lab_notebook": true,
+        "no_live_writeback": true,
+        "prompt_artifact": true,
+        "prompt_id": true,
+        "task_id": true
+      },
+      "case_id": "computational_biology__standalone",
+      "command_sequence": [
+        "git init",
+        "standalone gsigmad path",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml"
+      ],
+      "failure_mode": "unverified DOI, unsupported biological mechanism, or missing provenance",
+      "gsd_status": "not_applicable",
+      "matrix_version": "v1.2.0b1",
+      "passed": true,
+      "project_label": "Computational biology",
+      "project_type": "computational_biology",
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "adoption_path": "gsd_plus_gsigmad",
+      "artifact_checks": {
+        "adapter_not_configured": true,
+        "claude_skill": true,
+        "codex_skill": true,
+        "config": true,
+        "experiment_yaml": true,
+        "gsd_claude_install": true,
+        "gsd_codex_install": true,
+        "gsd_config": true,
+        "lab_notebook": true,
+        "no_live_writeback": true,
+        "prompt_artifact": true,
+        "prompt_id": true,
+        "task_id": true
+      },
+      "case_id": "computational_biology__gsd_plus_gsigmad",
+      "command_sequence": [
+        "git init",
+        "get-shit-done-cc --codex --claude --local --profile=core",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml",
+        ".codex/get-shit-done/VERSION",
+        ".claude/get-shit-done/VERSION",
+        ".planning/config.json"
+      ],
+      "failure_mode": "unverified DOI, unsupported biological mechanism, or missing provenance",
+      "gsd_status": "configured",
+      "matrix_version": "v1.2.0b1",
+      "passed": true,
+      "project_label": "Computational biology",
+      "project_type": "computational_biology",
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "adoption_path": "standalone",
+      "artifact_checks": {
+        "adapter_not_configured": true,
+        "claude_skill": true,
+        "codex_skill": true,
+        "config": true,
+        "experiment_yaml": true,
+        "lab_notebook": true,
+        "no_live_writeback": true,
+        "prompt_artifact": true,
+        "prompt_id": true,
+        "task_id": true
+      },
+      "case_id": "bioinformatics_pipeline__standalone",
+      "command_sequence": [
+        "git init",
+        "standalone gsigmad path",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml"
+      ],
+      "failure_mode": "pipeline step drift, missing manifest, or unrecorded reference data",
+      "gsd_status": "not_applicable",
+      "matrix_version": "v1.2.0b1",
+      "passed": true,
+      "project_label": "Bioinformatics pipeline",
+      "project_type": "bioinformatics_pipeline",
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "adoption_path": "gsd_plus_gsigmad",
+      "artifact_checks": {
+        "adapter_not_configured": true,
+        "claude_skill": true,
+        "codex_skill": true,
+        "config": true,
+        "experiment_yaml": true,
+        "gsd_claude_install": true,
+        "gsd_codex_install": true,
+        "gsd_config": true,
+        "lab_notebook": true,
+        "no_live_writeback": true,
+        "prompt_artifact": true,
+        "prompt_id": true,
+        "task_id": true
+      },
+      "case_id": "bioinformatics_pipeline__gsd_plus_gsigmad",
+      "command_sequence": [
+        "git init",
+        "get-shit-done-cc --codex --claude --local --profile=core",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml",
+        ".codex/get-shit-done/VERSION",
+        ".claude/get-shit-done/VERSION",
+        ".planning/config.json"
+      ],
+      "failure_mode": "pipeline step drift, missing manifest, or unrecorded reference data",
+      "gsd_status": "configured",
+      "matrix_version": "v1.2.0b1",
+      "passed": true,
+      "project_label": "Bioinformatics pipeline",
+      "project_type": "bioinformatics_pipeline",
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "adoption_path": "standalone",
+      "artifact_checks": {
+        "adapter_not_configured": true,
+        "claude_skill": true,
+        "codex_skill": true,
+        "config": true,
+        "experiment_yaml": true,
+        "lab_notebook": true,
+        "no_live_writeback": true,
+        "prompt_artifact": true,
+        "prompt_id": true,
+        "task_id": true
+      },
+      "case_id": "math_modeling_notebook__standalone",
+      "command_sequence": [
+        "git init",
+        "standalone gsigmad path",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml"
+      ],
+      "failure_mode": "non-identifiable model, unpinned solver seed, or notebook-only replay",
+      "gsd_status": "not_applicable",
+      "matrix_version": "v1.2.0b1",
+      "passed": true,
+      "project_label": "Math/modeling notebook",
+      "project_type": "math_modeling_notebook",
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "adoption_path": "gsd_plus_gsigmad",
+      "artifact_checks": {
+        "adapter_not_configured": true,
+        "claude_skill": true,
+        "codex_skill": true,
+        "config": true,
+        "experiment_yaml": true,
+        "gsd_claude_install": true,
+        "gsd_codex_install": true,
+        "gsd_config": true,
+        "lab_notebook": true,
+        "no_live_writeback": true,
+        "prompt_artifact": true,
+        "prompt_id": true,
+        "task_id": true
+      },
+      "case_id": "math_modeling_notebook__gsd_plus_gsigmad",
+      "command_sequence": [
+        "git init",
+        "get-shit-done-cc --codex --claude --local --profile=core",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml",
+        ".codex/get-shit-done/VERSION",
+        ".claude/get-shit-done/VERSION",
+        ".planning/config.json"
+      ],
+      "failure_mode": "non-identifiable model, unpinned solver seed, or notebook-only replay",
+      "gsd_status": "configured",
+      "matrix_version": "v1.2.0b1",
+      "passed": true,
+      "project_label": "Math/modeling notebook",
+      "project_type": "math_modeling_notebook",
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "adoption_path": "standalone",
+      "artifact_checks": {
+        "adapter_not_configured": true,
+        "claude_skill": true,
+        "codex_skill": true,
+        "config": true,
+        "experiment_yaml": true,
+        "lab_notebook": true,
+        "no_live_writeback": true,
+        "prompt_artifact": true,
+        "prompt_id": true,
+        "task_id": true
+      },
+      "case_id": "data_analysis_only__standalone",
+      "command_sequence": [
+        "git init",
+        "standalone gsigmad path",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml"
+      ],
+      "failure_mode": "implicit cleaning, undocumented exclusion, or missing environment",
+      "gsd_status": "not_applicable",
+      "matrix_version": "v1.2.0b1",
+      "passed": true,
+      "project_label": "Data-analysis-only",
+      "project_type": "data_analysis_only",
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "adoption_path": "gsd_plus_gsigmad",
+      "artifact_checks": {
+        "adapter_not_configured": true,
+        "claude_skill": true,
+        "codex_skill": true,
+        "config": true,
+        "experiment_yaml": true,
+        "gsd_claude_install": true,
+        "gsd_codex_install": true,
+        "gsd_config": true,
+        "lab_notebook": true,
+        "no_live_writeback": true,
+        "prompt_artifact": true,
+        "prompt_id": true,
+        "task_id": true
+      },
+      "case_id": "data_analysis_only__gsd_plus_gsigmad",
+      "command_sequence": [
+        "git init",
+        "get-shit-done-cc --codex --claude --local --profile=core",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml",
+        ".codex/get-shit-done/VERSION",
+        ".claude/get-shit-done/VERSION",
+        ".planning/config.json"
+      ],
+      "failure_mode": "implicit cleaning, undocumented exclusion, or missing environment",
+      "gsd_status": "configured",
+      "matrix_version": "v1.2.0b1",
+      "passed": true,
+      "project_label": "Data-analysis-only",
+      "project_type": "data_analysis_only",
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "adoption_path": "standalone",
+      "artifact_checks": {
+        "adapter_not_configured": true,
+        "claude_skill": true,
+        "codex_skill": true,
+        "config": true,
+        "experiment_yaml": true,
+        "lab_notebook": true,
+        "no_live_writeback": true,
+        "prompt_artifact": true,
+        "prompt_id": true,
+        "task_id": true
+      },
+      "case_id": "non_science_software__standalone",
+      "command_sequence": [
+        "git init",
+        "standalone gsigmad path",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml"
+      ],
+      "failure_mode": "claim framed as scientific evidence instead of engineering evidence",
+      "gsd_status": "not_applicable",
+      "matrix_version": "v1.2.0b1",
+      "passed": true,
+      "project_label": "Non-science software repo",
+      "project_type": "non_science_software",
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    },
+    {
+      "adoption_path": "gsd_plus_gsigmad",
+      "artifact_checks": {
+        "adapter_not_configured": true,
+        "claude_skill": true,
+        "codex_skill": true,
+        "config": true,
+        "experiment_yaml": true,
+        "gsd_claude_install": true,
+        "gsd_codex_install": true,
+        "gsd_config": true,
+        "lab_notebook": true,
+        "no_live_writeback": true,
+        "prompt_artifact": true,
+        "prompt_id": true,
+        "task_id": true
+      },
+      "case_id": "non_science_software__gsd_plus_gsigmad",
+      "command_sequence": [
+        "git init",
+        "get-shit-done-cc --codex --claude --local --profile=core",
+        "gsigmad init .",
+        "gsigmad status",
+        "gsigmad register --type exploratory --hypothesis <project hypothesis>",
+        "gsigmad run --dry-run EXP-2.1",
+        "gsigmad audit EXP-2.1 --skip-citations",
+        "gsigmad redteam EXP-2.1"
+      ],
+      "expected_artifacts": [
+        ".gsigmad/config.yaml",
+        ".gsigmad/LAB_NOTEBOOK.md",
+        ".agents/skills/gsigmad/SKILL.md",
+        ".claude/skills/gsigmad/SKILL.md",
+        ".gsigmad/experiments/EXP-2.1.yaml",
+        "adapters/runtime/optional-overwatch.yaml",
+        ".codex/get-shit-done/VERSION",
+        ".claude/get-shit-done/VERSION",
+        ".planning/config.json"
+      ],
+      "failure_mode": "claim framed as scientific evidence instead of engineering evidence",
+      "gsd_status": "configured",
+      "matrix_version": "v1.2.0b1",
+      "passed": true,
+      "project_label": "Non-science software repo",
+      "project_type": "non_science_software",
+      "returned_exp_id": "EXP-2.1",
+      "returned_exp_id_used": true
+    }
+  ],
+  "matrix_version": "v1.2.0b1",
+  "package_version": "1.2.0b1",
+  "project_type_count": 6,
+  "runtime_examples": {
+    "chatgpt_codex": {
+      "authority": "repo edits and local governance only; no truth authority",
+      "skill_path": ".agents/skills/gsigmad/SKILL.md",
+      "status": "supported"
+    },
+    "claude_code": {
+      "authority": "repo edits and local governance only; no truth authority",
+      "skill_path": ".claude/skills/gsigmad/SKILL.md",
+      "status": "supported"
+    },
+    "ollama": {
+      "authority": "local model backend only; no governance authority",
+      "model_count": 8,
+      "probe": "http://127.0.0.1:11434/api/tags",
+      "startup": [
+        "ollama serve"
+      ],
+      "status": "configured"
+    },
+    "ollarma": {
+      "authority": "bounded local bridge with receipts only; no claim promotion authority",
+      "health_status": null,
+      "probe": "http://127.0.0.1:8484/health",
+      "startup": [
+        "ollarma serve",
+        "curl -sS http://127.0.0.1:8484/health | jq '.status, .startup_readiness.status'"
+      ],
+      "status": "not_configured"
+    }
+  },
+  "schema_version": 1
+}

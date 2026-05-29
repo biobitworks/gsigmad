@@ -56,6 +56,8 @@ Public positioning docs:
 - [Capability matrix](docs/CAPABILITY_MATRIX.md)
 - [Release and DOI process](docs/RELEASE_DOI_PROCESS.md)
 - [Public benchmark plan](docs/PUBLIC_BENCHMARK_PLAN.md)
+- [How to use gsigmad](docs/HOW_TO_USE_GSIGMAD.md)
+- [Runtime adoption matrix](docs/RUNTIME_ADOPTION_MATRIX.md)
 
 ## CLI
 
@@ -63,10 +65,11 @@ Public positioning docs:
 gsigmad --help
 gsigmad init .
 gsigmad status
-gsigmad register --type exploratory --hypothesis "H0: toy data are unchanged."
-gsigmad run --dry-run EXP-1.1
-gsigmad audit EXP-1.1 --skip-citations
-gsigmad redteam EXP-1.1
+EXP_ID=$(gsigmad --json register --type exploratory --hypothesis "H0: toy data are unchanged." \
+  | python -c 'import json,sys; print(json.load(sys.stdin)["exp_id"])')
+gsigmad run --dry-run "$EXP_ID"
+gsigmad audit "$EXP_ID" --skip-citations
+gsigmad redteam "$EXP_ID"
 ```
 
 ## Agent Skills
@@ -123,6 +126,12 @@ Public benchmark seed artifacts live under
 
 These examples are public-safe release artifacts, not a full benchmark and not
 evidence that gsigmad validates scientific truth.
+
+Out-of-the-box project adoption examples live under
+[examples/projects/](examples/projects/). They cover six synthetic repo shapes
+in standalone `gsigmad` mode and combined `get-shit-done + gsigmad` mode, with
+ChatGPT Codex, Claude Code, Ollama, and Ollarma runtime notes. They are
+operator walkthroughs and local smoke receipts, not ratified benchmark data.
 
 ## Citation and DOI
 

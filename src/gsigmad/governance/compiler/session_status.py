@@ -45,6 +45,7 @@ def get_exp_status_summary(
     project_root: str,
     arango_host: str = "localhost:8531",
     arango_db: str = "overwatch",
+    arango_timeout: float = 0.5,
 ) -> dict:
     """
     Fetch EXP status summary. Primary: ArangoDB. Fallback: local file scan.
@@ -53,6 +54,8 @@ def get_exp_status_summary(
         project_root: Path to the project root directory.
         arango_host: ArangoDB host:port (default: localhost:8531).
         arango_db: ArangoDB database name (default: overwatch).
+        arango_timeout: Maximum seconds to wait for the optional KG before
+            falling back to the local `.gsigmad/experiments` scan.
 
     Returns:
         {"pass": True, "exps": list[dict], "source": "kg"|"local_fallback", "warning": None|str}
@@ -61,7 +64,7 @@ def get_exp_status_summary(
     # Primary: ArangoDB
     if ARANGO_AVAILABLE:
         try:
-            client = ArangoClient(hosts=f"http://{arango_host}")
+            client = ArangoClient(hosts=f"http://{arango_host}", request_timeout=arango_timeout)
             db = client.db(arango_db, verify=False)
             cursor = db.aql.execute(_AQL_EXP_STATUS, count=True)
             exps = [_normalize_exp(doc) for doc in cursor]
