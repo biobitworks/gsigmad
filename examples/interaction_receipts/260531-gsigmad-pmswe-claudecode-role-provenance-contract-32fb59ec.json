@@ -1,0 +1,25 @@
+{
+  "receipt_version": "1.0",
+  "slug": "260531-gsigmad-pmswe-claudecode-role-provenance-contract-32fb59ec",
+  "created_at": "2026-05-31T16:00:00Z",
+  "runtime": "claude-code",
+  "role_header": {
+    "role_lane": "PM/SWE",
+    "role_owner": "claude-code (under operator direction)",
+    "decision_owner": "operator",
+    "execution_owner": "SWE",
+    "review_owner": "operator",
+    "approval_owner": "operator",
+    "writeback_disposition": "blocked",
+    "claim_ceiling": "GOVERNANCE_ONLY"
+  },
+  "artifact_path": "gsigmad/docs/ROLE_AND_PROVENANCE_CONTRACT.md",
+  "content_hash": "sha256:32fb59ec83d7dcc68ae4b21c62754fe81bf2b8ad7d9305c8cac56392b046a848",
+  "parents": [
+    "cellico/docs/ROLE_LANE_GOVERNANCE.md@SIG-20260531T225416Z-codex-roleloops"
+  ],
+  "signature": "SIG-20260531T160000Z-claudecode-role-provenance-contract",
+  "session_pointer": "~/.ollarma/swe_session/session-log.jsonl",
+  "determinism_note": "deterministic",
+  "notes": "Worked example: the interaction-receipt for authoring this contract. Re-hashing the doc yields the same slug shorthash; the contract includes replayable per-role loops."
+}
