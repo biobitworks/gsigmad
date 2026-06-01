@@ -42,5 +42,9 @@ def test_interaction_receipt_matches_contract_hash_and_slug() -> None:
     assert receipt["slug"].endswith(contract_hash[:8])
     assert receipts[0].stem == receipt["slug"]
     assert receipt["determinism_note"] == "deterministic"
+    assert receipt["role_loop"] == "design -> apply -> verify"
+    assert receipt["role_input"]
+    assert "input -> analysis -> output" in receipt["role_analysis"]
+    assert receipt["role_output"] == receipt["artifact_path"]
     assert receipt["role_header"]["writeback_disposition"] == "blocked"
     assert receipt["role_header"]["claim_ceiling"] == "GOVERNANCE_ONLY"
