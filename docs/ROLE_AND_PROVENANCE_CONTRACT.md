@@ -63,6 +63,18 @@ Every role has a short loop that must be visible in the work unit and receipt.
 The loop is intentionally simple so a later agent can replay the work without
 getting stuck in governance loops or inventing a new process.
 
+All role loops normalize to the same replay envelope:
+
+```text
+input -> analysis -> output
+```
+
+The role-specific loop names below are the concrete implementation of that
+envelope. A receipt MUST identify the input it consumed, the analysis or method
+it applied, and the output artifact or decision it produced. If a role cannot
+name all three, the work is not replayable and must stop for a narrower scope or
+handoff.
+
 | Role | Required loop | Deterministic part | Human/authority part |
 | --- | --- | --- | --- |
 | `PI` | `input -> analysis -> interpretation` | evidence intake, claim-ceiling check, gap list | interpretation, hypothesis priority, claim ceiling |
@@ -86,6 +98,16 @@ SWE:      gate -> design -> apply -> verify
 Review:   artifact -> analysis -> verdict
 Operator: request -> approve_or_deny -> receipt
 ```
+
+Receipt mapping:
+
+| Envelope field | Receipt field | Requirement |
+| --- | --- | --- |
+| `input` | `role_input` | Pointer to the prompt, task, phase, artifact, gate, or approval request consumed. |
+| `analysis` | `role_analysis` | Method, command, review rule, or decision procedure applied to the input. |
+| `output` | `role_output` | Pointer to the artifact, verdict, verified change, blocked decision, or approval receipt produced. |
+| loop name | `role_loop` | One of the required role loops above, recorded exactly. |
+| replay status | `determinism_note` | Whether the loop is replayable, manifest-fixed, or operator-action-only. |
 
 Stop rather than loop if a role reaches a step outside its authority ceiling.
 For example, `SWE.verify` may report a failing scientific threshold, but it must
@@ -149,10 +171,14 @@ that flows into SeedGraph.
   },
   "artifact_path": "gsigmad/docs/ROLE_AND_PROVENANCE_CONTRACT.md",  // POINTER, owner-repo-relative
   "content_hash": "sha256:<64hex>",               // sha256 of the referenced artifact
+  "role_loop": "design -> apply -> verify",
+  "role_input": "operator request: define role/provenance contract",
+  "role_analysis": "generalize Cellico role governance into gsigmad contract",
+  "role_output": "gsigmad/docs/ROLE_AND_PROVENANCE_CONTRACT.md",
   "parents": ["<prior receipt slug>", "..."],     // provenance DAG / Merkle chain
   "signature": "SIG-20260531T160000Z-claudecode-role-provenance-contract",
   "session_pointer": "~/.ollarma/swe_session/session-log.jsonl#<entry>",  // cross-agent ledger
-  "determinism_note": "deterministic"             // see §5.3
+  "determinism_note": "deterministic"             // see §6.3
 }
 ```
 
@@ -265,3 +291,4 @@ Stop and escalate if:
 | Date | Signature | Type | Description |
 | --- | --- | --- | --- |
 | 2026-05-31 | SIG-20260531T160000Z-claudecode-role-provenance-contract | CREATE | Generalized Cellico role-lane governance to gsigmad machinery; added Operator role + explicit-approval rule, role→runtime authorization matrix with non-up-scope ceiling, and the interaction-receipt provenance scheme (slug/path/hash/signature/parents) flowing to SeedGraph via Overwatch-gated writeback. DRAFT pending operator review. |
+| 2026-06-01 | SIG-20260601T022000Z-codex-role-loop-replay-clarification | AMEND | Made the generic `input -> analysis -> output` replay envelope explicit for every role, added receipt fields for `role_loop`, `role_input`, `role_analysis`, and `role_output`, and corrected the determinism-note section reference. |
