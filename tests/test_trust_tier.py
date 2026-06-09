@@ -4,6 +4,7 @@ Tests for governance/kg/writer.py — trust tier enforcement and auto-promotion.
 Tests: PROVISIONAL blocked, audit trail SIG-ID format, VERIFIED allowed,
 auto-promotion schema valid, auto-promotion schema invalid.
 """
+import json
 import re
 import tempfile
 from pathlib import Path
@@ -158,41 +159,63 @@ def test_verified_allowed(tmp_path):
 
 
 # ---------------------------------------------------------------------------
-# test_auto_promotion_schema_valid
+# auto-promotion: validates a KG document against an EXPLICIT KG-document schema
 # ---------------------------------------------------------------------------
 
-def test_auto_promotion_schema_valid():
-    """
-    auto_promote() on a doc that satisfies CANON-CORE-schema.json must set
-    doc["status"] = "VERIFIED".
+# Illustrative KG-document schema (test fixture, NOT committed governance canon):
+# encodes the established PROVISIONAL/VERIFIED/QUARANTINED trust-tier status model
+# and the minimal pointer+hash shape of a real KG document. The canonical
+# promotion schema is a pending PI/operator governance decision.
+_KG_DOC_SCHEMA = {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "required": ["id", "collection", "content_sha256"],
+    "properties": {
+        "status": {"enum": ["PROVISIONAL", "VERIFIED", "QUARANTINED"]},
+        "id": {"type": "string"},
+        "collection": {"type": "string"},
+        "content_sha256": {"type": "string"},
+    },
+}
 
-    The CANON-CORE-schema.json requires "extends" (matching pattern
-    "CANON-CORE v{semver}") and optionally validates "status" as one of
-    ["ACTIVE", "DEPRECATED", "DRAFT"]. To avoid a status enum clash we
-    start with status="DRAFT" (a valid schema value) and confirm auto_promote
-    sets it to "VERIFIED" on a passing validation.
-    """
+
+def _write_kg_doc_schema(tmp_path: Path) -> str:
+    schema_file = tmp_path / "kg_doc.schema.json"
+    schema_file.write_text(json.dumps(_KG_DOC_SCHEMA), encoding="utf-8")
+    return str(schema_file)
+
+
+def test_auto_promotion_schema_valid(tmp_path):
+    """A real PROVISIONAL KG document that satisfies an explicit KG-document
+    schema is promoted to VERIFIED."""
+    schema_path = _write_kg_doc_schema(tmp_path)
     doc = {
-        "extends": "CANON-CORE v1.0.0",
-        # Do not pre-set status — auto_promote should SET it to VERIFIED
+        "id": "EXTREF-0001",
+        "collection": "extrefs",
+        "content_sha256": "a" * 64,
+        "status": "PROVISIONAL",
     }
-    result = auto_promote(doc)
+    result = auto_promote(doc, schema_path)
     assert result["status"] == "VERIFIED"
 
 
-# ---------------------------------------------------------------------------
-# test_auto_promotion_schema_invalid
-# ---------------------------------------------------------------------------
-
-def test_auto_promotion_schema_invalid():
-    """
-    auto_promote() on a doc missing required 'extends' must keep
-    doc["status"] = "PROVISIONAL".
-    """
+def test_auto_promotion_schema_invalid(tmp_path):
+    """A doc missing a required KG-document field stays PROVISIONAL."""
+    schema_path = _write_kg_doc_schema(tmp_path)
     doc = {
-        "project": "test-project",
+        "id": "EXTREF-0002",
         "status": "PROVISIONAL",
-        # 'extends' is missing — required by CANON-CORE-schema.json
+        # missing 'collection' and 'content_sha256' — required by the KG-doc schema
     }
-    result = auto_promote(doc)
+    result = auto_promote(doc, schema_path)
+    assert result["status"] == "PROVISIONAL"
+
+
+def test_auto_promotion_requires_explicit_schema():
+    """Regression: auto_promote must NOT default to the CANON-CORE extension-header
+    schema. Without an explicit KG-document schema it fails closed to PROVISIONAL —
+    even for a doc that satisfies the CANON-CORE header schema."""
+    canon_header_doc = {"extends": "CANON-CORE v1.0.0"}
+    with pytest.warns(RuntimeWarning):
+        result = auto_promote(canon_header_doc)  # no schema_path supplied
     assert result["status"] == "PROVISIONAL"

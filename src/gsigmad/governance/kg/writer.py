@@ -17,7 +17,8 @@ Public API:
     TrustTierError (Exception)
 
 Reference: governance/CANON-CORE.md Invariants 1, 3, 9
-           governance/CANON-CORE-schema.json for auto_promote()
+           auto_promote() takes an EXPLICIT KG-document schema; the CANON-CORE
+           header schema must NOT be used to promote KG docs
            DATA_CONTRACTS.md §6 (namespace / timestamp conventions)
 """
 from __future__ import annotations
@@ -656,20 +657,31 @@ def _append_to(path: Path, entry: dict) -> None:
 
 def auto_promote(
     doc: dict,
-    schema_path: str = "src/gsigmad/governance/CANON-CORE-schema.json",
+    schema_path: str | None = None,
 ) -> dict:
-    """Validate doc against CANON-CORE-schema.json and set status=VERIFIED on pass.
+    """Validate a KG document against an explicit KG-document schema; VERIFIED on pass.
 
-    Uses jsonschema.validate() with FormatChecker(). If validation passes,
-    doc["status"] is set to "VERIFIED". If it fails (or jsonschema is not
-    installed), doc["status"] remains "PROVISIONAL".
+    The caller MUST supply the JSON Schema that defines a *promotable KG document*
+    for this collection (the PROVISIONAL -> VERIFIED trust-tier model; QUARANTINED
+    is set elsewhere on requeue failure). There is intentionally **no default**:
+    ``governance/CANON-CORE-schema.json`` is the CANON-CORE *extension-header*
+    schema — it requires ``extends`` and a status enum of ACTIVE/DEPRECATED/DRAFT,
+    so a real PROVISIONAL EXTREF / KG document can never satisfy it. Defaulting to
+    it made auto-promotion silently impossible (it could only ever promote a
+    CANON-header-shaped doc, never an actual KG document). When no schema is
+    supplied, this fails closed: ``doc["status"]`` stays/defaults to "PROVISIONAL".
 
-    This implements the auto-promotion criteria for low-risk EXTREF artifacts
-    per the cross-agent trust model decision in PROJECT.md.
+    NOTE (governance decision, pending PI/operator): the canonical KG-document
+    promotion schema (which fields gate VERIFIED) is not yet defined in-repo. Until
+    it is, pass an explicit, reviewed schema path; do not reintroduce a
+    header-schema default.
+
+    Uses jsonschema.validate() with FormatChecker(). Modified in place.
 
     Args:
         doc: Document dict to validate. Modified in-place.
-        schema_path: Path to JSON Schema file (default: CANON-CORE-schema.json).
+        schema_path: Path to the KG-document JSON Schema. Required for promotion;
+            None (or a missing jsonschema install) fails closed to PROVISIONAL.
 
     Returns:
         The (possibly modified) doc dict.
@@ -677,6 +689,17 @@ def auto_promote(
     if not JSONSCHEMA_AVAILABLE:
         warnings.warn(
             "jsonschema not installed; auto_promote always returns PROVISIONAL",
+            RuntimeWarning,
+            stacklevel=2,
+        )
+        doc.setdefault("status", "PROVISIONAL")
+        return doc
+
+    if not schema_path:
+        warnings.warn(
+            "auto_promote called without a KG-document schema_path; failing closed "
+            "to PROVISIONAL (the CANON-CORE header schema must not be used to "
+            "promote KG documents)",
             RuntimeWarning,
             stacklevel=2,
         )
