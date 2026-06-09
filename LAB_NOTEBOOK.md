@@ -19,7 +19,7 @@
 - Repair performed: generated or verified `.planning/file_sidecar_inventory.jsonl` and `.planning/sidecar_test_tasks.jsonl` for this repo.
 - Branch at repair: `main`.
 - Boundary: local planning/custody data only. No live writeback, import, commit, push, external database mutation, claim promotion, or canonical truth promotion was performed.
-- Future test command: `/Users/byron/projects/bin/portfolio_sidecar_file_tests.py --check`.
+- Future test command: `portfolio_sidecar_file_tests.py --check` (operator-local portfolio tooling).
 
 <!-- role-provenance-contract-20260531 -->
 

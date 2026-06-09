@@ -34,3 +34,6 @@ exports/
 .idea/
 .vscode/
 *.swp
+
+# Operator-local quick-reference card — never ship (contains local paths/private names)
+docs/REPO_QUICK_REFERENCE.md

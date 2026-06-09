@@ -3,10 +3,10 @@
 Status: **DRAFT — forward governance rule, pending operator review**
 Created: 2026-05-31
 Owner repo: `gsigmad` (reusable workflow machinery + receipt vocabulary)
-Consumers: Cellico, Watchtower, Antigence, Ollarma, and all gsigmad-governed repos
+Consumers: Watchtower, Antigence, Ollarma, and all gsigmad-governed repos
 Registrar of canonical truth: Overwatch (on operator approval only)
 
-This contract generalizes Cellico's project-local `docs/ROLE_LANE_GOVERNANCE.md`
+This contract generalizes an originating project's local `docs/ROLE_LANE_GOVERNANCE.md`
 (2026-05-31) into ecosystem machinery, and adds the **interaction-provenance**
 scheme (slug + path + hash + signature + parents) so every agent interaction is
 traceable into the SeedGraph knowledge graph with governance and provenance.
@@ -173,7 +173,7 @@ that flows into SeedGraph.
   "content_hash": "sha256:<64hex>",               // sha256 of the referenced artifact
   "role_loop": "design -> apply -> verify",
   "role_input": "operator request: define role/provenance contract",
-  "role_analysis": "generalize Cellico role governance into gsigmad contract",
+  "role_analysis": "generalize originating-project role governance into gsigmad contract",
   "role_output": "gsigmad/docs/ROLE_AND_PROVENANCE_CONTRACT.md",
   "parents": ["<prior receipt slug>", "..."],     // provenance DAG / Merkle chain
   "signature": "SIG-20260531T160000Z-claudecode-role-provenance-contract",
@@ -191,7 +191,7 @@ that flows into SeedGraph.
 
 - `shorthash` = first 8 hex chars of `content_hash`. This binds the slug to the
   exact content, so the same interaction always reproduces the same slug.
-- `signature` = `SIG-{ISO8601-compact}-{runtime}-{task-kebab}` (Cellico's existing
+- `signature` = `SIG-{ISO8601-compact}-{runtime}-{task-kebab}` (the originating project's existing
   format, kept for continuity with its change log).
 
 ### 6.3 Determinism rule
@@ -290,5 +290,5 @@ Stop and escalate if:
 
 | Date | Signature | Type | Description |
 | --- | --- | --- | --- |
-| 2026-05-31 | SIG-20260531T160000Z-claudecode-role-provenance-contract | CREATE | Generalized Cellico role-lane governance to gsigmad machinery; added Operator role + explicit-approval rule, role→runtime authorization matrix with non-up-scope ceiling, and the interaction-receipt provenance scheme (slug/path/hash/signature/parents) flowing to SeedGraph via Overwatch-gated writeback. DRAFT pending operator review. |
+| 2026-05-31 | SIG-20260531T160000Z-claudecode-role-provenance-contract | CREATE | Generalized originating-project role-lane governance to gsigmad machinery; added Operator role + explicit-approval rule, role→runtime authorization matrix with non-up-scope ceiling, and the interaction-receipt provenance scheme (slug/path/hash/signature/parents) flowing to SeedGraph via Overwatch-gated writeback. DRAFT pending operator review. |
 | 2026-06-01 | SIG-20260601T022000Z-codex-role-loop-replay-clarification | AMEND | Made the generic `input -> analysis -> output` replay envelope explicit for every role, added receipt fields for `role_loop`, `role_input`, `role_analysis`, and `role_output`, and corrected the determinism-note section reference. |

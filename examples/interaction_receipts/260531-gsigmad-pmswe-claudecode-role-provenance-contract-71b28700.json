@@ -1,6 +1,6 @@
 {
   "receipt_version": "1.0",
-  "slug": "260531-gsigmad-pmswe-claudecode-role-provenance-contract-9f9b26f5",
+  "slug": "260531-gsigmad-pmswe-claudecode-role-provenance-contract-71b28700",
   "created_at": "2026-05-31T16:00:00Z",
   "runtime": "claude-code",
   "role_header": {
@@ -14,13 +14,13 @@
     "claim_ceiling": "GOVERNANCE_ONLY"
   },
   "artifact_path": "gsigmad/docs/ROLE_AND_PROVENANCE_CONTRACT.md",
-  "content_hash": "sha256:9f9b26f5bc91a0c45acb4841e48e9d7d42e9b865bcce91b6f87bdd4f7c7a6d84",
+  "content_hash": "sha256:71b28700bab91a02254e68a843f30142919a1501290a7d9249f19d2e5cc6c05e",
   "role_loop": "design -> apply -> verify",
   "role_input": "operator request: define role/provenance contract with replayable role loops",
-  "role_analysis": "generalize Cellico role governance into gsigmad contract and make input -> analysis -> output replay fields explicit",
+  "role_analysis": "generalize originating-project role governance into gsigmad contract and make input -> analysis -> output replay fields explicit",
   "role_output": "gsigmad/docs/ROLE_AND_PROVENANCE_CONTRACT.md",
   "parents": [
-    "cellico/docs/ROLE_LANE_GOVERNANCE.md@SIG-20260531T225416Z-codex-roleloops"
+    "originating-project/docs/ROLE_LANE_GOVERNANCE.md@SIG-20260531T225416Z-codex-roleloops"
   ],
   "signature": "SIG-20260531T160000Z-claudecode-role-provenance-contract",
   "session_pointer": "~/.ollarma/swe_session/session-log.jsonl",
