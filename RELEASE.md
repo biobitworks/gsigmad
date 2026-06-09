@@ -93,7 +93,7 @@ release.
 on every PR/push to `main` and on `v*` tags via
 `.github/workflows/public-release-gate.yml`, and locally as a pre-push hook
 (activate once per clone with `git config core.hooksPath scripts/hooks`). It
-blocks absolute user-home paths (`/Users/...`), internal runtime directories
+blocks absolute user-home paths (those under `/Users/`), internal runtime directories
 tracked into the public tree, and untracked working-tree files. It ships no
 private project-name list, so it is safe to publish.
 
