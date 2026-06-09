@@ -86,14 +86,28 @@ Before pushing publicly:
 - package metadata includes license, citation, security, and contribution files
 - GitHub remote is explicitly configured for the intended public repo
 
-The private upstream development repo ships an executable release-gate scan
-that enforces the above. From that upstream checkout:
+This is enforced by a **two-tier hard gate**. Exit code 1 anywhere aborts the
+release.
+
+**Tier 1 — public, self-contained, automatic.** `scripts/release_guard.py` runs
+on every PR/push to `main` and on `v*` tags via
+`.github/workflows/public-release-gate.yml`, and locally as a pre-push hook
+(activate once per clone with `git config core.hooksPath scripts/hooks`). It
+blocks absolute user-home paths (`/Users/...`), internal runtime directories
+tracked into the public tree, and untracked working-tree files. It ships no
+private project-name list, so it is safe to publish.
+
+**Tier 2 — upstream, authoritative, full ruleset.** The full 17-rule scan
+(including the private project-name FLAG list, which must NEVER ship publicly)
+lives only in the private upstream development repo. Run it from that checkout
+**before** refreshing / pushing / tagging this mirror:
 
 ```bash
-python3 scripts/release_gate_scan.py /path/to/gsigmad
-pytest tests/test_release_gate.py -q
+GSIGMAD_PUBLIC_REPO=/path/to/gsigmad scripts/prepublish_gate.sh
 ```
 
-Exit code 1 on any BLOCK-class finding halts the release. The scan
-rules are committed at
-`.planning/quick/260511-gsigmad-public-release-ip-redteam/SANITIZATION-RULES.json`.
+That wrapper runs `scripts/release_gate_scan.py` against the mirror and the
+`tests/test_release_gate.py` suite, and fails on any BLOCK **or** FLAG. The scan
+rules are committed upstream at
+`.planning/quick/260511-gsigmad-public-release-ip-redteam/SANITIZATION-RULES.json`
+(upstream-only; not part of the public mirror).

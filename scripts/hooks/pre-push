@@ -1,0 +1,21 @@
+#!/bin/sh
+# gsigmad public-release pre-push guard.
+#
+# Fails hard (aborts the push) when the self-contained release guard finds a
+# BLOCK-class leak: absolute user-home paths, internal runtime dirs tracked into
+# the public tree, or untracked working-tree files.
+#
+# Activate (one-time, per clone):
+#     git config core.hooksPath scripts/hooks
+#
+# The full private-name (R-14) scan is enforced upstream via
+# scripts/prepublish_gate.sh before this mirror is refreshed.
+repo_root=$(git rev-parse --show-toplevel)
+echo "[pre-push] gsigmad release guard..." >&2
+if ! python3 "$repo_root/scripts/release_guard.py" "$repo_root"; then
+  echo "[pre-push] BLOCKED: release_guard found a release blocker (findings above). Push aborted." >&2
+  echo "[pre-push] Scrub the leak, or override intentionally with: git push --no-verify" >&2
+  exit 1
+fi
+echo "[pre-push] release guard clean." >&2
+exit 0

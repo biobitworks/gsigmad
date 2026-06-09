@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - "v*"
 
 jobs:
   test:
@@ -25,6 +27,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+
+      - name: Release guard (self-contained leak scan)
+        run: python scripts/release_guard.py
 
       - name: Set up Node
         uses: actions/setup-node@v4
