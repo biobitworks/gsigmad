@@ -4,8 +4,7 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build]
 include = [
-    "src/gsigmad/skill_bundle/**/*.md",
-    "src/gsigmad/skill_bundle/**/*.yaml",
+    "src/gsigmad/**/*",
     "skills/**/*.md",
     "skills/**/*.yaml",
     "docs/**/*.md",
@@ -14,6 +13,12 @@ include = [
     "examples/**",
     "npm/**",
     "homebrew/**",
+]
+exclude = [
+    "**/.DS_Store",
+    "**/node_modules/**",
+    "**/__pycache__/**",
+    "**/*.pyc",
 ]
 
 [project]
